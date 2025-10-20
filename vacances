@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sri Lanka Express — Plan de voyage (9 jours)</title>
+  <meta name="description" content="Plan de voyage pragmatique et complet — Itinéraire jour par jour, budget, transports, checklists. Partage gratuit.">
+  <style>
+    /* ====== Design système, sans dépendances ====== */
+    :root{
+      --bg: #0b0c10;
+      --card:#111218;
+      --muted:#8992a1;
+      --text:#e6e8ec;
+      --brand:#4f46e5;
+      --brand-2:#22c55e;
+      --accent:#0ea5e9;
+      --warning:#f59e0b;
+      --danger:#ef4444;
+      --ring: 0 0 0 3px rgba(79,70,229,.35);
+      --radius: 16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font: 16px/1.45 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text); background: radial-gradient(1200px 800px at 20% -10%, rgba(34,197,94,.15), transparent 40%), radial-gradient(1000px 700px at 120% 0%, rgba(14,165,233,.18), transparent 50%), var(--bg);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{width:min(1150px, 100% - 2rem); margin-inline:auto}
+    .grid{display:grid; gap:1rem}
+    .grid-2{grid-template-columns:repeat(2, minmax(0,1fr))}
+    .grid-3{grid-template-columns:repeat(3, minmax(0,1fr))}
+    @media (max-width: 960px){.grid-2,.grid-3{grid-template-columns:1fr}}
+
+    /* Header */
+    header.hero{position:relative; padding: 2.5rem 0 1.25rem}
+    .badge{display:inline-flex; align-items:center; gap:.4rem; border:1px solid rgba(255,255,255,.12); padding:.25rem .6rem; border-radius:999px; color:#cbd5e1; background:rgba(17,18,24,.6); backdrop-filter: blur(6px)}
+    .title{font-weight:800; letter-spacing:.2px; font-size: clamp(2rem, 3.2vw, 3rem); margin:.6rem 0}
+    .subtitle{color:var(--muted); max-width:65ch}
+    .hero-actions{display:flex; gap:.5rem; flex-wrap:wrap; margin-top:1rem}
+    button, .btn{appearance:none; border:0; background:var(--brand); color:white; border-radius:12px; padding:.7rem 1rem; font-weight:600; cursor:pointer}
+    button:hover, .btn:hover{filter:brightness(1.05)}
+    .btn.secondary{background:#1f2937; color:#e5e7eb}
+    .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,.16)}
+
+    nav.sticky{
+      position: sticky; top:0; z-index:25; background:rgba(11,12,16,.7); backdrop-filter: blur(8px);
+      border-bottom:1px solid rgba(255,255,255,.08)
+    }
+    .nav-inner{display:flex; gap:.5rem; overflow:auto; padding:.5rem 0}
+    .chip{white-space:nowrap; border:1px solid rgba(255,255,255,.15); padding:.45rem .75rem; border-radius:999px; color:#d1d5db; background:rgba(17,18,24,.5)}
+    .chip.active{background:linear-gradient(90deg, rgba(79,70,229,.25), rgba(34,197,94,.25)); color:white; border-color:transparent}
+
+    /* Cards */
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.09); border-radius: var(--radius); padding:1rem}
+    .card h3{margin:.25rem 0 .5rem; font-size:1.05rem}
+    .muted{color:var(--muted)}
+    .kpi{font-weight:800; font-size:1.45rem}
+
+    /* Sections */
+    section{scroll-margin-top:80px; padding:1.25rem 0}
+    .section-title{display:flex; align-items:center; gap:.6rem; font-size:1.2rem; margin: .5rem 0 .75rem}
+
+    /* Day accordion */
+    details.day{border:1px solid rgba(255,255,255,.1); border-radius: var(--radius); padding:.8rem 1rem; background:rgba(17,18,24,.5)}
+    summary{list-style:none; cursor:pointer}
+    summary::-webkit-details-marker{display:none}
+    .day-head{display:flex; align-items:center; justify-content:space-between; gap:.75rem}
+    .day-head b{font-size:1.05rem}
+    .pill{display:inline-flex; align-items:center; gap:.4rem; background:rgba(34,197,94,.12); color:#86efac; border:1px solid rgba(34,197,94,.22); padding:.15rem .5rem; border-radius:999px; font-size:.85rem}
+    .list{margin:.4rem 0 0; padding-left:1rem}
+    .list li{margin:.25rem 0}
+    .alt{border-left:3px solid rgba(14,165,233,.55); padding-left:.65rem; margin-top:.35rem}
+
+    /* Tables */
+    table{width:100%; border-collapse:collapse; margin:.25rem 0}
+    th,td{padding:.5rem .6rem; border-bottom:1px dashed rgba(255,255,255,.08); text-align:left}
+    th{color:#cbd5e1; font-weight:600}
+    td.k{color:#cbd5e1}
+    td.v{text-align:right}
+
+    /* Utilities */
+    .row{display:flex; gap:1rem; align-items:center}
+    .right{margin-left:auto}
+    .spacer{height:1rem}
+    .tiny{font-size:.85rem}
+    .code{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:.9em}
+
+    /* Footer */
+    footer{border-top:1px solid rgba(255,255,255,.08); color:#a1a1aa; padding:1.25rem 0 3rem}
+
+    /* Print */
+    @media print{
+      nav.sticky, .hero-actions, .date-picker{display:none}
+      body{background:white; color:black}
+      .card, details.day{background:white; border-color:#e5e7eb}
+      a{color:black}
+    }
+  </style>
+</head>
+<body>
+  <header class="hero container">
+    <div class="badge">Sri Lanka · 9 jours · entre amis</div>
+    <h1 class="title">Sri Lanka Express — plan de voyage <span class="muted">(pragmatique)</span></h1>
+    <p class="subtitle">Itinéraire jour par jour, temps de trajets, budget, météo attendue, checklists et exports. Adapté à un groupe. Zéro blabla inutile.</p>
+    <div class="hero-actions">
+      <button id="btnPrint" title="Imprimer / PDF">🖨️ Imprimer / PDF</button>
+      <button id="btnIcs" class="btn secondary" title="Exporter le calendrier (.ics)">📆 Export .ics</button>
+      <button id="btnExpand" class="btn ghost" title="Tout dérouler">➕ Tout dérouler</button>
+      <button id="btnCollapse" class="btn ghost" title="Tout replier">➖ Tout replier</button>
+    </div>
+  </header>
+
+  <nav class="sticky">
+    <div class="container nav-inner" id="nav">
+      <a class="chip active" href="#recap">Récap</a>
+      <a class="chip" href="#dates">Dates</a>
+      <a class="chip" href="#itinerary">Itinéraire</a>
+      <a class="chip" href="#meteo">Météo</a>
+      <a class="chip" href="#logements">Logements</a>
+      <a class="chip" href="#transports">Transports</a>
+      <a class="chip" href="#activites">Activités</a>
+      <a class="chip" href="#budget">Budget</a>
+      <a class="chip" href="#checklist">Checklists</a>
+      <a class="chip" href="#roles">Rôles</a>
+      <a class="chip" href="#plansB">Plans B</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Récap -->
+    <section id="recap">
+      <div class="section-title">🧭 Récap express</div>
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>Format</h3>
+          <div class="kpi">9 jours</div>
+          <div class="muted tiny">Jeudi → dimanche suivant · 7 jours de congés max</div>
+        </div>
+        <div class="card">
+          <h3>Parcours</h3>
+          <div class="kpi">Colombo → Côte Sud → Udawalawe → Ella → Kandy → Dambulla/Sigiriya → Trincomalee</div>
+        </div>
+        <div class="card">
+          <h3>Budget cible / pers.</h3>
+          <div class="kpi">1 667,26 €</div>
+          <div class="muted tiny">Vols inclus</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dates -->
+    <section id="dates">
+      <div class="section-title">📅 Dates & calendrier</div>
+      <div class="card">
+        <div class="row date-picker">
+          <label for="startDate"><b>Date de <u>départ (jeudi)</u> :</b></label>
+          <input id="startDate" type="date" />
+          <span class="muted tiny">Astuce : choisissez un des jeudis proposés ci‑dessous pour caler les jours J1→J9 automatiquement.</span>
+        </div>
+        <div class="spacer"></div>
+        <div class="grid grid-3">
+          <div class="card">
+            <h3>Fenêtre 1</h3>
+            <p class="muted">Jeu 4 → Dim 14 juin</p>
+            <button class="btn" data-quick-date="2025-06-04">Choisir ce jeudi</button>
+          </div>
+          <div class="card">
+            <h3>Fenêtre 2</h3>
+            <p class="muted">Jeu 11 → Dim 21 juin</p>
+            <button class="btn" data-quick-date="2025-06-11">Choisir ce jeudi</button>
+          </div>
+          <div class="card">
+            <h3>Fenêtre 3</h3>
+            <p class="muted">Jeu 18 → Dim 28 juin</p>
+            <button class="btn" data-quick-date="2025-06-18">Choisir ce jeudi</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Itinéraire -->
+    <section id="itinerary">
+      <div class="section-title">🗺️ Itinéraire jour par jour</div>
+      <div id="days" class="grid"></div>
+    </section>
+
+    <!-- Météo -->
+    <section id="meteo">
+      <div class="section-title">🌦️ Météo attendue (juin)</div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Aperçu</h3>
+          <ul class="list">
+            <li>Sud/Ouest (Colombo, Côte Sud, Kandy, Ella) : averses courtes, éclaircies ensuite.</li>
+            <li>Est (Trincomalee) : plus sec, mer plus calme.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Par étape</h3>
+          <ul class="list">
+            <li><b>Colombo</b> : chaleur humide, pluies fin de journée possibles.</li>
+            <li><b>Côte Sud</b> : mer formée par moments, surf débutant OK (Weligama).</li>
+            <li><b>Udawalawe</b> : chaud, faune active tôt.</li>
+            <li><b>Ella</b> : plus frais, brumes/grains l’après‑midi.</li>
+            <li><b>Kandy</b> : averses intermittentes.</li>
+            <li><b>Dambulla/Sigiriya</b> : plutôt sec & chaud.</li>
+            <li><b>Trincomalee</b> : ensoleillé, snorkelling/bateau favorables.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Logements -->
+    <section id="logements">
+      <div class="section-title">🏨 Logements — critères</div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Répartition</h3>
+          <ul class="list">
+            <li>Colombo : boutique‑hôtel central ou près du lac.</li>
+            <li>Unawatuna/Mirissa : hôtel/Airbnb proche plage.</li>
+            <li>Ella : guesthouse vue collines.</li>
+            <li>Kandy : hôtel calme, accès temples.</li>
+            <li>Trincomalee : villa/hôtel bord de mer (Uppuveli/Dutch Bay).</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>À vérifier</h3>
+          <ul class="list">
+            <li>Petit‑déj inclus ? Réception 24/7 ? Check‑in tardif ?</li>
+            <li>Bagagerie le jour d’arrivée/départ ?</li>
+            <li>Chambres doubles, lits séparés si besoin.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Transports -->
+    <section id="transports">
+      <div class="section-title">🚐 Transports — temps & modes</div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Temps de route réalistes</h3>
+          <table>
+            <tr><td class="k">Colombo → Unawatuna</td><td class="v">2–2h30</td></tr>
+            <tr><td class="k">Unawatuna → Udawalawe</td><td class="v">3–3h30</td></tr>
+            <tr><td class="k">Udawalawe → Ella</td><td class="v">3–3h30</td></tr>
+            <tr><td class="k">Ella → Kandy (train)</td><td class="v">5–7h</td></tr>
+            <tr><td class="k">Kandy → Dambulla</td><td class="v">2–2h30</td></tr>
+            <tr><td class="k">Sigiriya → Trincomalee</td><td class="v">3,5–4,5h</td></tr>
+            <tr><td class="k">Trincomalee → Colombo</td><td class="v">5,5–7h</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h3>Conseils groupe</h3>
+          <ul class="list">
+            <li>Van privé pour les liaisons longues (coût partagé).</li>
+            <li>Train Ella→Kandy : tenter places réservées, sinon 2e/3e classe.</li>
+            <li>Tuk‑tuks pour courts trajets (1–4 km).</li>
+            <li>Conduite à gauche ; on évite la location de voiture.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Activités -->
+    <section id="activites">
+      <div class="section-title">🎯 Activités & réservations</div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Immanquables</h3>
+          <ul class="list">
+            <li>Safari Udawalawe (3h, départ tôt).</li>
+            <li>Snorkelling tortues (Mirissa), respect distance.</li>
+            <li>Surf débutant (Weligama, 1–1h30).</li>
+            <li>Tea factory Uva Halpewatte.</li>
+            <li>Flying Ravana (méga zipline).</li>
+            <li>Temple de la Dent, Jardins botaniques.</li>
+            <li>Grottes de Dambulla, rocher de Sigiriya.</li>
+            <li>Trincomalee : baleines (selon mer), Pigeon Island.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Règles simples</h3>
+          <ul class="list">
+            <li>Tenue temples : épaules/genoux couverts, chaussures retirées.</li>
+            <li>Ambuluwawa : escalier étroit, éviter par grand vent.</li>
+            <li>Faune : ne pas toucher/nourrir (tortues/singes).</li>
+            <li>Pigeon Island : ne pas piétiner les coraux.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Budget -->
+    <section id="budget">
+      <div class="section-title">💶 Budget / personne (estimation)</div>
+      <div class="grid grid-2">
+        <div class="card">
+          <table>
+            <tr><td class="k">Avion A/R</td><td class="v" data-money="650">650,00 €</td></tr>
+            <tr><td class="k">Logement</td><td class="v" data-money="470.62">470,62 €</td></tr>
+            <tr><td class="k">Activités</td><td class="v" data-money="255">255,00 €</td></tr>
+            <tr><td class="k">Transports terrestres & train</td><td class="v" data-money="41.64">41,64 €</td></tr>
+            <tr><td class="k">Repas & boissons</td><td class="v" data-money="250">250,00 €</td></tr>
+            <tr><th>Total</th><th class="v" id="budgetTotal">—</th></tr>
+          </table>
+          <p class="muted tiny">Repères prix : snack 1–3 € · repas 2–6 € · restau 6–12 € · poisson 8–15 € · jus/café 1–3 € · bière 2–3,5 € · cocktail 5–9 €.</p>
+        </div>
+        <div class="card">
+          <h3>Paiements</h3>
+          <ul class="list">
+            <li>CB en ville/hôtels ; cash pour tuk‑tuks, petits achats, tips.</li>
+            <li>Retraits : privilégier 1–2 gros retraits (moins de frais).</li>
+            <li>Deux cartes par binôme, séparées.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Checklists -->
+    <section id="checklist">
+      <div class="section-title">🧳 Checklists</div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>À emporter</h3>
+          <ul class="list">
+            <li>Vêtements : maillot, 3–4 t‑shirts, short, pantalon léger, k‑way, sweat.</li>
+            <li>Chaussures : baskets + sandales.</li>
+            <li>Temples : paréo/écharpe ; short sous genou/pantalon.</li>
+            <li>Soleil : casquette, lunettes, crème solaire.</li>
+            <li>Pharmacie : pansements, antalgique, anti‑mal des transports, anti‑diarrhéique, répulsif moustiques.</li>
+            <li>Électricité : adaptateur universel, powerbank.</li>
+            <li>Eau : gourde réutilisable.</li>
+            <li>Snorkel : masque perso (optionnel).</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Avant départ</h3>
+          <ul class="list">
+            <li>ETA (visa électronique) validé, passeport &gt; 6 mois.</li>
+            <li>Assurance voyage (soins + rapatriement).</li>
+            <li>Copies passeports/assurances (cloud + offline).</li>
+            <li>Confirmations chauffeurs/hôtels/train.</li>
+            <li>Appli de dépenses pour caisse commune.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rôles -->
+    <section id="roles">
+      <div class="section-title">🧩 Rôles (proposition)</div>
+      <div class="card">
+        <ul class="list">
+          <li>Coordination vols & documents.</li>
+          <li>Hébergements (réservations + confirmations).</li>
+          <li>Chauffeur/van & safari.</li>
+          <li>Train Ella→Kandy.</li>
+          <li>Activités mer à Trincomalee.</li>
+          <li>Caisse commune.</li>
+          <li>Secours & santé (kit + numéros utiles).</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Plans B -->
+    <section id="plansB">
+      <div class="section-title">⛑️ Plans B météo</div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Côte Sud sous pluie</h3>
+          <p class="muted">Bascule Galle (musée, cafés, shopping), spa ayurvédique, cours de cuisine.</p>
+        </div>
+        <div class="card">
+          <h3>Ella brume/pluie</h3>
+          <p class="muted">Raccourcir zipline, garder tea factory, cafés couverts.</p>
+        </div>
+        <div class="card">
+          <h3>Train complet</h3>
+          <p class="muted">Van Ella→Kandy + arrêts panoramiques.</p>
+        </div>
+        <div class="card">
+          <h3>Mer agitée à Trinco</h3>
+          <p class="muted">Plages abritées (Sandy Cove/Dutch Bay), temples, marché local.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="container">
+      <div class="row">
+        <span>Fait pour le groupe — partage libre.</span>
+        <span class="right tiny muted">Dernière mise à jour : <span id="lastUpdated"></span></span>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // ====== Données structurées (édition simple) ======
+    const plan = {
+      title: "Sri Lanka Express — 9 jours",
+      // Itinéraire: chaque bloc jour a des segments avec horaires locaux indicatifs (Asia/Colombo)
+      days: [
+        {
+          key: "J1",
+          name: "Colombo → Unawatuna",
+          offsetFromThursday: 1, // Vendredi local
+          segments: [
+            { time: "02:50–04:30", label: "Arrivée CMB · SIM/ATM · Transfert hôtel" },
+            { time: "09:00–17:30", label: "Colombo : Jami Ul‑Afar · Pettah · Gangaramaya · Port City" },
+            { time: "19:00–21:30", label: "Route Colombo → Unawatuna (van) · Check‑in" },
+          ],
+          alt: "Pluie : musées/cafés à Colombo, Lotus Tower si visibilité",
+        },
+        {
+          key: "J2",
+          name: "Côte Sud : Unawatuna/Mirissa/Weligama",
+          offsetFromThursday: 2, // Samedi
+          segments: [
+            { time: "07:15–08:00", label: "Coconut Tree Hill" },
+            { time: "08:30–11:00", label: "Mirissa · snorkelling tortues (respect distance)" },
+            { time: "11:45–13:15", label: "Weligama · cours de surf débutant" },
+            { time: "14:30–17:30", label: "Plages : Dalawella · Mihiripenna · Ahangama" },
+          ],
+          alt: "Pluie : Fort de Galle, cafés, soins ayurvédiques",
+        },
+        {
+          key: "J3",
+          name: "Udawalawe → Ella",
+          offsetFromThursday: 3, // Dimanche
+          segments: [
+            { time: "05:00–08:30", label: "Route Unawatuna → Udawalawe" },
+            { time: "08:30–11:30", label: "Safari Udawalawe (4×4 + guide)" },
+            { time: "13:00–16:30", label: "Route Udawalawe → Ella" },
+          ],
+          alt: "—",
+        },
+        {
+          key: "J4",
+          name: "Ella → Kandy (train panoramique)",
+          offsetFromThursday: 4, // Lundi
+          segments: [
+            { time: "07:30–09:30", label: "Uva Halpewatte Tea · visite + dégustation" },
+            { time: "10:30–11:30", label: "Flying Ravana · méga zipline" },
+            { time: "12:00–18:00", label: "Train Ella → Kandy (5–7h selon convoi)" },
+          ],
+          alt: "Train complet : van Ella → Kandy + points de vue",
+        },
+        {
+          key: "J5",
+          name: "Kandy",
+          offsetFromThursday: 5, // Mardi
+          segments: [
+            { time: "08:00–10:30", label: "Temple de la Dent (tenue requise)" },
+            { time: "11:00–13:00", label: "Ambuluwawa Tower (vue 360°)" },
+            { time: "15:00–17:00", label: "Jardins botaniques (Peradeniya)" },
+            { time: "19:00–20:00", label: "Spectacle traditionnel" },
+          ],
+          alt: "Cours de cuisine : placer Kandy ou Galle selon météo",
+        },
+        {
+          key: "J6",
+          name: "Dambulla → Sigiriya → Trincomalee",
+          offsetFromThursday: 6, // Mercredi
+          segments: [
+            { time: "07:00–09:30", label: "Route Kandy → Dambulla" },
+            { time: "09:30–11:00", label: "Grottes de Dambulla" },
+            { time: "12:00–14:00", label: "Sigiriya (montée + sommet)" },
+            { time: "14:00–18:30", label: "Route Sigiriya → Trincomalee" },
+          ],
+          alt: "—",
+        },
+        {
+          key: "J7",
+          name: "Trincomalee — large & récifs",
+          offsetFromThursday: 7, // Jeudi
+          segments: [
+            { time: "06:00–12:00", label: "Sortie baleines (si mer OK)" },
+            { time: "14:30–17:30", label: "Pigeon Island · snorkelling" },
+          ],
+          alt: "Mer agitée : plages abritées (Sandy Cove/Dutch Bay)",
+        },
+        {
+          key: "J8",
+          name: "Trincomalee — temples & plages",
+          offsetFromThursday: 8, // Vendredi
+          segments: [
+            { time: "09:00–11:00", label: "Koneswaram Kovil" },
+            { time: "11:30–12:30", label: "Sri Badrakali Amman" },
+            { time: "15:30–18:30", label: "Uppuveli / Sandy Cove / Dutch Bay" },
+          ],
+          alt: "—",
+        },
+        {
+          key: "J9",
+          name: "Retour (Trinco → Colombo → Paris)",
+          offsetFromThursday: 9, // Samedi
+          segments: [
+            { time: "08:00–10:30", label: "Dernier bain · check‑out" },
+            { time: "17:00–23:59", label: "Route Trincomalee → Colombo" },
+            { time: "04:05 (+1)", label: "Vol retour (nuit sam→dim)" },
+          ],
+          alt: "—",
+        },
+      ],
+    };
+
+    // ====== Rendu dynamique de l'itinéraire ======
+    const daysEl = document.getElementById('days');
+    const startDateInput = document.getElementById('startDate');
+    const moneyNodes = [...document.querySelectorAll('[data-money]')];
+
+    function euro(n){ return new Intl.NumberFormat('fr-FR', {style:'currency', currency:'EUR'}).format(n); }
+
+    function parseTimeRangeToISO(dateObj, timeStr){
+      // timeStr formats: "HH:MM–HH:MM" or "HH:MM (single)" or "HH:MM (+1)"
+      // Returns {start: Date, end: Date|null}
+      const plusOne = timeStr.includes('(+1)');
+      const m = timeStr.match(/(\d{2}:\d{2})(?:[\u2013\-](\d{2}:\d{2}))?/);
+      if(!m) return {start:null, end:null};
+      const [_, t1, t2] = m;
+      const [h1, min1] = t1.split(':').map(Number);
+      const d1 = new Date(dateObj);
+      d1.setHours(h1, min1, 0, 0);
+      let d2 = null;
+      if(t2){
+        const [h2, min2] = t2.split(':').map(Number);
+        d2 = new Date(dateObj);
+        d2.setHours(h2, min2, 0, 0);
+        if(plusOne || d2 < d1){ d2 = new Date(d2.getTime() + 24*3600*1000); }
+      }
+      return {start:d1, end:d2};
+    }
+
+    function formatDateLabel(baseThursday, offsetDays){
+      if(!baseThursday) return '';
+      const d = new Date(baseThursday.getTime() + offsetDays*86400000);
+      return d.toLocaleDateString('fr-FR', {weekday:'long', day:'2-digit', month:'short'});
+    }
+
+    function renderDays(){
+      const base = startDateInput.value ? new Date(startDateInput.value + 'T00:00:00') : null; // Thursday
+      daysEl.innerHTML = '';
+      plan.days.forEach((day, idx) =>{
+        const label = base ? `${day.key} · ${formatDateLabel(base, day.offsetFromThursday)}` : day.key;
+        const details = document.createElement('details');
+        details.className = 'day';
+        if(idx < 3) details.open = true; // ouvrir les 3 premiers par défaut
+        const summary = document.createElement('summary');
+        summary.innerHTML = `<div class="day-head"><div><b>${label}</b><div class="muted tiny">${day.name}</div></div><span class="pill">${day.segments.length} blocs</span></div>`;
+        details.appendChild(summary);
+        const ul = document.createElement('ul');
+        ul.className = 'list';
+        day.segments.forEach(seg =>{
+          const li = document.createElement('li');
+          li.innerHTML = `<span class="code">${seg.time}</span> — ${seg.label}`;
+          ul.appendChild(li);
+        });
+        details.appendChild(ul);
+        if(day.alt && day.alt !== '—'){
+          const alt = document.createElement('div');
+          alt.className = 'alt tiny muted';
+          alt.textContent = `Plan B : ${day.alt}`;
+          details.appendChild(alt);
+        }
+        daysEl.appendChild(details);
+      });
+    }
+
+    // ====== Budget total ======
+    function renderBudget(){
+      const total = moneyNodes.reduce((s, n)=> s + Number(n.dataset.money||0), 0);
+      document.getElementById('budgetTotal').textContent = euro(total);
+    }
+
+    // ====== Export ICS ======
+    function pad(n){return String(n).padStart(2,'0')}
+    function toICSDate(d){
+      return d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+'T'+pad(d.getUTCHours())+pad(d.getUTCMinutes())+'00Z';
+    }
+    function download(filename, text){
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([text], {type:'text/calendar;charset=utf-8'}));
+      a.download = filename; a.click(); URL.revokeObjectURL(a.href);
+    }
+    function exportICS(){
+      if(!startDateInput.value){
+        alert('Choisissez d’abord la date de départ (jeudi).');
+        return;
+      }
+      const tz = 'Asia/Colombo';
+      const baseThu = new Date(startDateInput.value + 'T00:00:00');
+      let ics = 'BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Sri Lanka Express//FR\nCALSCALE:GREGORIAN\nMETHOD:PUBLISH\n';
+      plan.days.forEach(day=>{
+        // Utiliser le premier segment pour dater le bloc jour
+        const localDate = new Date(baseThu.getTime() + day.offsetFromThursday*86400000);
+        // Créer un événement par segment avec des heures si disponibles
+        day.segments.forEach(seg=>{
+          const tr = parseTimeRangeToISO(localDate, seg.time);
+          const start = tr.start ? toICSDate(tr.start) : toICSDate(localDate);
+          const end = tr.end ? toICSDate(tr.end) : toICSDate(new Date(localDate.getTime()+2*3600*1000));
+          const uid = Math.random().toString(36).slice(2) + '@slexpress';
+          const summary = `${day.key} — ${seg.label}`.slice(0,130);
+          const desc = `${day.name}`;
+          ics += 'BEGIN:VEVENT\n';
+          ics += `UID:${uid}\n`;
+          ics += `DTSTAMP:${toICSDate(new Date())}\n`;
+          ics += `DTSTART:${start}\n`;
+          ics += `DTEND:${end}\n`;
+          ics += `SUMMARY:${summary.replace(/\n/g,' ')}\n`;
+          ics += `DESCRIPTION:${desc.replace(/\n/g,' ')}\n`;
+          ics += `LOCATION:Sri Lanka\n`;
+          ics += 'END:VEVENT\n';
+        });
+      });
+      ics += 'END:VCALENDAR\n';
+      download('sri-lanka-express.ics', ics);
+    }
+
+    // ====== UI bindings ======
+    document.getElementById('btnPrint').addEventListener('click', ()=> window.print());
+    document.getElementById('btnIcs').addEventListener('click', exportICS);
+    document.getElementById('btnExpand').addEventListener('click', ()=> document.querySelectorAll('details.day').forEach(d=> d.open = true));
+    document.getElementById('btnCollapse').addEventListener('click', ()=> document.querySelectorAll('details.day').forEach(d=> d.open = false));
+    document.querySelectorAll('[data-quick-date]').forEach(btn=> btn.addEventListener('click', (e)=>{
+      startDateInput.value = e.currentTarget.getAttribute('data-quick-date');
+      renderDays();
+      window.scrollTo({top: document.getElementById('itinerary').offsetTop - 70, behavior:'smooth'});
+    }));
+    startDateInput.addEventListener('change', renderDays);
+
+    // Active chip on scroll
+    const sections = [...document.querySelectorAll('main section')];
+    const nav = document.getElementById('nav');
+    const chips = [...nav.querySelectorAll('.chip')];
+    const observer = new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          chips.forEach(c=> c.classList.remove('active'));
+          const id = '#' + entry.target.id;
+          const link = chips.find(c=> c.getAttribute('href')===id);
+          if(link) link.classList.add('active');
+        }
+      })
+    }, {rootMargin:'-50% 0px -45% 0px', threshold: [0, 1]});
+    sections.forEach(s=> observer.observe(s));
+
+    // Init
+    renderDays();
+    renderBudget();
+    document.getElementById('lastUpdated').textContent = new Date().toLocaleString('fr-FR', {dateStyle:'medium', timeStyle:'short'});
+  </script>
+</body>
+</html>
