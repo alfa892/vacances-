@@ -593,8 +593,8 @@ const itinerary: Array<{
         srLabel="Réserver le spectacle YMBA"
         images={[
           {
-            src: "https://www.viator.com/images/108917P220_1_95.jpg",
-            alt: "Danseurs enflammés au spectacle YMBA",
+            src: "https://bellmasry.com/wp-content/uploads/2022/12/cracheur-de-feu-_-spectacle-oriental.jpg",
+            alt: "Cracheur de feu pendant le spectacle YMBA",
           },
         ]}
       />
@@ -622,16 +622,12 @@ const itinerary: Array<{
         srLabel="Explorer les grottes de Dambulla"
         images={[
           {
-            src: "https://images.squarespace-cdn.com/content/v1/6298cb774cf3830bc9b342bf/1667540226303-HTH4O4VEDHBVWP63JUSB/Seated+Buddhas+at+Dambulla+Cave+Temple.jpg",
-            alt: "Statues de Bouddha à Dambulla",
+            src: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/b5/60/e9/inside-the-second-cave.jpg?w=900&h=500&s=1",
+            alt: "Intérieur du temple troglodyte de Dambulla",
           },
           {
-            src: "https://www.historyhit.com/app/uploads/2021/06/shutterstock_Dambulla-Cave-Temple-1.jpg",
-            alt: "Peintures murales des grottes de Dambulla",
-          },
-          {
-            src: "https://www.ceylonexpeditions.com/medias/destination_places/big/131/dambulla-cave-temple.jpg",
-            alt: "Entrée du temple de Dambulla",
+            src: "https://upload.wikimedia.org/wikipedia/commons/3/33/Golden_Buddha_and_Buddhist_Museum_at_Dambulla.jpg",
+            alt: "Golden Buddha et musée de Dambulla",
           },
         ]}
       />
