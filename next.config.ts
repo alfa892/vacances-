@@ -143,6 +143,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "www.trawell.in",
       },
+      {
+        protocol: "https",
+        hostname: "www.artesine.fr",
+      },
     ],
   },
 };
