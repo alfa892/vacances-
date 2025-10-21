@@ -964,21 +964,14 @@ export default function Home() {
 
       <section className="bg-[#214D34] py-12">
         <div className="mx-auto flex max-w-6xl flex-col gap-12 px-6 sm:px-10">
-          <div className="flex flex-col items-center gap-8 text-center">
+          <div className="flex flex-col items-center gap-6 text-center">
             <h2 className={`${playfair.className} text-3xl font-semibold text-white sm:text-4xl`}>
-              Dates possibles
+              Dates de départ
             </h2>
-           <div className="w-full max-w-xl">
-  {travelWindows.map((slot) => (
-  <div className="rounded-[32px] border border-white/40 bg-white px-8 py-10 shadow-sm">
-    <div
-    <p className={`${playfair.className} text-4xl font-semibold text-[#214D34] sm:text-5xl`}>
-      key={slot.id}
-      Du 18 au 28 Juin 2025
-      className="rounded-[28px] border border-white/40 bg-white text-[#214D34] px-6 py-8 text-center shadow-sm"
-    </p>
-    >
-              </div>
+            <div className="w-full max-w-xl rounded-[32px] border border-white/40 bg-white px-8 py-6 text-[#214D34] shadow-lg sm:px-12 sm:py-8">
+              <p className={`${playfair.className} text-3xl font-semibold sm:text-4xl`}>
+                Du 18 au 28 juin 2025
+              </p>
             </div>
           </div>
 
