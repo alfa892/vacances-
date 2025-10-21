@@ -593,8 +593,8 @@ const itinerary: Array<{
         srLabel="Réserver le spectacle YMBA"
         images={[
           {
-            src: "https://bellmasry.com/wp-content/uploads/2022/12/cracheur-de-feu-_-spectacle-oriental.jpg",
-            alt: "Cracheur de feu pendant le spectacle YMBA",
+            src: "https://www.artesine.fr/images/guide/produits/2023-04/041_fanny_solo_de_feu-172023.jpg",
+            alt: "Artiste cracheuse de feu lors du spectacle YMBA",
           },
         ]}
       />
