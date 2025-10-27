@@ -26,6 +26,8 @@ const budgetBreakdown = [
   { label: "Terrestre", amount: "50 €", note: "Train panoramique, tuk-tuk, ajustements chauffeur." },
   { label: "Repas & drinks", amount: "200 €", note: "Du kottu au resto chic + cocktails." },
   { label: "Visa", amount: "40 €", note: "ETA en ligne, reçu sous 48 h." },
+  { label: "Vaccins", amount: "À prévoir", note: "1 ou 2 rappels pour être à jour (hépatite A, DTCP, typhoïde)." },
+  { label: "Passeport", amount: "À vérifier", note: "Valable au moins 6 mois après l’entrée sur le territoire." },
 ];
 
 const tripStats = [
@@ -478,18 +480,18 @@ const itinerary: Array<{
     time: "Fin de journée",
     plan: (
       <HoverPreviewLink
-        href="https://www.airbnb.fr/rooms/853604814351448100?check_out=2026-06-10&viralityEntryPoint=1&unique_share_id=D205B22C-FB27-495D-A1E5-05FD9E3708C6&slcid=2d6696eae7434453a3d93e5d4cd14efb&s=76&adults=8&check_in=2026-06-09&slug=CS7Pcr5m&source_impression_id=p3_1760987549_P3i75SI1DySSiH15"
+        href="https://www.airbnb.fr/rooms/598817875487986040?check_out=2026-06-23&viralityEntryPoint=1&unique_share_id=E5AAB5B9-0352-459E-AB7B-1AEA8373B344&slcid=439698ccc6834b4ca4ada4b0120f7153&s=76&adults=8&check_in=2026-06-20&slug=ouThftMR&source_impression_id=p3_1757950133_P3-dBiw5kQilIe91"
         label="CHECK IN — Villa sur les hauteurs"
         subtitle="Piscine et staff aux petits soins"
         srLabel="Ouvrir la villa de Kandy"
         images={[
           {
-            src: "https://a0.muscache.com/im/pictures/miso/Hosting-853604814351448100/original/2b57a5fe-ab2c-497c-a79d-5f53ea4a7238.jpeg?im_w=1440",
-            alt: "Piscine à débordement à Kandy",
+            src: "https://a0.muscache.com/im/pictures/miso/Hosting-598817875487986040/original/9b361618-bfd5-4604-96ce-766a39b6ca3d.jpeg?im_w=1200",
+            alt: "Piscine à débordement entourée de jungle",
           },
           {
-            src: "https://a0.muscache.com/im/pictures/miso/Hosting-853604814351448100/original/79a2b95d-2d87-41d7-b634-730a2309f00e.jpeg?im_w=1440",
-            alt: "Terrasse panoramique de la villa",
+            src: "https://a0.muscache.com/im/pictures/miso/Hosting-598817875487986040/original/2e23aef1-54bf-4c23-88e7-98cf91c9135c.jpeg?im_w=1200",
+            alt: "Salon intérieur/extérieur de la villa",
           },
         ]}
       />
@@ -903,9 +905,9 @@ const stays = [
   },
   {
     title: "Unawatuna — Villa entière",
-    href: "https://www.airbnb.fr/rooms/1265998667374290710",
+    href: "https://www.airbnb.fr/rooms/1265998667374290710?check_out=2026-06-07&viralityEntryPoint=1&unique_share_id=736C1D87-76F3-4658-97DE-E164FCD5C230&slcid=e30f31a350994cc98af2963a3869747f&s=76&adults=8&check_in=2026-06-05&slug=mNqkpYLM&source_impression_id=p3_1757952396_P3CnOf0tWM2kgM19",
     description: "Grande maison à 5 min de la plage, jardin tropical pour les apéros.",
-    image: "/photos/unawatuna-villa.jpg",
+    image: "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI2NTk5ODY2NzM3NDI5MDcxMA==/original/e4fffc4f-d3d8-4fbc-8f51-51761ac980e3.jpeg?im_w=1200",
   },
   {
     title: "Ella — Panorama Villa",
@@ -915,9 +917,9 @@ const stays = [
   },
   {
     title: "Kandy — Villa sur les hauteurs",
-    href: "https://www.airbnb.fr/rooms/853604814351448100?check_out=2026-06-10&viralityEntryPoint=1&unique_share_id=D205B22C-FB27-495D-A1E5-05FD9E3708C6&slcid=2d6696eae7434453a3d93e5d4cd14efb&s=76&adults=8&check_in=2026-06-09&slug=CS7Pcr5m&source_impression_id=p3_1760987549_P3i75SI1DySSiH15",
+    href: "https://www.airbnb.fr/rooms/598817875487986040?check_out=2026-06-23&viralityEntryPoint=1&unique_share_id=E5AAB5B9-0352-459E-AB7B-1AEA8373B344&slcid=439698ccc6834b4ca4ada4b0120f7153&s=76&adults=8&check_in=2026-06-20&slug=ouThftMR&source_impression_id=p3_1757950133_P3-dBiw5kQilIe91",
     description: "Piscine, staff aux petits soins et ambiance jungle.",
-    image: "https://a0.muscache.com/im/pictures/miso/Hosting-853604814351448100/original/0159a3a5-332c-4bb4-a8b2-30fc389bc27a.jpeg?im_w=1200",
+    image: "https://a0.muscache.com/im/pictures/miso/Hosting-598817875487986040/original/2e23aef1-54bf-4c23-88e7-98cf91c9135c.jpeg?im_w=1200",
   },
   {
     title: "Trincomalee — Villa Uppuveli",
@@ -966,7 +968,7 @@ export default function Home() {
             </h2>
             <div className="w-full max-w-xl rounded-[32px] border border-white/40 bg-white px-8 py-6 text-[#214D34] shadow-lg sm:px-12 sm:py-8">
               <p className={`${playfair.className} text-3xl font-semibold sm:text-4xl`}>
-                Du 18 au 28 juin 2025
+                Du 20 au 30 juin 2025
               </p>
             </div>
           </div>
