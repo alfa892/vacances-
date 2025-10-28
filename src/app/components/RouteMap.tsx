@@ -381,8 +381,6 @@ const focusOnCoordinates = useCallback((coordinates: [number, number][], bearing
               "line-color": ["get", "color"],
               "line-width": ["get", "width"],
               "line-opacity": ["get", "opacity"],
-              "line-join": "round",
-              "line-cap": "round",
             }}
           />
         </Source>

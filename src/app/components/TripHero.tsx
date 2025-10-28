@@ -22,7 +22,7 @@ type TripHeroProps = {
   badges?: HeroBadge[];
   videoSrc?: string;
   posterSrc: string;
-  ctas: HeroCTA[];
+  ctas: ReadonlyArray<HeroCTA>;
 };
 
 export function TripHero({ title, subtitle, badges = [], videoSrc, posterSrc, ctas }: TripHeroProps) {

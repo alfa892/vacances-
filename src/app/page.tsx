@@ -14,7 +14,7 @@ const playfair = Playfair_Display({
 const heroCtas = [
   { href: "#itineraire", label: "Voir l’itinéraire" },
   { href: "#budget", label: "Budget détaillé", variant: "secondary" },
-];
+] as const;
 
 const routePlan = (label: string, href: string) => (
   <a
