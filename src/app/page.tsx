@@ -11,8 +11,11 @@ const playfair = Playfair_Display({
   weight: ['400', '600'],
 });
 
+const messengerInviteUrl = `https://m.me/alfa892?text=${encodeURIComponent('je viens a ce voyage incroyable !')}`;
+
 const heroCtas = [
-  { href: '#itineraire', label: 'Voir l’itinéraire' },
+  { href: messengerInviteUrl, label: 'Je viens 🚀' },
+  { href: '#itineraire', label: 'Voir l’itinéraire', variant: 'secondary' },
   { href: '#budget', label: 'Budget détaillé', variant: 'secondary' },
 ] as const;
 
@@ -994,6 +997,27 @@ export default function Home() {
         posterSrc="https://www.experiencetravelgroup.com/wp-content/uploads/2025/08/Train-from-Ella-1-e1480349616219-768x513-1.jpg"
         ctas={heroCtas}
       />
+
+      <div className="fixed bottom-4 left-4 right-4 z-40 sm:hidden">
+        <a
+          href={messengerInviteUrl}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="flex items-center justify-center rounded-2xl bg-[var(--color-saffron)] px-6 py-4 text-lg font-semibold text-ink shadow-xl transition hover:bg-[var(--color-saffron)]/90 active:translate-y-[1px]"
+        >
+          Je viens 🚀
+        </a>
+      </div>
+      <div className="fixed bottom-6 right-6 z-40 hidden sm:flex">
+        <a
+          href={messengerInviteUrl}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="inline-flex items-center gap-2 rounded-2xl bg-[var(--color-saffron)] px-6 py-4 text-base font-semibold text-ink shadow-2xl transition hover:bg-[var(--color-saffron)]/90 active:translate-y-[1px]"
+        >
+          <span>Je viens 🚀</span>
+        </a>
+      </div>
 
       <section className="bg-ink py-14 text-white">
         <div className="mx-auto flex max-w-6xl flex-col gap-12 px-6 sm:px-10">

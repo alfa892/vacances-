@@ -88,6 +88,8 @@ export function TripHero({ title, subtitle, badges = [], videoSrc, posterSrc, ct
             <a
               key={cta.href}
               href={cta.href}
+              target="_blank"
+              rel="noreferrer noopener"
               className={clsx(
                 "inline-flex items-center justify-center rounded-2xl px-6 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
                 cta.variant === "secondary"
