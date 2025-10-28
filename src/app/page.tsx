@@ -17,12 +17,20 @@ const heroCtas = [
   { href: '#budget', label: 'Budget détaillé', variant: 'secondary' },
 ] as const;
 
-const messengerMessages = [
+const messengerPositiveMessages = [
   'je viens a ce voyage incroyable !',
   'on réserve quand ? je suis partant !',
   'je bloque mes congés, je viens sur ce trip ✈️',
   'comptez sur moi pour le Sri Lanka, je m’inscris !',
   'let’s go pour ce voyage de luxe au Sri Lanka !',
+] as const;
+
+const messengerNegativeMessages = [
+  'je passe mon tour cette fois 😅',
+  'ce voyage est trop fou pour moi pour l’instant 😬',
+  'pas dispo sur ces dates malheureusement…',
+  'je décline mais je veux voir les photos quand même !',
+  'je viens pas, mais je veux un souvenir 🧿',
 ] as const;
 
 const messengerConversationUrl = 'https://www.messenger.com/t/7159800990799818';
@@ -1273,11 +1281,20 @@ export default function Home() {
         </section>
 
         <section className="mt-2 flex justify-center px-6 pb-20 sm:px-10">
-          <MessengerCta
-            conversationUrl={messengerConversationUrl}
-            messages={messengerMessages}
-            label="Je viens 🚀"
-          />
+          <div className="flex w-full max-w-3xl flex-col items-center gap-4 sm:flex-row">
+            <MessengerCta
+              conversationUrl={messengerConversationUrl}
+              messages={messengerPositiveMessages}
+              label="Je viens 🚀"
+              className="w-full sm:w-auto"
+            />
+            <MessengerCta
+              conversationUrl={messengerConversationUrl}
+              messages={messengerNegativeMessages}
+              label="Je viens pas 😅"
+              className="w-full !bg-slate-900 !text-white sm:w-auto"
+            />
+          </div>
         </section>
       </main>
 
