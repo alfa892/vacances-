@@ -18,22 +18,16 @@ const heroCtas = [
 ] as const;
 
 const messengerPositiveMessages = [
-  'je viens a ce voyage incroyable !',
-  'on réserve quand ? je suis partant !',
-  'je bloque mes congés, je viens sur ce trip ✈️',
-  'comptez sur moi pour le Sri Lanka, je m’inscris !',
-  'let’s go pour ce voyage de luxe au Sri Lanka !',
+  'Je viens à ce voyage incroyable !',
+  'On réserve quand ? Je suis partant ! Dites juste où cliquer et j’obéis.',
 ] as const;
 
 const messengerNegativeMessages = [
-  'je passe mon tour cette fois 😅',
-  'ce voyage est trop fou pour moi pour l’instant 😬',
-  'pas dispo sur ces dates malheureusement…',
-  'je décline mais je veux voir les photos quand même !',
-  'je viens pas, mais je veux un souvenir 🧿',
+  'Je passe mon tour cette fois 😅. Mon FOMO pleure en silence.',
+  'Pas dispo, malheureusement…',
 ] as const;
 
-const messengerConversationUrl = 'https://www.messenger.com/t/7159800990799818';
+const messengerConversationUrl = 'https://www.messenger.com/t/1194668915909110';
 
 const routePlan = (label: string, href: string) => (
   <a
@@ -1072,7 +1066,7 @@ export default function Home() {
                 id="budget"
                 className={`${playfair.className} text-5xl font-semibold sm:text-6xl`}
               >
-                1 670,00 €
+                Moins de 2 000 €
               </h2>
             </div>
             <div className="px-8 py-10 sm:px-12">
@@ -1285,13 +1279,13 @@ export default function Home() {
             <MessengerCta
               conversationUrl={messengerConversationUrl}
               messages={messengerPositiveMessages}
-              label="Je viens 🚀"
+              label="Je viens ✅"
               className="w-full sm:w-auto"
             />
             <MessengerCta
               conversationUrl={messengerConversationUrl}
               messages={messengerNegativeMessages}
-              label="Je viens pas 😅"
+              label="Je viens pas ❌"
               className="w-full !bg-slate-900 !text-white sm:w-auto"
             />
           </div>
