@@ -5,18 +5,27 @@ import type { ReactNode } from 'react';
 import { HoverPreviewLink } from './components/HoverPreviewLink';
 import { TripHero } from './components/TripHero';
 import { RouteMapSection } from './components/RouteMapSection';
+import { MessengerCta } from './components/MessengerCta';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
   weight: ['400', '600'],
 });
 
-const messengerInviteUrl = `https://www.messenger.com/t/7159800990799818?text=${encodeURIComponent('je viens a ce voyage incroyable !')}`;
-
 const heroCtas = [
   { href: '#itineraire', label: 'Voir l’itinéraire' },
   { href: '#budget', label: 'Budget détaillé', variant: 'secondary' },
 ] as const;
+
+const messengerMessages = [
+  'je viens a ce voyage incroyable !',
+  'on réserve quand ? je suis partant !',
+  'je bloque mes congés, je viens sur ce trip ✈️',
+  'comptez sur moi pour le Sri Lanka, je m’inscris !',
+  'let’s go pour ce voyage de luxe au Sri Lanka !',
+] as const;
+
+const messengerConversationUrl = 'https://www.messenger.com/t/7159800990799818';
 
 const routePlan = (label: string, href: string) => (
   <a
@@ -1264,14 +1273,11 @@ export default function Home() {
         </section>
 
         <section className="mt-2 flex justify-center px-6 pb-20 sm:px-10">
-          <a
-            href={messengerInviteUrl}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="inline-flex items-center gap-3 rounded-[28px] bg-[var(--color-saffron)] px-10 py-5 text-xl font-semibold text-ink shadow-2xl transition hover:bg-[var(--color-saffron)]/90 active:translate-y-[1px]"
-          >
-            Je viens 🚀
-          </a>
+          <MessengerCta
+            conversationUrl={messengerConversationUrl}
+            messages={messengerMessages}
+            label="Je viens 🚀"
+          />
         </section>
       </main>
 
