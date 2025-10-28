@@ -991,7 +991,7 @@ export default function Home() {
                     </div>
             <div className="w-full max-w-xl rounded-[32px] border border-white/40 bg-white px-8 py-6 text-center text-ink shadow-lg sm:px-12 sm:py-8">
               <p className={`${playfair.className} text-3xl font-semibold sm:text-4xl`}>
-                Du 20 au 30 juin 2025
+                Du 20 au 30 juin 2026
               </p>
             </div>
           </div>
