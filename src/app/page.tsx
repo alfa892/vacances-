@@ -11,11 +11,10 @@ const playfair = Playfair_Display({
   weight: ['400', '600'],
 });
 
-const messengerInviteUrl = `https://m.me/alfa892?text=${encodeURIComponent('je viens a ce voyage incroyable !')}`;
+const messengerInviteUrl = `https://www.messenger.com/t/7159800990799818?text=${encodeURIComponent('je viens a ce voyage incroyable !')}`;
 
 const heroCtas = [
-  { href: messengerInviteUrl, label: 'Je viens 🚀' },
-  { href: '#itineraire', label: 'Voir l’itinéraire', variant: 'secondary' },
+  { href: '#itineraire', label: 'Voir l’itinéraire' },
   { href: '#budget', label: 'Budget détaillé', variant: 'secondary' },
 ] as const;
 
@@ -998,27 +997,6 @@ export default function Home() {
         ctas={heroCtas}
       />
 
-      <div className="fixed bottom-4 left-4 right-4 z-40 sm:hidden">
-        <a
-          href={messengerInviteUrl}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="flex items-center justify-center rounded-2xl bg-[var(--color-saffron)] px-6 py-4 text-lg font-semibold text-ink shadow-xl transition hover:bg-[var(--color-saffron)]/90 active:translate-y-[1px]"
-        >
-          Je viens 🚀
-        </a>
-      </div>
-      <div className="fixed bottom-6 right-6 z-40 hidden sm:flex">
-        <a
-          href={messengerInviteUrl}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="inline-flex items-center gap-2 rounded-2xl bg-[var(--color-saffron)] px-6 py-4 text-base font-semibold text-ink shadow-2xl transition hover:bg-[var(--color-saffron)]/90 active:translate-y-[1px]"
-        >
-          <span>Je viens 🚀</span>
-        </a>
-      </div>
-
       <section className="bg-ink py-14 text-white">
         <div className="mx-auto flex max-w-6xl flex-col gap-12 px-6 sm:px-10">
           <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:items-end sm:justify-between sm:text-left">
@@ -1026,8 +1004,7 @@ export default function Home() {
               <h2 className={`${playfair.className} text-3xl font-semibold sm:text-4xl`}>
                 Dates de départ
               </h2>
-              <p className="mt-2 max-w-xl text-sm text-white/75"></p>
-            </div>
+                    </div>
             <div className="w-full max-w-xl rounded-[32px] border border-white/40 bg-white px-8 py-6 text-center text-ink shadow-lg sm:px-12 sm:py-8">
               <p className={`${playfair.className} text-3xl font-semibold sm:text-4xl`}>
                 Du 20 au 30 juin 2025
@@ -1284,6 +1261,17 @@ export default function Home() {
               </a>
             ))}
           </div>
+        </section>
+
+        <section className="mt-2 flex justify-center px-6 pb-20 sm:px-10">
+          <a
+            href={messengerInviteUrl}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="inline-flex items-center gap-3 rounded-[28px] bg-[var(--color-saffron)] px-10 py-5 text-xl font-semibold text-ink shadow-2xl transition hover:bg-[var(--color-saffron)]/90 active:translate-y-[1px]"
+          >
+            Je viens 🚀
+          </a>
         </section>
       </main>
 
