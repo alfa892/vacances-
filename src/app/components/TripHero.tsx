@@ -84,22 +84,29 @@ export function TripHero({ title, subtitle, badges = [], videoSrc, posterSrc, ct
           transition={{ delay: 0.1, duration: 0.25 }}
           className="flex flex-col items-start gap-3 sm:flex-row"
         >
-          {ctas.map((cta) => (
-            <a
-              key={cta.href}
-              href={cta.href}
-              target="_blank"
-              rel="noreferrer noopener"
-              className={clsx(
-                "inline-flex items-center justify-center rounded-2xl px-6 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
-                cta.variant === "secondary"
-                  ? "border border-white/60 bg-white/10 text-white hover:bg-white/20 focus-visible:ring-white/60"
-                  : "bg-saffron text-ink hover:bg-saffron/90 focus-visible:ring-saffron/80"
-              )}
-            >
-              {cta.label}
-            </a>
-          ))}
+          {ctas.map((cta) => {
+            const isAnchor = cta.href.startsWith('#');
+            const isExternal = /^https?:\/\//.test(cta.href);
+            const target = isAnchor || !isExternal ? undefined : '_blank';
+            const rel = target === '_blank' ? 'noreferrer noopener' : undefined;
+
+            return (
+              <a
+                key={cta.href}
+                href={cta.href}
+                target={target}
+                rel={rel}
+                className={clsx(
+                  "inline-flex items-center justify-center rounded-2xl px-6 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+                  cta.variant === "secondary"
+                    ? "border border-white/60 bg-white/10 text-white hover:bg-white/20 focus-visible:ring-white/60"
+                    : "bg-saffron text-ink hover:bg-saffron/90 focus-visible:ring-saffron/80"
+                )}
+              >
+                {cta.label}
+              </a>
+            );
+          })}
         </motion.div>
       </div>
     </section>
