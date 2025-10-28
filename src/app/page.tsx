@@ -18,13 +18,12 @@ const heroCtas = [
 ] as const;
 
 const messengerPositiveMessages = [
-  'Je viens à ce voyage incroyable !',
-  'On réserve quand ? Je suis partant ! Dites juste où cliquer et j’obéis.',
+  '✅ En cliquant « Je viens », je certifie m’émerveiller devant chaque paysage, applaudir les levers de soleil comme des œuvres d’art et goûter prioritairement aux meilleurs restos locaux. J’accepte de participer aux expériences local avec haut taux de bonne humeur (> 80%), et de limiter le râlage à 0,5 unité/jour.',
 ] as const;
 
 const messengerNegativeMessages = [
-  'Je passe mon tour cette fois 😅. Mon FOMO pleure en silence.',
-  'Pas dispo, malheureusement…',
+  '❌ Je passe mon tour cette fois 😅. Mon FOMO pleure en silence.',
+  '❌ Pas dispo, malheureusement…',
 ] as const;
 
 const messengerConversationUrl = 'https://www.messenger.com/t/1194668915909110';
@@ -211,7 +210,7 @@ const itinerary: Array<{
       <HoverPreviewLink
         href="https://wandertropics.com/colombo-port-city/"
         label="🏝️ Plage artificielle à Port City"
-        subtitle="si on veut se reposer"
+        subtitle="Promenade et bars en bord de mer"
         srLabel="Voir la plage artificielle de Port City"
         images={[
           {
@@ -369,32 +368,6 @@ const itinerary: Array<{
       />
     ),
     price: 'Gratuit',
-  },
-  {
-    day: 'Day 2 — Samedi',
-    city: '',
-    time: '',
-    plan: (
-      <div className="flex flex-wrap items-center gap-2">
-        <span>⚠️ Si météo capricieuse :</span>
-        <HoverPreviewLink
-          href="https://www.tripadvisor.fr/Attraction_Review-g297896-d3617497-Reviews-Galle_Dutch_Fort-Galle_Galle_District_Southern_Province.html"
-          label="Visiter le fort de Galle"
-          images={[
-            {
-              src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuE2yHJGxC3j7HfBqNS4hgNI7-V9Umrbszlg&s',
-              alt: 'Fort de Galle et ses remparts',
-            },
-            {
-              src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkOlLGrIhdrWCIzdtbT-kZ6rwz04iAnyHrAQ&s',
-              alt: 'Vue sur le phare du fort de Galle',
-            },
-          ]}
-        />
-      </div>
-    ),
-    price: '',
-    note: true,
   },
   {
     day: 'Day 3 — Dimanche',
