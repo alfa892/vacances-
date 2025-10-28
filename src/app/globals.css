@@ -3,11 +3,21 @@
 :root {
   --background: #f8fafc;
   --foreground: #0f172a;
+  --color-saffron: #f2994a;
+  --color-jungle: #0f766e;
+  --color-ocean: #0e7490;
+  --color-sand: #f5e9da;
+  --color-ink: #0f172a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-saffron: var(--color-saffron);
+  --color-jungle: var(--color-jungle);
+  --color-ocean: var(--color-ocean);
+  --color-sand: var(--color-sand);
+  --color-ink: var(--color-ink);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -23,4 +33,16 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+.bg-ink {
+  background-color: var(--color-ink);
+}
+
+.bg-saffron {
+  background-color: var(--color-saffron);
+}
+
+.text-ink {
+  color: var(--color-ink);
 }

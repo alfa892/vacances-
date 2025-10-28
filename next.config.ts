@@ -147,6 +147,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "www.artesine.fr",
       },
+      {
+        protocol: "https",
+        hostname: "www.experiencetravelgroup.com",
+      },
     ],
   },
 };

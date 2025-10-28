@@ -1,19 +1,27 @@
 import Image from "next/image";
 import { Playfair_Display } from "next/font/google";
 import type { ReactNode } from "react";
+
 import { HoverPreviewLink } from "./components/HoverPreviewLink";
+import { TripHero } from "./components/TripHero";
+import { RouteMapSection } from "./components/RouteMapSection";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
   weight: ["400", "600"],
 });
 
+const heroCtas = [
+  { href: "#itineraire", label: "Voir l’itinéraire" },
+  { href: "#budget", label: "Budget détaillé", variant: "secondary" },
+];
+
 const routePlan = (label: string, href: string) => (
   <a
     href={href}
     target="_blank"
     rel="noreferrer noopener"
-    className="inline-flex items-center gap-1 text-[#214D34] underline decoration-dotted underline-offset-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#214D34]/60"
+    className="inline-flex items-center gap-1 text-[var(--color-jungle)] underline decoration-dotted underline-offset-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-jungle)]/30 focus-visible:ring-offset-2"
   >
     {label}
   </a>
@@ -932,79 +940,75 @@ const stays = [
 
 export default function Home() {
   return (
-    <div className="bg-[var(--background)] text-[var(--foreground)]">
-      <header className="bg-white py-20 sm:py-24">
-        <div className="mx-auto max-w-5xl px-6 sm:px-8">
-          <div className="flex flex-col items-center gap-10 rounded-[40px] bg-[#214D34] px-8 py-12 text-center text-white shadow-[0_40px_120px_-40px_rgba(0,0,0,0.55)] sm:flex-row sm:items-center sm:gap-16 sm:px-12 sm:py-14 sm:text-left">
-            <div className="flex flex-1 flex-col gap-6">
-              <p className="text-xs uppercase tracking-[0.35em] text-white/70 sm:text-sm">11 jours d’aventure</p>
-              <h1 className={`${playfair.className} text-5xl font-semibold leading-tight text-white sm:text-6xl`}>
-                Sri Lanka De Luxe
-              </h1>
-              <div className="space-y-1 text-base text-white/80 sm:text-lg">
-                <p className="text-xl font-semibold text-white sm:text-2xl">Marie Kris Alex</p>
-                <p>Travel Experience Specialist</p>
-              </div>
-            </div>
-            <div className="relative flex w-full max-w-xs items-center justify-center overflow-hidden rounded-[32px] p-6 sm:h-[320px] sm:max-w-sm">
-              <Image
-                src="https://upload.wikimedia.org/wikipedia/commons/1/11/Flag_of_Sri_Lanka.svg"
-                alt="Drapeau du Sri Lanka"
-                fill
-                sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 70vw"
-                priority
-                className="object-contain"
-              />
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="bg-[var(--color-sand)] text-ink">
+      <TripHero
+        title="Sri Lanka De Luxe"
+        subtitle="Marie · Kris · Alex — Travel Experience Specialist"
+        posterSrc="https://www.experiencetravelgroup.com/wp-content/uploads/2025/08/Train-from-Ella-1-e1480349616219-768x513-1.jpg"
+        ctas={heroCtas}
+      />
 
-      <section className="bg-[#214D34] py-12">
+      <section className="bg-ink py-14 text-white">
         <div className="mx-auto flex max-w-6xl flex-col gap-12 px-6 sm:px-10">
-          <div className="flex flex-col items-center gap-6 text-center">
-            <h2 className={`${playfair.className} text-3xl font-semibold text-white sm:text-4xl`}>
-              Dates de départ
-            </h2>
-            <div className="w-full max-w-xl rounded-[32px] border border-white/40 bg-white px-8 py-6 text-[#214D34] shadow-lg sm:px-12 sm:py-8">
+          <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:items-end sm:justify-between sm:text-left">
+            <div>
+              <h2 className={`${playfair.className} text-3xl font-semibold sm:text-4xl`}>
+                Dates de départ
+              </h2>
+              <p className="mt-2 max-w-xl text-sm text-white/75">
+                Ajustable selon les congés, mais ce créneau permet de capter la meilleure météo sur les zones visitées.
+              </p>
+            </div>
+            <div className="w-full max-w-xl rounded-[32px] border border-white/40 bg-white px-8 py-6 text-center text-ink shadow-lg sm:px-12 sm:py-8">
               <p className={`${playfair.className} text-3xl font-semibold sm:text-4xl`}>
                 Du 20 au 30 juin 2025
               </p>
             </div>
           </div>
 
-          <div className="flex flex-col gap-8">
-            <div className="h-2" />
-            <div className="text-center text-white">
-              <h3 className={`${playfair.className} text-3xl font-semibold sm:text-4xl`}>
-                Congés à poser : 7 jours max
-              </h3>
-            </div>
-            <div className="grid gap-6 sm:grid-cols-3">
-              {tripStats.map((stat) => (
-                <div
-                  key={stat.value}
-                  className="rounded-[28px] border border-white/30 bg-white/95 px-6 py-6 text-center text-[#214D34]"
-                >
-                  <p className={`${playfair.className} text-3xl font-semibold`}>{stat.value}</p>
-                  <p className="mt-2 text-sm text-slate-600">{stat.description}</p>
-                </div>
-              ))}
-            </div>
+          <div className="grid gap-6 sm:grid-cols-3">
+            {tripStats.map((stat) => (
+              <div
+                key={stat.value}
+                className="rounded-[28px] border border-white/25 bg-white/90 px-6 py-6 text-center text-ink shadow-sm backdrop-blur"
+              >
+                <p className={`${playfair.className} text-3xl font-semibold`}>{stat.value}</p>
+                <p className="mt-2 text-sm text-slate-600">{stat.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <main className="mx-auto flex max-w-5xl flex-col gap-16 px-6 py-16 sm:px-10">
+      <section className="px-6 py-16 sm:px-10">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.2fr_1fr]">
+          <RouteMapSection />
+          <div className="flex flex-col gap-4 rounded-[32px] border border-ink/10 bg-white/90 px-8 py-8 text-sm text-ink shadow-sm backdrop-blur">
+            <h2 className={`${playfair.className} text-3xl font-semibold text-ink`}>
+              Parcours global
+            </h2>
+            <ul className="grid gap-3 text-ink/75">
+              <li>🌆 Colombo — arrivée de nuit, city vibes et rooftops.</li>
+              <li>🌴 Côte Sud — Unawatuna & Mirissa pour la villa, les tortues et le surf.</li>
+              <li>🦁 Safaris à Udawalawe.</li>
+              <li>⛰️ Intérieur — Ella et Kandy pour le thé, les trains panoramiques et les temples.</li>
+              <li>🪨 Triangle culturel — Sigiriya, Dambulla et patrimoine UNESCO.</li>
+              <li>🌊 Côte Est — Trincomalee pour les baleines, snorkelling et plages sauvages.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <main className="mx-auto flex max-w-5xl flex-col gap-16 px-6 pb-20 sm:px-10">
         <section className="flex flex-col gap-8" aria-labelledby="budget">
-          <div className="overflow-hidden rounded-[36px] border border-[#214D34] bg-white text-center text-[#214D34]">
-            <div className="bg-[#214D34] px-8 py-8 text-white sm:px-12">
+          <div className="overflow-hidden rounded-[36px] border border-[var(--color-jungle)] bg-white text-center text-ink shadow-lg">
+            <div className="bg-[var(--color-jungle)] px-8 py-8 text-white sm:px-12">
               <h2 id="budget" className={`${playfair.className} text-5xl font-semibold sm:text-6xl`}>
                 1 670,00 €
               </h2>
             </div>
             <div className="px-8 py-10 sm:px-12">
-              <p className={`${playfair.className} text-lg font-semibold text-[#214D34]`}>
+              <p className={`${playfair.className} text-lg font-semibold text-ink`}>
                 Budget quasi tout compris
               </p>
               <p className="mt-3 text-sm text-slate-700">
@@ -1013,8 +1017,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="overflow-hidden rounded-[36px] border border-[#214D34] bg-white text-[#214D34]">
-            <div className="bg-[#214D34] px-8 py-8 text-center text-white sm:px-12">
+          <div className="overflow-hidden rounded-[36px] border border-[var(--color-jungle)] bg-white text-ink shadow-lg">
+            <div className="bg-[var(--color-jungle)] px-8 py-8 text-center text-white sm:px-12">
               <h3 className={`${playfair.className} text-2xl font-semibold sm:text-3xl`}>
                 Répartition détaillée
               </h3>
@@ -1023,7 +1027,7 @@ export default function Home() {
               {budgetBreakdown.map((line) => (
                 <div
                   key={line.label}
-                  className="rounded-[28px] border border-[#214D34]/20 bg-white/95 px-6 py-5 text-[#214D34] shadow-sm"
+                  className="rounded-[28px] border border-[var(--color-jungle)]/15 bg-white/95 px-6 py-5 text-ink shadow-sm"
                 >
                   <div className="flex items-baseline justify-between gap-3">
                     <h4 className="text-xs font-semibold uppercase tracking-wide">
@@ -1039,8 +1043,8 @@ export default function Home() {
         </section>
 
         <section className="flex flex-col gap-6" aria-labelledby="itineraire">
-          <div className="rounded-[36px] border border-[#214D34] bg-white">
-            <div className="rounded-t-[36px] bg-[#214D34] px-8 py-8 text-center text-white sm:px-12">
+          <div className="rounded-[36px] border border-[var(--color-jungle)] bg-white shadow-lg">
+            <div className="rounded-t-[36px] bg-[var(--color-jungle)] px-8 py-8 text-center text-white sm:px-12">
               <h2 id="itineraire" className={`${playfair.className} text-3xl font-semibold sm:text-4xl`}>
                 Planning jour par jour
               </h2>
@@ -1055,58 +1059,99 @@ export default function Home() {
                 return (
                   <details
                     key={label}
-                    className="relative overflow-visible rounded-[28px] border border-[#214D34]/30 bg-white"
+                    className="relative overflow-visible rounded-[28px] border border-[var(--color-jungle)]/25 bg-white"
                   >
                     <summary
-                      className={`${playfair.className} flex cursor-pointer list-none items-center justify-between gap-3 border-b border-[#214D34]/20 bg-white px-5 py-4 text-left text-[#214D34]`}
+                      className={`${playfair.className} flex cursor-pointer list-none items-center justify-between gap-3 border-b border-[var(--color-jungle)]/20 bg-white px-5 py-4 text-left text-ink`}
                     >
                       <span className="text-lg font-semibold">{label}</span>
-                      <span className="text-sm text-[#214D34]/80">{firstCity}</span>
+                      <span className="text-sm text-ink/70">{firstCity}</span>
                     </summary>
-                    <div className="relative overflow-x-auto border-t border-[#214D34]/20">
-                      <div className="min-w-[680px] text-sm text-slate-700">
-                        <div className="grid grid-cols-[1.1fr_0.8fr_2fr_0.9fr] bg-slate-900 text-xs font-semibold uppercase tracking-[0.35em] text-white">
-                          <div className="px-4 py-3">Ville</div>
-                          <div className="px-4 py-3">Horaire</div>
-                          <div className="px-4 py-3">Planning</div>
-                          <div className="px-4 py-3">Prix (/pers)</div>
-                        </div>
-                        <div>
-                          {entries.map((entry, entryIndex) => {
-                            if (entry.note) {
+                    <div className="border-t border-[var(--color-jungle)]/15">
+                      <div className="hidden sm:block">
+                        <div className="min-w-[680px] overflow-hidden text-sm text-slate-700">
+                          <div className="grid grid-cols-[1.1fr_0.8fr_2fr_0.9fr] bg-slate-900 text-xs font-semibold uppercase tracking-[0.35em] text-white">
+                            <div className="px-4 py-3">Ville</div>
+                            <div className="px-4 py-3">Horaire</div>
+                            <div className="px-4 py-3">Planning</div>
+                            <div className="px-4 py-3">Prix (/pers)</div>
+                          </div>
+                          <div>
+                            {entries.map((entry, entryIndex) => {
+                              if (entry.note) {
+                                return (
+                                  <div
+                                    key={`note-${label}-${entryIndex}`}
+                                    className="grid grid-cols-[1.1fr_0.8fr_2fr_0.9fr] bg-slate-100 px-4 py-3 text-slate-600"
+                                  >
+                                    <div className="col-span-4 italic">{entry.plan}</div>
+                                  </div>
+                                );
+                              }
+
+                              const city = entry.city && entry.city.trim() !== "" ? entry.city : "—";
+                              const time = entry.time && entry.time.trim() !== "" ? entry.time : "—";
+                              const price = entry.price && entry.price.trim() !== "" ? entry.price : "—";
+                              const planContent =
+                                typeof entry.plan === "string"
+                                  ? entry.plan.trim() !== "" ? entry.plan : "—"
+                                  : entry.plan;
+
                               return (
                                 <div
-                                  key={`note-${label}-${entryIndex}`}
-                                  className="grid grid-cols-[1.1fr_0.8fr_2fr_0.9fr] bg-slate-100 px-4 py-3 text-slate-600"
+                                  key={`${label}-${entryIndex}`}
+                                  className={`grid grid-cols-[1.1fr_0.8fr_2fr_0.9fr] gap-0 px-4 py-3 ${
+                                    entryIndex % 2 === 0 ? "bg-white" : "bg-slate-50"
+                                  }`}
                                 >
-                                  <div className="col-span-4 italic">{entry.plan}</div>
+                                  <div className="pr-4 font-medium text-slate-800">{city}</div>
+                                  <div className="pr-4 text-slate-500">{time}</div>
+                                  <div className="relative pr-4 text-slate-700">{planContent}</div>
+                                  <div className="text-slate-900">{price}</div>
                                 </div>
                               );
-                            }
+                            })}
+                          </div>
+                        </div>
+                      </div>
 
-                            const city = entry.city && entry.city.trim() !== "" ? entry.city : "—";
-                            const time = entry.time && entry.time.trim() !== "" ? entry.time : "—";
-                            const price = entry.price && entry.price.trim() !== "" ? entry.price : "—";
-                            const planContent =
-                              typeof entry.plan === "string"
-                                ? entry.plan.trim() !== "" ? entry.plan : "—"
-                                : entry.plan;
-
+                      <div className="flex flex-col gap-3 p-4 sm:hidden">
+                        {entries.map((entry, entryIndex) => {
+                          if (entry.note) {
                             return (
                               <div
-                                key={`${label}-${entryIndex}`}
-                                className={`grid grid-cols-[1.1fr_0.8fr_2fr_0.9fr] gap-0 px-4 py-3 ${
-                                  entryIndex % 2 === 0 ? "bg-white" : "bg-slate-50"
-                                }`}
+                                key={`note-mobile-${label}-${entryIndex}`}
+                                className="rounded-2xl border border-[var(--color-jungle)]/20 bg-slate-100 px-4 py-3 text-xs text-slate-600"
                               >
-                                <div className="pr-4 font-medium text-slate-800">{city}</div>
-                                <div className="pr-4 text-slate-500">{time}</div>
-                                <div className="relative pr-4 text-slate-700">{planContent}</div>
-                                <div className="text-slate-900">{price}</div>
+                                {entry.plan}
                               </div>
                             );
-                          })}
-                        </div>
+                          }
+
+                          const city = entry.city && entry.city.trim() !== "" ? entry.city : "—";
+                          const time = entry.time && entry.time.trim() !== "" ? entry.time : "—";
+                          const price = entry.price && entry.price.trim() !== "" ? entry.price : "—";
+                          const planContent =
+                            typeof entry.plan === "string"
+                              ? entry.plan.trim() !== "" ? entry.plan : "—"
+                              : entry.plan;
+
+                          return (
+                            <div
+                              key={`mobile-${label}-${entryIndex}`}
+                              className="rounded-2xl border border-[var(--color-jungle)]/20 bg-white px-4 py-4 text-sm shadow-sm"
+                            >
+                              <div className="flex items-start justify-between gap-4">
+                                <div>
+                                  <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-jungle)]/80">{city}</p>
+                                  <p className="mt-1 text-base font-semibold text-ink">{time}</p>
+                                </div>
+                                <p className="text-sm font-semibold text-[var(--color-jungle)]">{price}</p>
+                              </div>
+                              <div className="mt-3 text-sm text-slate-700">{planContent}</div>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   </details>
@@ -1132,7 +1177,7 @@ export default function Home() {
                 href={stay.href}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="group overflow-hidden rounded-[32px] border border-[#214D34]/60 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+                className="group overflow-hidden rounded-[32px] border border-[var(--color-jungle)]/40 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
               >
                 <div className="relative h-56 w-full">
                   <Image
@@ -1142,11 +1187,11 @@ export default function Home() {
                     sizes="(min-width: 1024px) 32vw, (min-width: 768px) 50vw, 100vw"
                     className="object-cover transition duration-500 group-hover:scale-105"
                   />
-                  <span className="absolute inset-x-0 bottom-0 bg-[#214D34]/80 px-4 py-2 text-center text-xs font-semibold uppercase tracking-[0.3em] text-white">
+                  <span className="absolute inset-x-0 bottom-0 bg-[var(--color-jungle)]/80 px-4 py-2 text-center text-xs font-semibold uppercase tracking-[0.3em] text-white">
                     Cliquer pour voir
                   </span>
                 </div>
-                <div className="space-y-2 px-5 py-5 text-[#214D34]">
+                <div className="space-y-2 px-5 py-5 text-ink">
                   <h3 className={`${playfair.className} text-lg font-semibold`}>{stay.title}</h3>
                   <p className="text-sm leading-relaxed text-slate-600">{stay.description}</p>
                 </div>
@@ -1156,7 +1201,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="bg-slate-950 py-12 text-sm text-slate-300">
+      <footer className="bg-ink py-12 text-sm text-white/70">
         <div className="mx-auto flex max-w-5xl px-6 sm:px-10">
           Sri Lanka de Luxe — Itinéraire privé.
         </div>
