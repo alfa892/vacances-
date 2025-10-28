@@ -1062,8 +1062,7 @@ export default function Home() {
                 Budget quasi tout compris
               </p>
               <p className="mt-3 text-sm text-slate-700">
-                Transport, hébergements, activités, visa et repas pour une expérience complète et
-                sans souci au Sri Lanka.
+                Transport, hébergements, activités, visa et repas au Sri Lanka.
               </p>
             </div>
           </div>
