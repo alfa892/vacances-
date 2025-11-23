@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Fraunces, JetBrains_Mono } from "next/font/google";
+import { CustomCursor } from "./components/CustomCursor";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -7,8 +8,14 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  axes: ["SOFT", "WONK", "opsz"], // Enable variable font axes for that organic feel
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 
@@ -48,14 +55,29 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+import { getFeatureFlags } from "@/lib/api";
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const flags = await getFeatureFlags();
+
+  const bodyClasses = [
+    geistSans.variable,
+    fraunces.variable,
+    jetbrainsMono.variable,
+    "antialiased",
+    flags.contrast === "high" ? "high-contrast" : "",
+    flags.density === "compact" ? "density-compact" : "",
+    flags.motionLevel !== "full" ? "reduce-motion" : "",
+  ].filter(Boolean).join(" ");
+
   return (
-    <html lang="fr">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="fr" suppressHydrationWarning>
+      <body className={bodyClasses}>
+        <CustomCursor forceHidden={!flags.animations} />
         {children}
       </body>
     </html>

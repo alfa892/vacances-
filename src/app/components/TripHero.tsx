@@ -1,114 +1,109 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { motion } from "framer-motion";
-import type { ReactNode } from "react";
-import clsx from "clsx";
+import { motion, useScroll, useTransform } from 'framer-motion';
 
-type HeroBadge = {
-  label: string;
-  icon?: ReactNode;
-};
-
-type HeroCTA = {
-  href: string;
-  label: string;
-  variant?: "primary" | "secondary";
-};
+import { useRef } from 'react';
 
 type TripHeroProps = {
   title: string;
   subtitle: string;
-  badges?: HeroBadge[];
-  videoSrc?: string;
-  posterSrc: string;
-  ctas: ReadonlyArray<HeroCTA>;
+  heroImage?: string;
+  heroVideo?: string;
+  prefersReducedMotion?: boolean;
 };
 
-export function TripHero({ title, subtitle, badges = [], videoSrc, posterSrc, ctas }: TripHeroProps) {
-  return (
-    <section className="relative overflow-hidden bg-ink text-white" aria-label="Présentation du voyage">
-      {videoSrc ? (
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          poster={posterSrc}
-          className="absolute inset-0 h-full w-full object-cover opacity-75"
-        >
-          <source src={videoSrc} type="video/mp4" />
-        </video>
-      ) : (
-        <Image
-          src={posterSrc}
-          alt="Paysage du Sri Lanka"
-          fill
-          sizes="100vw"
-          priority
-          className="absolute inset-0 h-full w-full object-cover opacity-75"
-        />
-      )}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/30" aria-hidden />
-      <div className="relative mx-auto flex max-w-6xl flex-col gap-8 px-6 pb-24 pt-32 sm:px-10 sm:pb-32">
-        {badges.length > 0 ? (
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.2 }}
-            className="inline-flex flex-wrap items-center gap-3"
-          >
-            {badges.map((badge) => (
-              <span
-                key={badge.label}
-                className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/90 backdrop-blur"
-              >
-                {badge.icon ? <span aria-hidden>{badge.icon}</span> : null}
-                {badge.label}
-              </span>
-            ))}
-          </motion.div>
-        ) : null}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05, duration: 0.25 }}
-          className="max-w-3xl"
-        >
-          <h1 className="text-4xl font-semibold leading-tight sm:text-6xl">{title}</h1>
-          <p className="mt-6 text-lg text-white/85 sm:text-xl">{subtitle}</p>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.25 }}
-          className="flex flex-col items-start gap-3 sm:flex-row"
-        >
-          {ctas.map((cta) => {
-            const isAnchor = cta.href.startsWith('#');
-            const isExternal = /^https?:\/\//.test(cta.href);
-            const target = isAnchor || !isExternal ? undefined : '_blank';
-            const rel = target === '_blank' ? 'noreferrer noopener' : undefined;
+export function TripHero({ title, subtitle, heroImage, heroVideo, prefersReducedMotion = false }: TripHeroProps) {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"]
+  });
 
-            return (
-              <a
-                key={cta.href}
-                href={cta.href}
-                target={target}
-                rel={rel}
-                className={clsx(
-                  "inline-flex items-center justify-center rounded-2xl px-6 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
-                  cta.variant === "secondary"
-                    ? "border border-white/60 bg-white/10 text-white hover:bg-white/20 focus-visible:ring-white/60"
-                    : "bg-saffron text-ink hover:bg-saffron/90 focus-visible:ring-saffron/80"
-                )}
-              >
-                {cta.label}
-              </a>
-            );
-          })}
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+  const defaultVideo = "https://cdn.coverr.co/videos/coverr-drone-shot-of-tropical-jungle-5256/1080p.mp4";
+  const defaultImage = "https://images.unsplash.com/photo-1526401485004-8ad6f57be0d7?auto=format&fit=crop&w=1600&q=80";
+
+  return (
+    <div ref={ref} className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-jungle">
+      {/* Video Background */}
+      <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
+        {!prefersReducedMotion ? (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay"
+          >
+            <source src={heroVideo || defaultVideo} type="video/mp4" />
+          </video>
+        ) : (
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay"
+            style={{ backgroundImage: `url('${heroImage || defaultImage}')` }}
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-b from-jungle/30 via-transparent to-jungle" />
+        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay" />
+      </motion.div>
+
+      {/* Content */}
+      <div className="relative z-10 px-4 max-w-7xl mx-auto w-full flex flex-col items-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 1, delay: prefersReducedMotion ? 0 : 0.2 }}
+          className="text-center"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.8, delay: prefersReducedMotion ? 0 : 0.4 }}
+          >
+            <span className="inline-block px-4 py-1.5 mb-8 border border-lime/20 bg-jungle/40 rounded-full text-lime text-xs font-mono uppercase tracking-[0.2em] backdrop-blur-md shadow-[0_0_15px_rgba(217,249,157,0.1)]">
+              Edition 2026 — The Roadtrip
+            </span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 1, ease: "easeOut", delay: prefersReducedMotion ? 0 : 0.5 }}
+            className="font-serif text-6xl md:text-8xl lg:text-9xl text-ink leading-[0.85] tracking-tight drop-shadow-2xl mix-blend-lighten"
+          >
+            {title}
+          </motion.h1>
+
+          <motion.div
+            initial={{ opacity: 0, width: 0 }}
+            animate={{ opacity: 1, width: "120px" }}
+            transition={{ duration: prefersReducedMotion ? 0 : 1, delay: prefersReducedMotion ? 0 : 0.8 }}
+            className="h-px bg-gradient-to-r from-transparent via-lime to-transparent mx-auto my-12"
+          />
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 1, delay: prefersReducedMotion ? 0 : 1 }}
+            className="text-lg md:text-2xl text-ink/80 font-light tracking-wide max-w-2xl mx-auto font-sans"
+          >
+            {subtitle}
+          </motion.p>
         </motion.div>
       </div>
-    </section>
+
+      {/* Scroll Indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: prefersReducedMotion ? 0 : 1.5, duration: prefersReducedMotion ? 0 : 1 }}
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 text-lime/60 flex flex-col items-center gap-4"
+      >
+        <span className="text-[10px] font-mono uppercase tracking-widest">Scroll to explore</span>
+        <div className="w-px h-24 bg-gradient-to-b from-lime/50 to-transparent" />
+      </motion.div>
+    </div>
   );
 }

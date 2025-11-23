@@ -1,13 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --color-saffron: #f2994a;
-  --color-jungle: #0f766e;
+  /* Bioluminescent Night Theme */
+  --background: #022c22;
+  /* Deepest Jungle Green */
+  --foreground: #ecfccb;
+  /* Very pale lime/white */
+
+  --color-jungle: #022c22;
+  --color-saffron: #fb923c;
+  /* Sunset Orange */
   --color-ocean: #0e7490;
-  --color-sand: #f5e9da;
-  --color-ink: #0f172a;
+  --color-sand: #064e3b;
+  /* Darker jungle for secondary backgrounds */
+  --color-ink: #ecfccb;
+  /* Light text on dark background */
+
+  --color-lime: #d9f99d;
+  /* Electric Lime Accent */
 }
 
 @theme inline {
@@ -18,14 +28,17 @@
   --color-ocean: var(--color-ocean);
   --color-sand: var(--color-sand);
   --color-ink: var(--color-ink);
+  --color-lime: var(--color-lime);
+
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-fraunces);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a1120;
-    --foreground: #e2e8f0;
+    --background: #0a1128;
+    --foreground: #f5f1e6;
   }
 }
 
@@ -33,16 +46,112 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), "Segoe UI", system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
 }
 
-.bg-ink {
-  background-color: var(--color-ink);
+.bg-noise {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-.bg-saffron {
-  background-color: var(--color-saffron);
+/* Apple Liquid Glass Aesthetic - Refined */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.4);
+  /* More transparent */
+  backdrop-filter: blur(24px) saturate(140%) brightness(1.1);
+  /* Smoother blur, slight brightness boost */
+  -webkit-backdrop-filter: blur(24px) saturate(140%) brightness(1.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 4px 24px -1px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+  /* Inner glow for depth */
 }
 
-.text-ink {
-  color: var(--color-ink);
+.dark .glass-panel {
+  background: rgba(10, 17, 40, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 32px 0 rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.25);
+  /* Very liquid/transparent */
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.03),
+    0 1px 2px rgba(255, 255, 255, 0.5) inset;
+  /* Specular highlight on top edge */
+  border-radius: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.08),
+    0 1px 2px rgba(255, 255, 255, 0.8) inset;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.dark .glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dark .glass-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.glass-button {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.02);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+.font-serif {
+  font-family: var(--font-fraunces), serif;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }

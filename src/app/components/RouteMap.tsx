@@ -180,13 +180,28 @@ const ROUTE_SEGMENTS = [
 ];
 
 const ALL_COORDS = STOPS.map((stop) => stop.coords);
+const WORLD_ROUTE_COORDS: [number, number][] = [
+  [2.3522, 48.8566], // Paris
+  [79.8612, 6.9271], // Colombo
+];
+const ALL_COORDS_WITH_WORLD = [...WORLD_ROUTE_COORDS, ...ALL_COORDS];
+const WORLD_MARKERS = [
+  { coords: WORLD_ROUTE_COORDS[0], title: "Paris", icon: "✈️", color: "#60a5fa" },
+];
 
 const INITIAL_VIEW_STATE = {
-  longitude: 80.35,
-  latitude: 7.2,
-  zoom: 6,
-  bearing: -10,
+  longitude: 25,
+  latitude: 25,
+  zoom: 3.2,
+  bearing: 0,
   pitch: 0,
+};
+
+type ViewportTarget = {
+  center: [number, number];
+  zoom: number;
+  bearing: number;
+  pitch: number;
 };
 
 const computeBounds = (coordinates: [number, number][]) => {
@@ -200,12 +215,64 @@ const computeBounds = (coordinates: [number, number][]) => {
   );
 };
 
-export function RouteMap() {
+type RouteMapProps = {
+  activeDay?: string;
+  activeCity?: string;
+  prefersReducedMotion?: boolean;
+};
+
+const DAY_COORDS: Record<string, [number, number][]> = {
+  'Day 1': [STOPS[0].coords], // Colombo
+  'Day 2': [STOPS[1].coords, STOPS[2].coords], // Unawatuna + Mirissa
+  'Day 3': [STOPS[3].coords], // Udawalawe
+  'Day 4': [STOPS[4].coords, STOPS[5].coords], // Ella + Kandy
+  'Day 5': [STOPS[6].coords], // Sigiriya
+  'Day 6': [STOPS[7].coords], // Trincomalee
+  'Day 7': [STOPS[7].coords], // Trincomalee
+  'Day 8': [STOPS[7].coords], // Trincomalee
+  'Day 9': [STOPS[8].coords], // Colombo retour
+};
+
+const CITY_LOCATIONS: Record<string, ViewportTarget> = STOPS.reduce((acc, stop) => {
+  const key = stop.title.replace(/\s*\(.*?\)\s*/g, '').toLowerCase();
+  acc[key] = {
+    center: stop.coords,
+    zoom: stop.title.toLowerCase().includes('colombo') ? 12 : 11,
+    bearing: -18,
+    pitch: 45,
+  };
+  return acc;
+}, {} as Record<string, ViewportTarget>);
+
+const FALLBACK_LOCATION: ViewportTarget = {
+  center: [INITIAL_VIEW_STATE.longitude, INITIAL_VIEW_STATE.latitude],
+  zoom: INITIAL_VIEW_STATE.zoom,
+  bearing: INITIAL_VIEW_STATE.bearing,
+  pitch: INITIAL_VIEW_STATE.pitch,
+};
+
+const normalizeDayKey = (value?: string) => {
+  if (!value) return null;
+  const trimmed = value.trim();
+  const explicitDay = trimmed.match(/^(Day\s*\d+)/i);
+  if (explicitDay) {
+    return explicitDay[1].replace(/\s+/, ' ');
+  }
+  const beforeDash = trimmed.split('—')[0]?.trim();
+  if (beforeDash) return beforeDash;
+  return trimmed;
+};
+
+export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }: RouteMapProps) {
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
   const [activeSegmentId, setActiveSegmentId] = useState<string>("all");
   const [popupInfo, setPopupInfo] = useState<Stop | null>(null);
   const [mapReady, setMapReady] = useState(false);
+  const [hasZoomedToSriLanka, setHasZoomedToSriLanka] = useState(false);
+  const [introPlayed, setIntroPlayed] = useState(false);
+  const [basemapStyle, setBasemapStyle] = useState<string>("mapbox://styles/mapbox/dark-v11");
+  const [usingFallbackStyle, setUsingFallbackStyle] = useState(false);
 
   const mapRef = useRef<MapRef | null>(null);
 
@@ -239,31 +306,106 @@ export function RouteMap() {
     [segmentsWithStyle]
   );
 
-const focusOnCoordinates = useCallback((coordinates: [number, number][], bearing: number) => {
-  if (!mapRef.current || coordinates.length === 0) return;
-  const map = mapRef.current.getMap();
-  const bounds = computeBounds(coordinates);
-  map.fitBounds(bounds, {
-    padding: 120,
-    duration: 1200,
-    bearing,
-    pitch: 0,
-  });
-}, []);
+  const worldRouteGeoJson = useMemo(
+    () => ({
+      type: "FeatureCollection" as const,
+      features: [
+        {
+          type: "Feature" as const,
+          properties: {},
+          geometry: {
+            type: "LineString" as const,
+            coordinates: WORLD_ROUTE_COORDS,
+          },
+        },
+      ],
+    }),
+    []
+  );
+
+  const focusOnCoordinates = useCallback((coordinates: [number, number][], bearing = -12, padding = 160) => {
+    if (!mapRef.current || coordinates.length === 0) return;
+    const map = mapRef.current.getMap();
+    const bounds = computeBounds(coordinates);
+    map.fitBounds(bounds, {
+      padding,
+      maxZoom: 13.5,
+      duration: prefersReducedMotion ? 0 : 1200,
+      bearing: 0,
+      pitch: 0,
+    });
+  }, [prefersReducedMotion]);
 
   useEffect(() => {
     if (!mapReady) return;
-
     if (activeSegmentId === "all") {
-      focusOnCoordinates(ALL_COORDS, -18);
+      focusOnCoordinates(ALL_COORDS_WITH_WORLD, 0, 220);
       return;
     }
 
     const segment = ROUTE_SEGMENTS.find((item) => item.id === activeSegmentId);
     if (segment) {
-      focusOnCoordinates(segment.coordinates, segment.bearing);
+      const padding = segment.coordinates.length > 2 ? 160 : 140;
+      focusOnCoordinates(segment.coordinates, 0, padding);
     }
   }, [activeSegmentId, focusOnCoordinates, mapReady]);
+
+  // Fly to location when activeDay changes
+  useEffect(() => {
+    if (!mapReady || !mapRef.current) return;
+
+    const dayKey = normalizeDayKey(activeDay) || undefined;
+    const dayCoords = dayKey ? DAY_COORDS[dayKey] : undefined;
+
+    if (!introPlayed && dayCoords && dayCoords.length > 0) {
+      if (prefersReducedMotion) {
+        focusOnCoordinates(dayCoords, 0, dayCoords.length > 1 ? 150 : 180);
+        setIntroPlayed(true);
+        return;
+      }
+
+      const map = mapRef.current.getMap();
+
+      // Step 1: Paris
+      map.flyTo({
+        center: WORLD_ROUTE_COORDS[0],
+        zoom: 4.5,
+        bearing: 0,
+        pitch: 0,
+        duration: 1200,
+        essential: true,
+      });
+
+      // Step 2: Colombo
+      setTimeout(() => {
+        map.flyTo({
+          center: STOPS[0].coords,
+          zoom: 10,
+          bearing: 0,
+          pitch: 0,
+          duration: 1200,
+          essential: true,
+        });
+      }, 1300);
+
+      // Step 3: focus day
+      setTimeout(() => {
+        const padding = dayCoords.length > 1 ? 150 : 180;
+        focusOnCoordinates(dayCoords, 0, padding);
+        setIntroPlayed(true);
+      }, 2600);
+
+      return;
+    }
+
+    if (dayCoords && dayCoords.length > 0) {
+      const padding = dayCoords.length > 1 ? 150 : 180;
+      focusOnCoordinates(dayCoords, 0, padding);
+      return;
+    }
+
+    // No day coordinates: do nothing
+  }, [activeCity, activeDay, focusOnCoordinates, introPlayed, mapReady, prefersReducedMotion]);
 
   const handleMarkerSelect = useCallback(
     (stop: Stop) => {
@@ -303,7 +445,7 @@ const focusOnCoordinates = useCallback((coordinates: [number, number][], bearing
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.25 }}
-        className="flex h-[420px] w-full items-center justify-center rounded-2xl border border-ink/10 bg-sand px-6 text-sm text-ink/80 shadow-lg"
+        className="flex h-[420px] w-full items-center justify-center rounded-3xl glass-panel px-6 text-sm text-ink/80"
       >
         Ajoute ton jeton Mapbox (`NEXT_PUBLIC_MAPBOX_TOKEN`) pour profiter de la carte interactive animée.
       </motion.div>
@@ -312,107 +454,120 @@ const focusOnCoordinates = useCallback((coordinates: [number, number][], bearing
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.25 }}
-      className="relative h-[420px] w-full overflow-hidden rounded-2xl border border-ink/10 shadow-lg"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="relative w-full h-full"
     >
-      {mapReady ? (
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-start justify-end p-4">
-          <div className="pointer-events-auto hidden max-h-[calc(100%-32px)] w-60 flex-col gap-2 overflow-y-auto rounded-3xl bg-white/85 p-4 text-xs text-ink shadow-lg backdrop-blur sm:flex">
-            <div>
-              <p className="text-sm font-semibold text-ink">Étapes sur la carte</p>
-              <p className="mt-1 text-[11px] text-slate-500">Clique pour zoomer ou ouvrir sur la carte.</p>
-            </div>
-            <div className="mt-2 flex flex-col gap-2">
-              {STOPS.map((stop) => {
-                const phase = phaseMap[stop.phaseId];
-                const isActive = popupInfo?.title === stop.title;
-                return (
-                  <button
-                    key={`sidebar-${stop.title}-${stop.coords[0]}`}
-                    type="button"
-                    onClick={() => handleSidebarSelect(stop)}
-                    className={`flex items-center gap-3 rounded-2xl border px-3 py-2 text-left text-xs font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-jungle)]/40 focus-visible:ring-offset-2 ${
-                      isActive ? "border-transparent text-ink shadow" : "border-ink/10 text-ink/80 hover:bg-white"
-                    }`}
-                    style={{
-                      backgroundColor: isActive ? `${phase.color}20` : "rgba(255,255,255,0.75)",
-                    }}
-                  >
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-base">{phase.icon}</span>
-                    <span className="flex flex-col">
-                      <span className="text-sm font-semibold text-ink">{stop.title}</span>
-                      <span className="text-[11px] text-slate-500">{stop.description}</span>
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      ) : null}
-
       <Map
         ref={mapRef}
         mapboxAccessToken={token}
-        mapStyle="mapbox://styles/mapbox/navigation-night-v1"
+        mapStyle={basemapStyle}
         initialViewState={INITIAL_VIEW_STATE}
         style={{ width: "100%", height: "100%" }}
         reuseMaps
+        interactive={false}
+        dragPan={false}
+        scrollZoom={false}
+        doubleClickZoom={false}
+        keyboard={false}
+        touchZoomRotate={false}
+        touchPitch={false}
+        dragRotate={false}
         onLoad={(event) => {
           setMapReady(true);
           const map = event.target;
+          map.setProjection({ name: "globe" });
           map.setFog({
-            color: "rgba(12, 74, 110, 0.35)",
-            "high-color": "#fdf6ec",
-            "space-color": "#0f172a",
+            color: "rgba(2, 44, 34, 0.5)",
+            "high-color": "rgba(3, 84, 63, 0.6)",
+            "space-color": "#020617",
             "horizon-blend": 0.2,
           });
-          focusOnCoordinates(ALL_COORDS, -18);
+          // Vue monde puis fly direct Sri Lanka large
+          focusOnCoordinates(ALL_COORDS_WITH_WORLD, -10, 260);
+          if (!hasZoomedToSriLanka) {
+            const duration = prefersReducedMotion ? 0 : 1200;
+            setTimeout(() => {
+              map.flyTo({
+                center: [80.4, 7.2],
+                zoom: 6.4,
+                bearing: 0,
+                pitch: 0,
+                duration,
+                essential: true,
+              });
+              setHasZoomedToSriLanka(true);
+            }, prefersReducedMotion ? 0 : 600);
+          }
+        }}
+        onError={(event) => {
+          // Si le style Mapbox échoue (token invalide / droit manquant), fallback vers un style public Carto
+          if (!usingFallbackStyle) {
+            setBasemapStyle("https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json");
+            setUsingFallbackStyle(true);
+          }
         }}
       >
-        <Source id="route" type="geojson" data={routeGeoJson}>
+        <Source id="world-route" type="geojson" data={worldRouteGeoJson}>
           <Layer
-            id="route-line"
+            id="world-line"
             type="line"
+            layout={{
+              "line-join": "round",
+              "line-cap": "round",
+            }}
             paint={{
-              "line-color": ["get", "color"],
-              "line-width": ["get", "width"],
-              "line-opacity": ["get", "opacity"],
+              "line-color": "#60a5fa",
+              "line-width": 2.5,
+              "line-opacity": 0.45,
+              "line-dasharray": [2, 2],
             }}
           />
         </Source>
 
-        <NavigationControl position="top-right" visualizePitch />
-        <FullscreenControl position="top-left" />
-        <ScaleControl position="bottom-left" maxWidth={120} unit="metric" />
+        <Source id="route" type="geojson" data={routeGeoJson}>
+          <Layer
+            id="route-line"
+            type="line"
+            layout={{
+              "line-join": "round",
+              "line-cap": "round",
+            }}
+            paint={{
+              "line-color": "#d9f99d", // Neon Lime
+              "line-width": 4,
+              "line-opacity": 0.9,
+              "line-blur": 1,
+            }}
+          />
+        </Source>
+
+        {WORLD_MARKERS.map((marker) => (
+          <Marker key={marker.title} longitude={marker.coords[0]} latitude={marker.coords[1]} anchor="bottom">
+            <div className="flex flex-col items-center gap-1 pointer-events-none">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/70 bg-white/80 text-lg shadow-md" style={{ color: marker.color }}>
+                {marker.icon}
+              </span>
+              <span className="rounded-full bg-white/85 px-3 py-1 text-[11px] font-semibold text-ink shadow-sm">{marker.title}</span>
+            </div>
+          </Marker>
+        ))}
 
         {STOPS.map((stop) => {
           const phase = phaseMap[stop.phaseId];
           const isActive = popupInfo?.title === stop.title;
           return (
             <Marker key={`${stop.title}-${stop.coords[0]}`} longitude={stop.coords[0]} latitude={stop.coords[1]} anchor="bottom">
-              <button
-                type="button"
-                onClick={() => handleMarkerSelect(stop)}
-                className="group relative flex flex-col items-center focus:outline-none"
-              >
+              <div className="group relative flex flex-col items-center pointer-events-none">
                 <span
-                  className={`flex h-10 w-10 items-center justify-center rounded-full border-2 bg-white/80 text-lg shadow-md transition ${
-                    isActive ? "border-[var(--color-jungle)]" : "border-white/70"
-                  }`}
+                  className={`flex h-10 w-10 items-center justify-center rounded-full border-2 bg-white/80 text-lg shadow-md transition ${isActive ? "border-[var(--color-jungle)]" : "border-white/70"
+                    }`}
                   style={{ color: phase.color, backdropFilter: "blur(6px)" }}
                 >
                   {phase.icon}
                 </span>
-                <span
-                  className="pointer-events-none absolute left-12 top-1/2 hidden -translate-y-1/2 whitespace-nowrap rounded-2xl bg-white/95 px-3 py-1 text-xs font-semibold text-ink shadow-lg transition group-hover:block group-focus-visible:block"
-                >
-                  {stop.title}
-                </span>
-              </button>
+              </div>
             </Marker>
           );
         })}
