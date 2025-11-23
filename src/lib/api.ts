@@ -44,7 +44,7 @@ export type TrackingEvent = {
     dayId?: string;
     city?: string;
     device?: string;
-    props?: Record<string, any>;
+    props?: Record<string, string | number | boolean | null>;
 };
 
 export async function track(data: TrackingEvent): Promise<void> {

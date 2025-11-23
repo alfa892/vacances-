@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wallet, Users, Plane, Bed, Ticket, Bus, Utensils, FileText } from 'lucide-react';
 import clsx from 'clsx';
-import { BudgetResponse, BudgetLine } from '../api/data/types';
+import { BudgetResponse } from '../api/data/types';
 
-const CATEGORY_CONFIG: Record<string, { icon: any, color: string }> = {
+const CATEGORY_CONFIG: Record<string, { icon: React.ElementType, color: string }> = {
     vols: { icon: Plane, color: 'bg-ocean' },
     logement: { icon: Bed, color: 'bg-indigo-400' },
     activites: { icon: Ticket, color: 'bg-saffron' },

@@ -243,7 +243,7 @@ function DayCardLegacy({ day, items, onActive }: { day: string; items: LegacyIti
 
                                 <div className="flex-1">
                                     <div className="text-xl md:text-2xl font-medium text-white/90 group-hover/item:text-lime transition-colors">
-                                        {isValidElement(item.plan) ? cloneElement(item.plan as React.ReactElement<any>, {
+                                        {isValidElement(item.plan) ? cloneElement(item.plan as React.ReactElement<{ onImageHover?: (src: string | null) => void }>, {
                                             onImageHover: (src: string | null) => setActiveImage(src)
                                         }) : item.plan}
                                     </div>

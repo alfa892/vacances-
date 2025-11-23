@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, MapPin, Calendar, ExternalLink, ArrowRight } from 'lucide-react';
 import { search, track } from '@/lib/api';
 import { SearchResult } from '@/app/api/data/types';
-import { useRouter } from 'next/navigation';
 
 export function CommandPalette() {
     const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +12,6 @@ export function CommandPalette() {
     const [results, setResults] = useState<SearchResult[]>([]);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [loading, setLoading] = useState(false);
-    const router = useRouter();
 
     // Toggle with Cmd+K
     useEffect(() => {

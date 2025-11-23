@@ -4,13 +4,10 @@ import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Map, {
-  FullscreenControl,
   Layer,
   MapRef,
   Marker,
-  NavigationControl,
   Popup,
-  ScaleControl,
   Source,
 } from "react-map-gl/mapbox";
 import { LngLatBounds } from "mapbox-gl";
@@ -233,24 +230,6 @@ const DAY_COORDS: Record<string, [number, number][]> = {
   'Day 9': [STOPS[8].coords], // Colombo retour
 };
 
-const CITY_LOCATIONS: Record<string, ViewportTarget> = STOPS.reduce((acc, stop) => {
-  const key = stop.title.replace(/\s*\(.*?\)\s*/g, '').toLowerCase();
-  acc[key] = {
-    center: stop.coords,
-    zoom: stop.title.toLowerCase().includes('colombo') ? 12 : 11,
-    bearing: -18,
-    pitch: 45,
-  };
-  return acc;
-}, {} as Record<string, ViewportTarget>);
-
-const FALLBACK_LOCATION: ViewportTarget = {
-  center: [INITIAL_VIEW_STATE.longitude, INITIAL_VIEW_STATE.latitude],
-  zoom: INITIAL_VIEW_STATE.zoom,
-  bearing: INITIAL_VIEW_STATE.bearing,
-  pitch: INITIAL_VIEW_STATE.pitch,
-};
-
 const normalizeDayKey = (value?: string) => {
   if (!value) return null;
   const trimmed = value.trim();
@@ -323,7 +302,7 @@ export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }
     []
   );
 
-  const focusOnCoordinates = useCallback((coordinates: [number, number][], bearing = -12, padding = 160) => {
+  const focusOnCoordinates = useCallback((coordinates: [number, number][], padding = 160) => {
     if (!mapRef.current || coordinates.length === 0) return;
     const map = mapRef.current.getMap();
     const bounds = computeBounds(coordinates);
@@ -339,14 +318,14 @@ export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }
   useEffect(() => {
     if (!mapReady) return;
     if (activeSegmentId === "all") {
-      focusOnCoordinates(ALL_COORDS_WITH_WORLD, 0, 220);
+      focusOnCoordinates(ALL_COORDS_WITH_WORLD, 220);
       return;
     }
 
     const segment = ROUTE_SEGMENTS.find((item) => item.id === activeSegmentId);
     if (segment) {
       const padding = segment.coordinates.length > 2 ? 160 : 140;
-      focusOnCoordinates(segment.coordinates, 0, padding);
+      focusOnCoordinates(segment.coordinates, padding);
     }
   }, [activeSegmentId, focusOnCoordinates, mapReady]);
 
@@ -359,7 +338,7 @@ export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }
 
     if (!introPlayed && dayCoords && dayCoords.length > 0) {
       if (prefersReducedMotion) {
-        focusOnCoordinates(dayCoords, 0, dayCoords.length > 1 ? 150 : 180);
+        focusOnCoordinates(dayCoords, dayCoords.length > 1 ? 150 : 180);
         setIntroPlayed(true);
         return;
       }
@@ -391,7 +370,7 @@ export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }
       // Step 3: focus day
       setTimeout(() => {
         const padding = dayCoords.length > 1 ? 150 : 180;
-        focusOnCoordinates(dayCoords, 0, padding);
+        focusOnCoordinates(dayCoords, padding);
         setIntroPlayed(true);
       }, 2600);
 
@@ -400,7 +379,7 @@ export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }
 
     if (dayCoords && dayCoords.length > 0) {
       const padding = dayCoords.length > 1 ? 150 : 180;
-      focusOnCoordinates(dayCoords, 0, padding);
+      focusOnCoordinates(dayCoords, padding);
       return;
     }
 
@@ -421,21 +400,6 @@ export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }
       }
     },
     [popupInfo]
-  );
-
-  const handleSidebarSelect = useCallback(
-    (stop: Stop) => {
-      handleMarkerSelect(stop);
-      if (!mapReady) return;
-
-      const segment = ROUTE_SEGMENTS.find((item) => item.id === stop.segmentId);
-      if (segment) {
-        focusOnCoordinates(segment.coordinates, segment.bearing);
-      } else {
-        focusOnCoordinates([stop.coords], -18);
-      }
-    },
-    [focusOnCoordinates, handleMarkerSelect, mapReady]
   );
 
   if (!token) {
@@ -501,7 +465,7 @@ export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }
             }, prefersReducedMotion ? 0 : 600);
           }
         }}
-        onError={(event) => {
+        onError={() => {
           // Si le style Mapbox échoue (token invalide / droit manquant), fallback vers un style public Carto
           if (!usingFallbackStyle) {
             setBasemapStyle("https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json");
