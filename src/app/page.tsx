@@ -1,76 +1,34 @@
-import Image from 'next/image';
-import { Playfair_Display } from 'next/font/google';
-import type { ReactNode } from 'react';
+export const dynamic = 'force-static';
+export const revalidate = 3600;
+
+import { TripHero } from './components/TripHero';
+import { ScrollytellingSection } from './components/ScrollytellingSection';
+import { BudgetWidget } from './components/BudgetWidget';
+import { ClientEffects } from './components/ClientEffects';
+import { CtaSection } from './components/CtaSection';
+import { CommandPalette } from './components/CommandPalette';
+import { budgetData } from './api/data/budgetData';
 
 import { HoverPreviewLink } from './components/HoverPreviewLink';
-import { TripHero } from './components/TripHero';
-import { RouteMapSection } from './components/RouteMapSection';
-import { MessengerCta } from './components/MessengerCta';
+import type { ReactNode } from 'react';
 
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  weight: ['400', '600'],
-});
+const tripTitle = 'Sri Lanka De Luxe';
+const tripSubtitle = 'Marie · Kris · Alex — Travel Experience Specialist';
+const heroImage = '/photos/hero-sri-lanka.jpg';
 
-const heroCtas = [
-  { href: '#itineraire', label: 'Voir l’itinéraire' },
-  { href: '#budget', label: 'Budget détaillé', variant: 'secondary' },
-] as const;
+const finalCtas = [
+  { href: 'https://wa.me/?text=Chaud%20pour%20le%20Sri%20Lanka%20!%20%F0%9F%87%B1%F0%9F%87%B0', label: 'Je valide le trip 🌴', type: 'whatsapp' as const },
+  { href: 'https://wa.me/?text=Je%20pr%C3%A9f%C3%A8re%20rester%20sous%20la%20pluie...%20%E2%98%94%EF%B8%8F', label: 'Je passe mon tour ☔️', type: 'whatsapp' as const },
+];
 
-const messengerPositiveMessages = [
-  '✅ En cliquant « Je viens », je certifie m’émerveiller devant chaque paysage, applaudir les levers de soleil comme des œuvres d’art et goûter prioritairement aux meilleurs restos locaux. J’accepte de participer aux expériences local avec haut taux de bonne humeur (> 80%), et de limiter le râlage à 0,5 unité/jour.',
-] as const;
-
-const messengerNegativeMessages = [
-  '❌ Je passe mon tour cette fois 😅. Mon FOMO pleure en silence.',
-  '❌ Pas dispo, malheureusement…',
-] as const;
-
-const messengerConversationUrl = 'https://www.messenger.com/t/1194668915909110';
-
-const routePlan = (label: string, href: string) => (
-  <a
+const routePlan = (label: string, href: string, images: { src: string; alt: string }[]) => (
+  <HoverPreviewLink
     href={href}
-    target="_blank"
-    rel="noreferrer noopener"
-    className="inline-flex items-center gap-1 text-[var(--color-jungle)] underline decoration-dotted underline-offset-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-jungle)]/30 focus-visible:ring-offset-2"
-  >
-    {label}
-  </a>
+    label={label}
+    srLabel={label}
+    images={images}
+  />
 );
-
-const budgetBreakdown = [
-  { label: 'Avion', amount: '650 €', note: 'Paris ↔ Colombo.' },
-  { label: 'Logement', amount: '470,62 €', note: 'Hôtels & villas.' },
-  {
-    label: 'Activités',
-    amount: '250 €',
-    note: 'Safari, zipline, sorties bateau, entrées temples.',
-  },
-  {
-    label: 'Terrestre',
-    amount: '50 €',
-    note: 'Train panoramique, tuk-tuk, ajustements chauffeur.',
-  },
-  { label: 'Repas & drinks', amount: '200 €', note: 'Du kottu au resto chic + cocktails.' },
-  { label: 'Visa', amount: '40 €', note: 'ETA en ligne, reçu sous 48 h.' },
-  {
-    label: 'Vaccins',
-    amount: 'À prévoir',
-    note: '1 ou 2 rappels pour être à jour (hépatite A, DTP, typhoïde).',
-  },
-  {
-    label: 'Passeport',
-    amount: 'À vérifier',
-    note: 'Valable au moins 6 mois après l’entrée sur le territoire.',
-  },
-];
-
-const tripStats = [
-  { value: '11 jours', description: 'Durée totale du voyage' },
-  { value: '9 jours', description: 'Sur place' },
-  { value: '7 jours', description: 'Congés à poser' },
-];
 
 const itinerary: Array<{
   day: string;
@@ -84,14 +42,28 @@ const itinerary: Array<{
     day: 'Mercredi',
     city: 'Paris',
     time: 'En débauchant',
-    plan: 'Aller dormir à l’hôtel à côté de CDG',
+    plan: (
+      <HoverPreviewLink
+        label="Aller dormir à l’hôtel à côté de CDG"
+        images={[
+          { src: '/photos/hero-sri-lanka.jpg', alt: 'Nuit avant le vol' },
+        ]}
+      />
+    ),
     price: 'Hôtel + train + restau',
   },
   {
     day: 'Jeudi',
     city: 'Paris',
     time: '10h30',
-    plan: '🛫🛫🛫   Décollage  🛫🛫🛫',
+    plan: (
+      <HoverPreviewLink
+        label="🛫🛫🛫   Décollage  🛫🛫🛫"
+        images={[
+          { src: '/photos/hero-sri-lanka.jpg', alt: 'Décollage vers Colombo' },
+        ]}
+      />
+    ),
     price: '325 €',
   },
   {
@@ -113,12 +85,12 @@ const itinerary: Array<{
         srLabel="Ouvrir la fiche de l’hôtel"
         images={[
           {
-            src: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/592834813.jpg?k=2b549e03614fec2e7471f7fb54930d103b63039ebdfeed0a7b1e6ba5ee66317b&o=',
-            alt: 'ITC Ratnadipa — Lobby',
+            src: '/photos/colombo-itc.jpg',
+            alt: 'ITC Ratnadipa — Lobby et façade',
           },
           {
-            src: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/548877610.jpg?k=d64ce3152c9cbc0e7e0bd912ecb2e2c0e246bd035616131e1df7f70830c96de8&o=',
-            alt: 'ITC Ratnadipa — Chambre',
+            src: '/photos/hero-sri-lanka.jpg',
+            alt: 'Paysage ferroviaire au Sri Lanka',
           },
         ]}
       />
@@ -129,7 +101,14 @@ const itinerary: Array<{
     day: 'Day 1 — Vendredi',
     city: 'Colombo',
     time: '10h',
-    plan: 'Petit déjeuner',
+    plan: (
+      <HoverPreviewLink
+        label="Petit déjeuner"
+        images={[
+          { src: '/photos/colombo-itc.jpg', alt: 'Petit déjeuner à Colombo' },
+        ]}
+      />
+    ),
     price: 'Gratuit',
   },
   {
@@ -249,7 +228,14 @@ const itinerary: Array<{
     day: 'Day 1 — Vendredi',
     city: 'Colombo',
     time: 'Fin de journée',
-    plan: '🍸 Rooftop avec vue sur Lotus Tower',
+    plan: (
+      <HoverPreviewLink
+        label="🍸 Rooftop avec vue sur Lotus Tower"
+        images={[
+          { src: '/photos/colombo-itc.jpg', alt: 'Rooftop sur Colombo' },
+        ]}
+      />
+    ),
     price: 'Prix du cocktail',
   },
   {
@@ -259,6 +245,16 @@ const itinerary: Array<{
     plan: routePlan(
       '🚐 Route en van (2 h)',
       'https://www.google.com/maps/dir/Colombo+City+Port,+Sri+Lanka/X7XJ%2BFJ8+Thalpe+Beach,+Wellethota+Road,+Talpe,+Sri+Lanka/@6.5591437,79.7641324,9.39z/data=!4m14!4m13!1m5!1m1!1s0x3ae2592cf4eff9d9:0xb4db8c89d7d055b0!2m2!1d79.8368426!2d6.9378036!1m5!1m1!1s0x3ae16d44d2b29173:0x797de772d527c2c5!2m2!1d80.2878868!2d5.9952498!3e0?entry=ttu&g_ep=EgoyMDI1MTAxNC4wIKXMDSoASAFQAw%3D%3D',
+      [
+        {
+          src: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+          alt: 'Route côtière vers Unawatuna',
+        },
+        {
+          src: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1200&q=80',
+          alt: 'Van sur une route bordée de cocotiers',
+        },
+      ],
     ),
     price: '5,25 €',
   },
@@ -274,12 +270,12 @@ const itinerary: Array<{
         srLabel="Ouvrir la villa Airbnb d'Unawatuna"
         images={[
           {
-            src: 'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI2NTk5ODY2NzM3NDI5MDcxMA==/original/e4fffc4f-d3d8-4fbc-8f51-51761ac980e3.jpeg?im_w=1200',
+            src: '/photos/unawatuna-villa.jpg',
             alt: 'Vue aérienne de la villa avec piscine',
           },
           {
-            src: 'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI2NTk5ODY2NzM3NDI5MDcxMA==/original/9348cb0c-7b51-407e-ab1b-0d9ad41380a4.jpeg?im_w=1200',
-            alt: 'Salon ouvert sur la jungle',
+            src: '/photos/unawatuna-alt.jpg',
+            alt: 'Plage proche de la villa à Unawatuna',
           },
         ]}
       />
@@ -376,6 +372,12 @@ const itinerary: Array<{
     plan: routePlan(
       '🚐 Route en van (2 h)',
       'https://www.google.com/maps/dir/Unawatuna,+Sri+Lanka/Udawalawe,+Sri+Lanka/@6.2817187,80.4832325,9.56z/data=!4m14!4m13!1m5!1m1!1s0x3ae172f162bf926d:0xc0444c5e8377446c!2m2!1d80.2488596!2d6.0174469!1m5!1m1!1s0x3ae40750763484ed:0x302cc7e3f95389b5!2m2!1d80.823938!2d6.4184828!3e0?entry=ttu&g_ep=EgoyMDI1MTAxNC4wIKXMDSoASAFQAw%3D%3D',
+      [
+        {
+          src: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80',
+          alt: 'Route vers le parc d’Udawalawe avec éléphants',
+        },
+      ],
     ),
     price: '3,13 €',
   },
@@ -409,6 +411,12 @@ const itinerary: Array<{
     plan: routePlan(
       '🚐 Route en van (2 h)',
       'https://www.google.com/maps/dir/Udawalawe,+Sri+Lanka/Ella,+Sri+Lanka/@6.5840189,80.7708802,10.34z/data=!4m14!4m13!1m5!1m1!1s0x3ae40750763484ed:0x302cc7e3f95389b5!2m2!1d80.823938!2d6.4184828!1m5!1m1!1s0x3ae465955bc09a25:0xbdfadcdadec487fb!2m2!1d81.0491074!2d6.8731332!3e0?entry=ttu&g_ep=EgoyMDI1MTAxNC4wIKXMDSoASAFQAw%3D%3D',
+      [
+        {
+          src: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1200&q=80',
+          alt: 'Route de montagne vers Ella',
+        },
+      ],
     ),
     price: '2,62 €',
   },
@@ -424,12 +432,12 @@ const itinerary: Array<{
         srLabel="Ouvrir la villa Panorama à Ella"
         images={[
           {
-            src: 'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTMxMzYyODAwMTgxNjU3MjM3Ng%3D%3D/original/0fe613a4-cc8d-4b84-b590-4530c670bfed.jpeg?im_w=720',
+            src: '/photos/ella-villa.jpg',
             alt: 'Vue sur la vallée depuis la terrasse',
           },
           {
-            src: 'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTMxMzYyODAwMTgxNjU3MjM3Ng%3D%3D/original/64a01a23-5c14-4988-a0b6-192da3a16f35.jpeg?im_w=720',
-            alt: 'Salon ouvert de la villa',
+            src: '/photos/stay-3.jpg',
+            alt: 'Salon ouvert avec vue sur la jungle',
           },
         ]}
       />
@@ -514,11 +522,11 @@ const itinerary: Array<{
         srLabel="Ouvrir la villa de Kandy"
         images={[
           {
-            src: 'https://a0.muscache.com/im/pictures/miso/Hosting-598817875487986040/original/9b361618-bfd5-4604-96ce-766a39b6ca3d.jpeg?im_w=1200',
+            src: '/photos/kandy-villa.jpg',
             alt: 'Piscine à débordement entourée de jungle',
           },
           {
-            src: 'https://a0.muscache.com/im/pictures/miso/Hosting-598817875487986040/original/2e23aef1-54bf-4c23-88e7-98cf91c9135c.jpeg?im_w=1200',
+            src: '/photos/stay-4.jpg',
             alt: 'Salon intérieur/extérieur de la villa',
           },
         ]}
@@ -638,6 +646,12 @@ const itinerary: Array<{
     plan: routePlan(
       '🚐 Route en van (1 h 30)',
       'https://www.google.com/maps/dir/Kandy,+Sri+Lanka/Dambulla,+Sri+Lanka/@7.5818242,80.219165,10z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x3ae366266498acd3:0x411a3818a1e03c35!2m2!1d80.6337262!2d7.2905715!1m5!1m1!1s0x3afcaff4c8adcc4f:0x67ae3cc5b1536914!2m2!1d80.6510856!2d7.8741017!3e0?entry=ttu&g_ep=EgoyMDI1MTAxNC4wIKXMDSoASAFQAw%3D%3D',
+      [
+        {
+          src: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1200&q=80',
+          alt: 'Route jungle entre Kandy et Dambulla',
+        },
+      ],
     ),
     price: '1,50 €',
   },
@@ -671,6 +685,12 @@ const itinerary: Array<{
     plan: routePlan(
       '🚐 Route en van (30 min)',
       'https://www.google.com/maps/dir/Dambulla,+Sri+Lanka/Sigiriya,+Sri+Lanka/@7.9141015,80.6617092,13z/data=!4m14!4m13!1m5!1m1!1s0x3afcaff4c8adcc4f:0x67ae3cc5b1536914!2m2!1d80.6510856!2d7.8741017!1m5!1m1!1s0x3afca0dfa73179d1:0x1e04c1150cff0edf!2m2!1d80.754698!2d7.9541085!3e0?entry=ttu&g_ep=EgoyMDI1MTAxNC4wIKXMDSoASAFQAw%3D%3D',
+      [
+        {
+          src: 'https://images.unsplash.com/photo-1568254183919-78a4f43a2877?auto=format&fit=crop&w=1200&q=80',
+          alt: 'Sigiriya vue depuis la route',
+        },
+      ],
     ),
     price: '0,40 €',
   },
@@ -704,6 +724,12 @@ const itinerary: Array<{
     plan: routePlan(
       '🚐 Route en van (1 h 50)',
       'https://www.google.com/maps/dir/Sigiriya,+Sri+Lanka/Trincomalee,+Sri+Lanka/@8.0752492,80.6588082,10.94z/data=!4m14!4m13!1m5!1m1!1s0x3afca0dfa73179d1:0x1e04c1150cff0edf!2m2!1d80.754698!2d7.9541085!1m5!1m1!1s0x3afbbcb6902dbe27:0x7de76a7a331b0fbb!2m2!1d81.2152121!2d8.5873638!3e0?entry=ttu&g_ep=EgoyMDI1MTAxNC4wIKXMDSoASAFQAw%3D%3D',
+      [
+        {
+          src: 'https://images.unsplash.com/photo-1493558103817-58b2924bce98?auto=format&fit=crop&w=1200&q=80',
+          alt: 'Route vers les plages de la côte est',
+        },
+      ],
     ),
     price: '2,12 €',
   },
@@ -719,11 +745,11 @@ const itinerary: Array<{
         srLabel="Ouvrir la villa Uppuveli"
         images={[
           {
-            src: 'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTMzODk2NTg2MTIwNzM2OTMwMw%3D%3D/original/db8b5fbc-c408-4fc5-b31a-4162e1947e6d.jpeg?im_w=1440',
+            src: '/photos/trincomalee-villa.jpg',
             alt: "Piscine avec vue sur l'océan à Trincomalee",
           },
           {
-            src: 'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTMzODk2NTg2MTIwNzM2OTMwMw%3D%3D/original/961e458f-5dca-4027-8e5a-8d9c8548986a.jpeg?im_w=1440',
+            src: '/photos/stay-3.jpg',
             alt: 'Salon ouvert de la villa Uppuveli',
           },
         ]}
@@ -777,7 +803,14 @@ const itinerary: Array<{
     day: 'Day 7 — Jeudi',
     city: 'Trincomalee',
     time: 'Après-midi',
-    plan: '🤿 Snorkelling',
+    plan: (
+      <HoverPreviewLink
+        label="🤿 Snorkelling"
+        images={[
+          { src: '/photos/trincomalee-villa.jpg', alt: 'Snorkelling à Trincomalee' },
+        ]}
+      />
+    ),
     price: '20,00 €',
   },
   {
@@ -905,6 +938,12 @@ const itinerary: Array<{
     plan: routePlan(
       '🚐 Route en van (5 h, départ 19h)',
       'https://www.google.com/maps/dir/Trincomalee,+Sri+Lanka/Colombo,+Sri+Lanka/@7.7571598,79.8787404,9z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x3afbbcb6902dbe27:0x7de76a7a331b0fbb!2m2!1d81.2152121!2d8.5873638!1m5!1m1!1s0x3ae253d10f7a7003:0x320b2e4d32d3838d!2m2!1d79.861243!2d6.9270786!3e0?entry=ttu&g_ep=EgoyMDI1MTAxNC4wIKXMDSoASAFQAw%3D%3D',
+      [
+        {
+          src: 'https://images.unsplash.com/photo-1505765050516-f72dcac9c60b?auto=format&fit=crop&w=1200&q=80',
+          alt: 'Route de nuit vers Colombo',
+        },
+      ],
     ),
     price: '11,62 €',
   },
@@ -912,364 +951,65 @@ const itinerary: Array<{
     day: 'Day 9 — Samedi',
     city: 'Colombo',
     time: '4h05',
-    plan: '🛫🛫🛫   Décollage  🛫🛫🛫',
+    plan: (
+      <HoverPreviewLink
+        label="🛫🛫🛫   Décollage  🛫🛫🛫"
+        images={[
+          { src: '/photos/hero-sri-lanka.jpg', alt: 'Vol retour depuis Colombo' },
+        ]}
+      />
+    ),
     price: '325 €',
   },
   {
     day: 'Dimanche',
     city: 'Paris',
     time: '13h50',
-    plan: '🛬🛬🛬   Atterrissage   🛬🛬🛬',
+    plan: (
+      <HoverPreviewLink
+        label="🛬🛬🛬   Atterrissage   🛬🛬🛬"
+        images={[
+          { src: '/photos/hero-sri-lanka.jpg', alt: 'Retour à Paris' },
+        ]}
+      />
+    ),
     price: '',
   },
 ];
 
-const itineraryDays = Array.from(
-  itinerary.reduce((acc, entry) => {
-    if (!acc.has(entry.day)) {
-      acc.set(entry.day, [] as Array<(typeof itinerary)[number]>);
-    }
-    acc.get(entry.day)!.push(entry);
-    return acc;
-  }, new Map<string, Array<(typeof itinerary)[number]>>()),
-).map(([label, entries]) => ({ label, entries }));
+export default async function Home() {
+  const budget = budgetData;
 
-const stays = [
-  {
-    title: 'Colombo — ITC Ratnadipa',
-    href: 'https://www.booking.com/hotel/lk/itc-ratnadipa-a-luxury-collection-colombo.fr.html',
-    description: '5 étoiles bord de mer pour atterrir en douceur et profiter de la skyline.',
-    image: '/photos/colombo-itc.jpg',
-  },
-  {
-    title: 'Unawatuna — Villa entière',
-    href: 'https://www.airbnb.fr/rooms/1265998667374290710?check_out=2026-06-07&viralityEntryPoint=1&unique_share_id=736C1D87-76F3-4658-97DE-E164FCD5C230&slcid=e30f31a350994cc98af2963a3869747f&s=76&adults=8&check_in=2026-06-05&slug=mNqkpYLM&source_impression_id=p3_1757952396_P3CnOf0tWM2kgM19',
-    description: 'Grande maison à 5 min de la plage, jardin tropical pour les apéros.',
-    image:
-      'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI2NTk5ODY2NzM3NDI5MDcxMA==/original/e4fffc4f-d3d8-4fbc-8f51-51761ac980e3.jpeg?im_w=1200',
-  },
-  {
-    title: 'Ella — Panorama Villa',
-    href: 'https://www.airbnb.fr/rooms/1313628001816572376?viralityEntryPoint=1&unique_share_id=A3E0BBB9-2B13-4B3D-A54A-0F50093FA969&slcid=a6fe49b2e35b4322908b785e6e6f27db&s=76&adults=1&slug=XEkpWBwW&source_impression_id=p3_1760987579_P3Ev1mvjfwlDoYVW',
-    description: 'Terrasse avec vue sur la vallée, parfait pour le café du matin.',
-    image:
-      'https://a0.muscache.com/im/pictures/miso/Hosting-1313628001816572376/original/a1910ffd-ac90-4076-b77b-c1ccda25150c.jpeg?im_w=1200',
-  },
-  {
-    title: 'Kandy — Villa sur les hauteurs',
-    href: 'https://www.airbnb.fr/rooms/598817875487986040?check_out=2026-06-23&viralityEntryPoint=1&unique_share_id=E5AAB5B9-0352-459E-AB7B-1AEA8373B344&slcid=439698ccc6834b4ca4ada4b0120f7153&s=76&adults=8&check_in=2026-06-20&slug=ouThftMR&source_impression_id=p3_1757950133_P3-dBiw5kQilIe91',
-    description: 'Piscine, staff aux petits soins et ambiance jungle.',
-    image:
-      'https://a0.muscache.com/im/pictures/miso/Hosting-598817875487986040/original/2e23aef1-54bf-4c23-88e7-98cf91c9135c.jpeg?im_w=1200',
-  },
-  {
-    title: 'Trincomalee — Villa Uppuveli',
-    href: 'https://www.airbnb.fr/rooms/1338965861207369303?check_out=2026-06-13&viralityEntryPoint=1&unique_share_id=6B355377-0E5F-4E38-8F02-0A6EEFC79D6C&slcid=d70159edb8814f74832fab4a1d9d06ea&s=76&adults=8&check_in=2026-06-10&slug=vk8ap3K9&source_impression_id=p3_1757953239_P3Hf3woRCOP_cR6D',
-    description: 'Face à la mer d’huile, snorkelling et lever de soleil privés.',
-    image:
-      'https://a0.muscache.com/im/pictures/miso/Hosting-1338965861207369303/original/4b1177bf-d9a0-4a11-8a44-b999fb86e14c.jpeg?im_w=1200',
-  },
-];
-
-export default function Home() {
   return (
-    <div className="bg-[var(--color-sand)] text-ink">
+    <main className="bg-background text-foreground min-h-screen selection:bg-jungle selection:text-white">
+      <div className="bg-noise" />
+      <ClientEffects />
+      <CommandPalette />
+
       <TripHero
-        title="Sri Lanka De Luxe"
-        subtitle="Marie · Kris · Alex — Travel Experience Specialist"
-        posterSrc="https://www.experiencetravelgroup.com/wp-content/uploads/2025/08/Train-from-Ella-1-e1480349616219-768x513-1.jpg"
-        ctas={heroCtas}
+        title={tripTitle}
+        subtitle={tripSubtitle}
+        heroImage={heroImage}
       />
 
-      <section className="bg-ink py-14 text-white">
-        <div className="mx-auto flex max-w-6xl flex-col gap-12 px-6 sm:px-10">
-          <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:items-end sm:justify-between sm:text-left">
-            <div>
-              <h2 className={`${playfair.className} text-3xl font-semibold sm:text-4xl`}>
-                Dates de départ
-              </h2>
-                    </div>
-            <div className="w-full max-w-xl rounded-[32px] border border-white/40 bg-white px-8 py-6 text-center text-ink shadow-lg sm:px-12 sm:py-8">
-              <p className={`${playfair.className} text-3xl font-semibold sm:text-4xl`}>
-                Du 20 au 30 juin 2026
-              </p>
-            </div>
-          </div>
+      <ScrollytellingSection itinerary={itinerary} />
 
-          <div className="grid gap-6 sm:grid-cols-3">
-            {tripStats.map((stat) => (
-              <div
-                key={stat.value}
-                className="rounded-[28px] border border-white/25 bg-white/90 px-6 py-6 text-center text-ink shadow-sm backdrop-blur"
-              >
-                <p className={`${playfair.className} text-3xl font-semibold`}>{stat.value}</p>
-                <p className="mt-2 text-sm text-slate-600">{stat.description}</p>
-              </div>
-            ))}
+      <section className="py-24 px-6 lg:px-12 bg-ink text-white relative overflow-hidden">
+        <div className="max-w-7xl mx-auto flex justify-center relative z-10">
+          <div className="w-full max-w-3xl">
+            <BudgetWidget budget={budget} />
           </div>
         </div>
       </section>
 
-      <section className="px-6 py-16 sm:px-10">
-        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.2fr_1fr]">
-          <RouteMapSection />
-          <div className="flex flex-col gap-4 rounded-[32px] border border-ink/10 bg-white/90 px-8 py-8 text-sm text-ink shadow-sm backdrop-blur">
-            <h2 className={`${playfair.className} text-3xl font-semibold text-ink`}>
-              Parcours global
-            </h2>
-            <ul className="grid gap-3 text-ink/75">
-              <li>🌆 Colombo — arrivée de nuit, city vibes et rooftops.</li>
-              <li>🌴 Côte Sud — Unawatuna & Mirissa pour la villa, les tortues et le surf.</li>
-              <li>🦁 Safaris à Udawalawe.</li>
-              <li>
-                ⛰️ Intérieur — Ella et Kandy pour le thé, les trains panoramiques et les temples.
-              </li>
-              <li>🪨 Triangle culturel — Sigiriya, Dambulla et patrimoine UNESCO.</li>
-              <li>🌊 Côte Est — Trincomalee pour les baleines, snorkelling et plages sauvages.</li>
-            </ul>
+      <section className="py-32 flex flex-col items-center justify-center gap-8 text-center relative z-10 pointer-events-none">
+        <div className="pointer-events-auto bg-lime p-12 rounded-[3rem] shadow-2xl max-w-4xl mx-6 transform hover:scale-[1.01] transition-transform duration-500">
+          <h2 className="font-serif text-4xl lg:text-6xl text-jungle mb-8">Alors, on part ?</h2>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <CtaSection ctas={finalCtas} />
           </div>
         </div>
       </section>
-
-      <main className="mx-auto flex max-w-5xl flex-col gap-16 px-6 pb-20 sm:px-10">
-        <section className="flex flex-col gap-8" aria-labelledby="budget">
-          <div className="overflow-hidden rounded-[36px] border border-[var(--color-jungle)] bg-white text-center text-ink shadow-lg">
-            <div className="bg-[var(--color-jungle)] px-8 py-8 text-white sm:px-12">
-              <h2
-                id="budget"
-                className={`${playfair.className} text-5xl font-semibold sm:text-6xl`}
-              >
-                Moins de 2 000 €
-              </h2>
-            </div>
-            <div className="px-8 py-10 sm:px-12">
-              <p className={`${playfair.className} text-lg font-semibold text-ink`}>
-                Budget quasi tout compris
-              </p>
-              <p className="mt-3 text-sm text-slate-700">
-                Transport, hébergements, activités, visa et repas au Sri Lanka.
-              </p>
-            </div>
-          </div>
-
-          <div className="overflow-hidden rounded-[36px] border border-[var(--color-jungle)] bg-white text-ink shadow-lg">
-            <div className="bg-[var(--color-jungle)] px-8 py-8 text-center text-white sm:px-12">
-              <h3 className={`${playfair.className} text-2xl font-semibold sm:text-3xl`}>
-                Répartition détaillée
-              </h3>
-            </div>
-            <div className="grid gap-4 px-8 py-10 sm:grid-cols-2 sm:px-12">
-              {budgetBreakdown.map((line) => (
-                <div
-                  key={line.label}
-                  className="rounded-[28px] border border-[var(--color-jungle)]/15 bg-white/95 px-6 py-5 text-ink shadow-sm"
-                >
-                  <div className="flex items-baseline justify-between gap-3">
-                    <h4 className="text-xs font-semibold uppercase tracking-wide">{line.label}</h4>
-                    <p className={`${playfair.className} text-lg font-semibold`}>{line.amount}</p>
-                  </div>
-                  <p className="mt-2 text-xs leading-relaxed text-slate-600">{line.note}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="flex flex-col gap-6" aria-labelledby="itineraire">
-          <div className="rounded-[36px] border border-[var(--color-jungle)] bg-white shadow-lg">
-            <div className="rounded-t-[36px] bg-[var(--color-jungle)] px-8 py-8 text-center text-white sm:px-12">
-              <h2
-                id="itineraire"
-                className={`${playfair.className} text-3xl font-semibold sm:text-4xl`}
-              >
-                Planning jour par jour
-              </h2>
-              <p className="mt-2 text-sm text-white/70">
-                Clique sur chaque jour pour dérouler la journée complète (horaires, activités,
-                coûts).
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-4 px-4 py-6 sm:px-8 sm:py-8">
-              {itineraryDays.map(({ label, entries }) => {
-                const firstCity = entries.find((entry) => entry.city.trim() !== '')?.city ?? '—';
-                return (
-                  <details
-                    key={label}
-                    className="relative overflow-visible rounded-[28px] border border-[var(--color-jungle)]/25 bg-white"
-                  >
-                    <summary
-                      className={`${playfair.className} flex cursor-pointer list-none items-center justify-between gap-3 border-b border-[var(--color-jungle)]/20 bg-white px-5 py-4 text-left text-ink`}
-                    >
-                      <span className="text-lg font-semibold">{label}</span>
-                      <span className="text-sm text-ink/70">{firstCity}</span>
-                    </summary>
-                    <div className="border-t border-[var(--color-jungle)]/15">
-                      <div className="hidden sm:block">
-                        <div className="min-w-[680px] overflow-hidden text-sm text-slate-700">
-                          <div className="grid grid-cols-[1.1fr_0.8fr_2fr_0.9fr] bg-slate-900 text-xs font-semibold uppercase tracking-[0.35em] text-white">
-                            <div className="px-4 py-3">Ville</div>
-                            <div className="px-4 py-3">Horaire</div>
-                            <div className="px-4 py-3">Planning</div>
-                            <div className="px-4 py-3">Prix (/pers)</div>
-                          </div>
-                          <div>
-                            {entries.map((entry, entryIndex) => {
-                              if (entry.note) {
-                                return (
-                                  <div
-                                    key={`note-${label}-${entryIndex}`}
-                                    className="grid grid-cols-[1.1fr_0.8fr_2fr_0.9fr] bg-slate-100 px-4 py-3 text-slate-600"
-                                  >
-                                    <div className="col-span-4 italic">{entry.plan}</div>
-                                  </div>
-                                );
-                              }
-
-                              const city =
-                                entry.city && entry.city.trim() !== '' ? entry.city : '—';
-                              const time =
-                                entry.time && entry.time.trim() !== '' ? entry.time : '—';
-                              const price =
-                                entry.price && entry.price.trim() !== '' ? entry.price : '—';
-                              const planContent =
-                                typeof entry.plan === 'string'
-                                  ? entry.plan.trim() !== ''
-                                    ? entry.plan
-                                    : '—'
-                                  : entry.plan;
-
-                              return (
-                                <div
-                                  key={`${label}-${entryIndex}`}
-                                  className={`grid grid-cols-[1.1fr_0.8fr_2fr_0.9fr] gap-0 px-4 py-3 ${
-                                    entryIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50'
-                                  }`}
-                                >
-                                  <div className="pr-4 font-medium text-slate-800">{city}</div>
-                                  <div className="pr-4 text-slate-500">{time}</div>
-                                  <div className="relative pr-4 text-slate-700">{planContent}</div>
-                                  <div className="text-slate-900">{price}</div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-col gap-3 p-4 sm:hidden">
-                        {entries.map((entry, entryIndex) => {
-                          if (entry.note) {
-                            return (
-                              <div
-                                key={`note-mobile-${label}-${entryIndex}`}
-                                className="rounded-2xl border border-[var(--color-jungle)]/20 bg-slate-100 px-4 py-3 text-xs text-slate-600"
-                              >
-                                {entry.plan}
-                              </div>
-                            );
-                          }
-
-                          const city = entry.city && entry.city.trim() !== '' ? entry.city : '—';
-                          const time = entry.time && entry.time.trim() !== '' ? entry.time : '—';
-                          const price =
-                            entry.price && entry.price.trim() !== '' ? entry.price : '—';
-                          const planContent =
-                            typeof entry.plan === 'string'
-                              ? entry.plan.trim() !== ''
-                                ? entry.plan
-                                : '—'
-                              : entry.plan;
-
-                          return (
-                            <div
-                              key={`mobile-${label}-${entryIndex}`}
-                              className="rounded-2xl border border-[var(--color-jungle)]/20 bg-white px-4 py-4 text-sm shadow-sm"
-                            >
-                              <div className="flex items-start justify-between gap-4">
-                                <div>
-                                  <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-jungle)]/80">
-                                    {city}
-                                  </p>
-                                  <p className="mt-1 text-base font-semibold text-ink">{time}</p>
-                                </div>
-                                <p className="text-sm font-semibold text-[var(--color-jungle)]">
-                                  {price}
-                                </p>
-                              </div>
-                              <div className="mt-3 text-sm text-slate-700">{planContent}</div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </details>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section className="flex flex-col gap-6" aria-labelledby="logements">
-          <div className="flex flex-col gap-2">
-            <h2 id="logements" className={`${playfair.className} text-3xl font-semibold`}>
-              Logements jolis : hôtels & Airbnb
-            </h2>
-            <p className="text-sm text-slate-600"></p>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {stays.map((stay) => (
-              <a
-                key={stay.title}
-                href={stay.href}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="group overflow-hidden rounded-[32px] border border-[var(--color-jungle)]/40 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-              >
-                <div className="relative h-56 w-full">
-                  <Image
-                    src={stay.image}
-                    alt={stay.title}
-                    fill
-                    sizes="(min-width: 1024px) 32vw, (min-width: 768px) 50vw, 100vw"
-                    className="object-cover transition duration-500 group-hover:scale-105"
-                  />
-                  <span className="absolute inset-x-0 bottom-0 bg-[var(--color-jungle)]/80 px-4 py-2 text-center text-xs font-semibold uppercase tracking-[0.3em] text-white">
-                    Cliquer pour voir
-                  </span>
-                </div>
-                <div className="space-y-2 px-5 py-5 text-ink">
-                  <h3 className={`${playfair.className} text-lg font-semibold`}>{stay.title}</h3>
-                  <p className="text-sm leading-relaxed text-slate-600">{stay.description}</p>
-                </div>
-              </a>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-2 flex justify-center px-6 pb-20 sm:px-10">
-          <div className="flex w-full max-w-3xl flex-col items-center gap-4 sm:flex-row">
-            <MessengerCta
-              conversationUrl={messengerConversationUrl}
-              messages={messengerPositiveMessages}
-              label="Je viens ✅"
-              className="w-full sm:w-auto"
-            />
-            <MessengerCta
-              conversationUrl={messengerConversationUrl}
-              messages={messengerNegativeMessages}
-              label="Je viens pas ❌"
-              className="w-full !bg-slate-900 !text-white sm:w-auto"
-            />
-          </div>
-        </section>
-      </main>
-
-      <footer className="bg-ink py-12 text-sm text-white/70">
-        <div className="mx-auto flex max-w-5xl px-6 sm:px-10">
-          Sri Lanka de Luxe — Itinéraire privé.
-        </div>
-      </footer>
-    </div>
+    </main>
   );
 }
