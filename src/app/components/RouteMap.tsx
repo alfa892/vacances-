@@ -302,12 +302,25 @@ export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }
     []
   );
 
-  const focusOnCoordinates = useCallback((coordinates: [number, number][], padding = 160) => {
+  type PaddingInput = number | { top?: number; bottom?: number; left?: number; right?: number };
+
+  const focusOnCoordinates = useCallback((coordinates: [number, number][], padding: PaddingInput = 160) => {
     if (!mapRef.current || coordinates.length === 0) return;
     const map = mapRef.current.getMap();
     const bounds = computeBounds(coordinates);
+
+    const normalizedPadding =
+      typeof padding === "number"
+        ? { top: Math.max(0, padding), bottom: Math.max(0, padding), left: Math.max(0, padding), right: Math.max(0, padding) }
+        : {
+            top: Math.max(0, padding.top ?? 160),
+            bottom: Math.max(0, padding.bottom ?? 160),
+            left: Math.max(0, padding.left ?? 160),
+            right: Math.max(0, padding.right ?? 160),
+          };
+
     map.fitBounds(bounds, {
-      padding,
+      padding: normalizedPadding,
       maxZoom: 13.5,
       duration: prefersReducedMotion ? 0 : 1200,
       bearing: 0,
@@ -449,7 +462,7 @@ export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }
             "horizon-blend": 0.2,
           });
           // Vue monde puis fly direct Sri Lanka large
-          focusOnCoordinates(ALL_COORDS_WITH_WORLD, -10, 260);
+          focusOnCoordinates(ALL_COORDS_WITH_WORLD, 180);
           if (!hasZoomedToSriLanka) {
             const duration = prefersReducedMotion ? 0 : 1200;
             setTimeout(() => {

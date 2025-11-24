@@ -28,8 +28,13 @@ export async function getBudget(): Promise<BudgetResponse> {
 }
 
 export async function getFeatureFlags(): Promise<FeatureFlagsResponse> {
-    // No cache for feature flags to allow quick toggles, or short cache
-    return fetchJson<FeatureFlagsResponse>('/api/feature-flags', { cache: 'no-store' });
+    // Build-time safe defaults (avoids network during static export)
+    return {
+        animations: true,
+        motionLevel: "full",
+        contrast: "normal",
+        density: "airy",
+    };
 }
 
 export async function search(query: string, limit = 12): Promise<SearchResult[]> {

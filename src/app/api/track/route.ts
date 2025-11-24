@@ -9,7 +9,7 @@ const trackSchema = z.object({
   city: z.string().optional(),
   device: z.string().optional(),
   props: z
-    .record(z.union([z.string(), z.number(), z.boolean()]))
+    .record(z.string(), z.union([z.string(), z.number(), z.boolean()]))
     .optional(),
   ts: z.number().optional(),
 });

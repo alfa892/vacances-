@@ -68,18 +68,22 @@ export type SearchResult =
       id: string;
       title: string;
       subtitle: string;
+      description?: string;
     }
   | {
       kind: "stop";
       id: string;
       title: string;
       subtitle: string;
+      dayId?: string;
       href?: string;
+      description?: string;
     }
   | {
       kind: "cta";
       id: string;
       title: string;
       subtitle: string;
+      description?: string;
       href: string;
     };
