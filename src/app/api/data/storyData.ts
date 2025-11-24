@@ -35,6 +35,7 @@ export const storyData: StoryResponse = {
           href: "https://www.booking.com/hotel/lk/itc-ratnadipa-a-luxury-collection-colombo.fr.html",
           media: [
             { src: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/592834813.jpg?k=2b549e03614fec2e7471f7fb54930d103b63039ebdfeed0a7b1e6ba5ee66317b&o=", alt: "Lobby ITC Ratnadipa" },
+            { src: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/548877610.jpg?k=d64ce3152c9cbc0e7e0bd912ecb2e2c0e246bd035616131e1df7f70830c96de8&o=", alt: "Chambre ITC Ratnadipa" },
           ],
         },
         {
@@ -47,6 +48,7 @@ export const storyData: StoryResponse = {
           href: "https://fr.tripadvisor.ca/Attraction_Review-g293962-d4091812-Reviews-or10-Jami_Ul_Alfar_Mosque-Colombo_Western_Province.html",
           media: [
             { src: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/4b/1a/0c/photo0jpg.jpg?w=1400&h=800&s=1", alt: "Mosquée Jami Ul-Afar" },
+            { src: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/b6/3e/38/caption.jpg?w=1100&h=-1&s=1", alt: "Intérieur de la mosquée Jami Ul-Afar" },
           ],
         },
         {
@@ -57,6 +59,10 @@ export const storyData: StoryResponse = {
           description: "Cocktail face à Lotus Tower et la skyline.",
           price: "Prix du cocktail",
           href: "https://www.therooftopguide.com/rooftop-bars-in-colombo/cloud-red-at-cinnamon-red.html",
+          media: [
+            { src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2y_CRTasuGeX5a8QeL-paqDIZT_Xobj1q8A&s", alt: "Vue skyline depuis le rooftop Cloud Red" },
+            { src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYUqGs1Ruk50DCu9t9Ke6TjUCO1oHWc_JjNw&s", alt: "Coucher de soleil au bar Cloud Red" },
+          ],
         },
       ],
     },
@@ -76,6 +82,10 @@ export const storyData: StoryResponse = {
           description: "Piscine jungle rien que pour nous.",
           price: "75 €",
           href: "https://www.airbnb.fr/rooms/1265998667374290710",
+          media: [
+            { src: "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI2NTk5ODY2NzM3NDI5MDcxMA==/original/e4fffc4f-d3d8-4fbc-8f51-51761ac980e3.jpeg?im_w=1200", alt: "Piscine de la villa Unawatuna" },
+            { src: "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI2NTk5ODY2NzM3NDI5MDcxMA==/original/9348cb0c-7b51-407e-ab1b-0d9ad41380a4.jpeg?im_w=1200", alt: "Suites ouvertes sur la jungle à Unawatuna" },
+          ],
         },
         {
           id: "mirissa-coconut",
@@ -86,6 +96,20 @@ export const storyData: StoryResponse = {
           price: "Gratuit",
           media: [
             { src: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/10/4f/42/photo1jpg.jpg?w=1200&h=-1&s=1", alt: "Coconut Tree Hill" },
+            { src: "https://thirdeyetraveller.com/wp-content/uploads/COCONUTHILL-7-of-12-2-scaled-scaled.jpg", alt: "Alignement de palmiers à Coconut Tree Hill" },
+          ],
+        },
+        {
+          id: "turtle-point",
+          title: "Turtle Point",
+          city: "Mirissa",
+          time: "Matin",
+          description: "Snorkelling avec tortues marines.",
+          price: "Gratuit",
+          href: "https://www.tripadvisor.fr/Attraction_Review-g1407334-d19174694-Reviews-Turtle_Point-Mirissa_Southern_Province.html",
+          media: [
+            { src: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/26/de/b9/ec/turtle-point.jpg?w=1200&h=1200&s=1", alt: "Tortue nageant à Turtle Point" },
+            { src: "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-720x480/0c/0f/ec/b3.jpg", alt: "Plongée avec tortues à Turtle Point" },
           ],
         },
         {
@@ -96,6 +120,9 @@ export const storyData: StoryResponse = {
           description: "Session chill pour débuter.",
           price: "20 €",
           href: "https://www.tripadvisor.fr/AttractionProductReview-g612380-d26496018-Surf_lessons_weligama_by_surf_and_stay_surf_camp-Weligama_Matara_Southern_Province.html",
+          media: [
+            { src: "https://media.kazaden.com/imgth/1920x810/img/activity_school/4061/Sri-Lanka_Mirissa_Surfeurs-sur-la-plage-%28c%29-ksl-690429154.jpg", alt: "Surfeurs sur la plage de Weligama" },
+          ],
         },
       ],
     },
@@ -115,6 +142,10 @@ export const storyData: StoryResponse = {
           description: "Jeep, éléphants, brume matinale.",
           price: "70 €",
           href: "https://www.unpasseportencavale.com/le-sri-lanka/parcs-reserves-et-safaris/faire-un-safari-a-uda-walawe/",
+          media: [
+            { src: "https://media.tacdn.com/media/attractions-splice-spp-674x446/09/de/b4/21.jpg", alt: "Éléphants au parc national d'Udawalawe" },
+            { src: "https://media.tacdn.com/media/attractions-splice-spp-674x446/0b/0b/2a/7c.jpg", alt: "Jeep de safari à Udawalawe" },
+          ],
         },
       ],
     },
@@ -134,6 +165,10 @@ export const storyData: StoryResponse = {
           description: "Viaduc des Neuf Arches, paysages thé.",
           price: "Inclus",
           href: "https://www.tripadvisor.fr/AttractionProductReview-g616035-d11471223-Reviews-Ella_to_Kandy_Scenic_Train_Journey-Ella_Uva_Province.html",
+          media: [
+            { src: "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-674x446/0b/1b/71/6f.jpg", alt: "Train bleu sur le viaduc des Neuf Arches" },
+            { src: "https://cdn.getyourguide.com/img/tour/72bc58fb94e5a37e.jpeg/145.jpg", alt: "Paysages depuis le train Ella → Kandy" },
+          ],
         },
         {
           id: "kandy-temple",
@@ -143,6 +178,10 @@ export const storyData: StoryResponse = {
           description: "Patrimoine UNESCO, rituels quotidiens.",
           price: "10 €",
           href: "https://www.unpasseportencavale.com/le-sri-lanka/le-triangle-culturel/visiter-le-temple-de-la-dent-a-kandy/",
+          media: [
+            { src: "https://media-cdn.tripadvisor.com/media/photo-s/17/74/46/29/sri-dalada-maligawa-or.jpg", alt: "Temple de la Dent à Kandy" },
+            { src: "https://backpackersunited.in/_next/image?url=https%3A%2F%2Fbpu-images-v1.s3.eu-north-1.amazonaws.com%2Fuploads%2F1721634681262_Sri%20Dalada%20Maligawa%201.jpg&w=3840&q=75", alt: "Intérieur du Temple de la Dent" },
+          ],
         },
       ],
     },
@@ -162,6 +201,10 @@ export const storyData: StoryResponse = {
           description: "Grimper pour la vue 360° sur la jungle.",
           price: "35 €",
           href: "https://www.unpasseportencavale.com/le-sri-lanka/le-triangle-culturel/le-rocher-du-lion-a-sigiriya-notre-guide-complet/",
+          media: [
+            { src: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/ed/85/6b/um-palacio-no-topo-da.jpg?w=1200&h=-1&s=1", alt: "Rocher du Lion à Sigiriya" },
+            { src: "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_720/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/muqzinlhem1y4kem2aiz/ExcursiondunejournéeàlaforteresseduLionsRockdeSigiriyaaudépartdeColombo-KlookÉtats-Unis.jpg", alt: "Escaliers monumentaux de Sigiriya" },
+          ],
         },
       ],
     },
@@ -181,6 +224,10 @@ export const storyData: StoryResponse = {
           description: "Piscine face à l'océan, coucher de soleil.",
           price: "228 €",
           href: "https://www.airbnb.fr/rooms/1338965861207369303",
+          media: [
+            { src: "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTMzODk2NTg2MTIwNzM2OTMwMw%3D%3D/original/db8b5fbc-c408-4fc5-b31a-4162e1947e6d.jpeg?im_w=1440", alt: "Piscine de la villa Uppuveli" },
+            { src: "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTMzODk2NTg2MTIwNzM2OTMwMw%3D%3D/original/961e458f-5dca-4027-8e5a-8d9c8548986a.jpeg?im_w=1440", alt: "Chambres lumineuses à Uppuveli" },
+          ],
         },
         {
           id: "baleines",
@@ -190,6 +237,9 @@ export const storyData: StoryResponse = {
           description: "Observation des baleines au large.",
           price: "30 €",
           href: "https://ann.fr/observer-les-baleines-du-sri-lanka/",
+          media: [
+            { src: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/30/13/0b/31/caption.jpg?w=1200&h=-1&s=1", alt: "Baleine au large de Trincomalee" },
+          ],
         },
         {
           id: "pigeon-island",
@@ -199,6 +249,10 @@ export const storyData: StoryResponse = {
           description: "Snorkelling eaux turquoise.",
           price: "55 €",
           href: "https://www.unpasseportencavale.com/le-sri-lanka/la-cote-est/pigeon-island-au-sri-lanka/",
+          media: [
+            { src: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/0c/b8/01/getlstd-property-photo.jpg?w=900&h=500&s=1", alt: "Plage de Pigeon Island" },
+            { src: "https://www.carnetdescapades.com/app/uploads/2019/01/pigeon-island-sri-lanka.jpg", alt: "Eaux turquoise autour de Pigeon Island" },
+          ],
         },
       ],
     },

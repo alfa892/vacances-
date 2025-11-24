@@ -42,28 +42,14 @@ const itinerary: Array<{
     day: 'Mercredi',
     city: 'Paris',
     time: 'En débauchant',
-    plan: (
-      <HoverPreviewLink
-        label="Aller dormir à l’hôtel à côté de CDG"
-        images={[
-          { src: '/photos/hero-sri-lanka.jpg', alt: 'Nuit avant le vol' },
-        ]}
-      />
-    ),
+    plan: 'Aller dormir à l’hôtel à côté de CDG',
     price: 'Hôtel + train + restau',
   },
   {
     day: 'Jeudi',
     city: 'Paris',
     time: '10h30',
-    plan: (
-      <HoverPreviewLink
-        label="🛫🛫🛫   Décollage  🛫🛫🛫"
-        images={[
-          { src: '/photos/hero-sri-lanka.jpg', alt: 'Décollage vers Colombo' },
-        ]}
-      />
-    ),
+    plan: '🛫🛫🛫   Décollage  🛫🛫🛫',
     price: '325 €',
   },
   {
@@ -85,12 +71,12 @@ const itinerary: Array<{
         srLabel="Ouvrir la fiche de l’hôtel"
         images={[
           {
-            src: '/photos/colombo-itc.jpg',
-            alt: 'ITC Ratnadipa — Lobby et façade',
+            src: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/592834813.jpg?k=2b549e03614fec2e7471f7fb54930d103b63039ebdfeed0a7b1e6ba5ee66317b&o=',
+            alt: 'Lobby de l’hôtel ITC Ratnadipa',
           },
           {
-            src: '/photos/hero-sri-lanka.jpg',
-            alt: 'Paysage ferroviaire au Sri Lanka',
+            src: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/548877610.jpg?k=d64ce3152c9cbc0e7e0bd912ecb2e2c0e246bd035616131e1df7f70830c96de8&o=',
+            alt: 'Chambre avec vue à l’ITC Ratnadipa',
           },
         ]}
       />
@@ -105,7 +91,10 @@ const itinerary: Array<{
       <HoverPreviewLink
         label="Petit déjeuner"
         images={[
-          { src: '/photos/colombo-itc.jpg', alt: 'Petit déjeuner à Colombo' },
+          {
+            src: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/592834813.jpg?k=2b549e03614fec2e7471f7fb54930d103b63039ebdfeed0a7b1e6ba5ee66317b&o=',
+            alt: 'Petit déjeuner à l’ITC Ratnadipa',
+          },
         ]}
       />
     ),
@@ -232,7 +221,14 @@ const itinerary: Array<{
       <HoverPreviewLink
         label="🍸 Rooftop avec vue sur Lotus Tower"
         images={[
-          { src: '/photos/colombo-itc.jpg', alt: 'Rooftop sur Colombo' },
+          {
+            src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2y_CRTasuGeX5a8QeL-paqDIZT_Xobj1q8A&s',
+            alt: 'Skyline de Colombo depuis Cloud Red',
+          },
+          {
+            src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYUqGs1Ruk50DCu9t9Ke6TjUCO1oHWc_JjNw&s',
+            alt: 'Vue sur Lotus Tower depuis le rooftop',
+          },
         ]}
       />
     ),
@@ -270,12 +266,12 @@ const itinerary: Array<{
         srLabel="Ouvrir la villa Airbnb d'Unawatuna"
         images={[
           {
-            src: '/photos/unawatuna-villa.jpg',
-            alt: 'Vue aérienne de la villa avec piscine',
+            src: 'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI2NTk5ODY2NzM3NDI5MDcxMA==/original/e4fffc4f-d3d8-4fbc-8f51-51761ac980e3.jpeg?im_w=1200',
+            alt: 'Piscine de la villa Unawatuna au cœur de la jungle',
           },
           {
-            src: '/photos/unawatuna-alt.jpg',
-            alt: 'Plage proche de la villa à Unawatuna',
+            src: 'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI2NTk5ODY2NzM3NDI5MDcxMA==/original/9348cb0c-7b51-407e-ab1b-0d9ad41380a4.jpeg?im_w=1200',
+            alt: 'Chambres ouvertes sur la piscine à Unawatuna',
           },
         ]}
       />
@@ -316,8 +312,12 @@ const itinerary: Array<{
         srLabel="Voir Turtle Point"
         images={[
           {
-            src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbEoleKYf6BKjPtimUUtJsjLNPLAcPR3C-1Q&s',
+            src: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/26/de/b9/ec/turtle-point.jpg?w=1200&h=1200&s=1',
             alt: 'Tortue nageant à Turtle Point',
+          },
+          {
+            src: 'https://media-cdn.tripadvisor.com/media/attractions-splice-spp-720x480/0c/0f/ec/b3.jpg',
+            alt: 'Snorkelling avec tortues à Turtle Point',
           },
         ]}
       />
@@ -432,12 +432,12 @@ const itinerary: Array<{
         srLabel="Ouvrir la villa Panorama à Ella"
         images={[
           {
-            src: '/photos/ella-villa.jpg',
-            alt: 'Vue sur la vallée depuis la terrasse',
+            src: 'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTMxMzYyODAwMTgxNjU3MjM3Ng%3D%3D/original/0fe613a4-cc8d-4b84-b590-4530c670bfed.jpeg?im_w=720',
+            alt: 'Terrasse panoramique de la villa à Ella',
           },
           {
-            src: '/photos/stay-3.jpg',
-            alt: 'Salon ouvert avec vue sur la jungle',
+            src: 'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTMxMzYyODAwMTgxNjU3MjM3Ng%3D%3D/original/64a01a23-5c14-4988-a0b6-192da3a16f35.jpeg?im_w=720',
+            alt: 'Chambre lumineuse ouverte sur la vallée d’Ella',
           },
         ]}
       />
@@ -481,6 +481,10 @@ const itinerary: Array<{
             src: 'https://lh3.googleusercontent.com/p/AF1QipOVY4i6KfvSe945qrsuwdutnamSMT4l19lvRj8=s1360-w1360-h1020',
             alt: "Zipline au-dessus de la vallée d'Ella",
           },
+          {
+            src: 'https://lh3.googleusercontent.com/p/AF1QipOVY4i6KfvSe945qrsuwdutnamSMT4l19lvRj8=s1360-w1360-h1020',
+            alt: "Zipline Flying Ravana vue large",
+          },
         ]}
       />
     ),
@@ -522,12 +526,12 @@ const itinerary: Array<{
         srLabel="Ouvrir la villa de Kandy"
         images={[
           {
-            src: '/photos/kandy-villa.jpg',
-            alt: 'Piscine à débordement entourée de jungle',
+            src: 'https://a0.muscache.com/im/pictures/miso/Hosting-598817875487986040/original/9b361618-bfd5-4604-96ce-766a39b6ca3d.jpeg?im_w=1200',
+            alt: 'Piscine à débordement de la villa de Kandy',
           },
           {
-            src: '/photos/stay-4.jpg',
-            alt: 'Salon intérieur/extérieur de la villa',
+            src: 'https://a0.muscache.com/im/pictures/miso/Hosting-598817875487986040/original/2e23aef1-54bf-4c23-88e7-98cf91c9135c.jpeg?im_w=1200',
+            alt: 'Salon ouvert sur la jungle à Kandy',
           },
         ]}
       />
@@ -745,12 +749,12 @@ const itinerary: Array<{
         srLabel="Ouvrir la villa Uppuveli"
         images={[
           {
-            src: '/photos/trincomalee-villa.jpg',
-            alt: "Piscine avec vue sur l'océan à Trincomalee",
+            src: 'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTMzODk2NTg2MTIwNzM2OTMwMw%3D%3D/original/db8b5fbc-c408-4fc5-b31a-4162e1947e6d.jpeg?im_w=1440',
+            alt: 'Piscine de la villa Uppuveli face à l’océan',
           },
           {
-            src: '/photos/stay-3.jpg',
-            alt: 'Salon ouvert de la villa Uppuveli',
+            src: 'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTMzODk2NTg2MTIwNzM2OTMwMw%3D%3D/original/961e458f-5dca-4027-8e5a-8d9c8548986a.jpeg?im_w=1440',
+            alt: 'Suites lumineuses de la villa Uppuveli',
           },
         ]}
       />
@@ -807,7 +811,14 @@ const itinerary: Array<{
       <HoverPreviewLink
         label="🤿 Snorkelling"
         images={[
-          { src: '/photos/trincomalee-villa.jpg', alt: 'Snorkelling à Trincomalee' },
+          {
+            src: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/0c/b8/01/getlstd-property-photo.jpg?w=900&h=500&s=1',
+            alt: 'Snorkelling dans les eaux de Pigeon Island',
+          },
+          {
+            src: 'https://www.carnetdescapades.com/app/uploads/2019/01/pigeon-island-sri-lanka.jpg',
+            alt: 'Récif turquoise idéal pour le masque et tuba',
+          },
         ]}
       />
     ),
@@ -951,14 +962,7 @@ const itinerary: Array<{
     day: 'Day 9 — Samedi',
     city: 'Colombo',
     time: '4h05',
-    plan: (
-      <HoverPreviewLink
-        label="🛫🛫🛫   Décollage  🛫🛫🛫"
-        images={[
-          { src: '/photos/hero-sri-lanka.jpg', alt: 'Vol retour depuis Colombo' },
-        ]}
-      />
-    ),
+    plan: '🛫🛫🛫   Décollage  🛫🛫🛫',
     price: '325 €',
   },
   {

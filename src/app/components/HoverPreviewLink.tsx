@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, createContext, useContext, memo } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import clsx from 'clsx';
+
+export const PreviewImageContext = createContext<((src: string | null) => void) | null>(null);
 
 type ImageProps = {
   src: string;
@@ -19,7 +21,7 @@ type HoverPreviewLinkProps = {
   onImageHover?: (src: string | null) => void;
 };
 
-export function HoverPreviewLink({
+export const HoverPreviewLink = memo(function HoverPreviewLink({
   label,
   href,
   subtitle,
@@ -28,6 +30,8 @@ export function HoverPreviewLink({
   onImageHover,
 }: HoverPreviewLinkProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const contextHover = useContext(PreviewImageContext);
+  const hoverHandler = onImageHover || contextHover;
 
   const Wrapper = (href ? Link : 'div') as React.ElementType;
   const wrapperProps = href
@@ -40,14 +44,14 @@ export function HoverPreviewLink({
     : {};
 
   const showPreview = () => {
-    if (images && images.length > 0 && onImageHover) {
-      onImageHover(images[0].src);
+    if (images && images.length > 0 && hoverHandler) {
+      hoverHandler(images[0].src);
     }
   };
 
   const clearPreview = () => {
-    if (onImageHover) {
-      onImageHover(null);
+    if (hoverHandler) {
+      hoverHandler(null);
     }
   };
 
@@ -103,4 +107,4 @@ export function HoverPreviewLink({
       </Wrapper>
     </>
   );
-}
+});
