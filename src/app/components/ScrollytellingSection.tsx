@@ -2,11 +2,21 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMemo, useRef, useState, isValidElement, cloneElement, useCallback } from 'react';
-import { RouteMap } from './RouteMap';
+import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { StoryDay } from '../api/data/types';
 import { HoverPreviewLink, PreviewImageContext } from './HoverPreviewLink';
 import { RouteLink } from './RouteLink';
 import clsx from 'clsx';
+
+const RouteMap = dynamic(() => import('./RouteMap').then((mod) => mod.RouteMap), {
+    ssr: false,
+    loading: () => (
+        <div className="flex h-full w-full items-center justify-center bg-[radial-gradient(circle_at_top,rgba(14,116,144,0.18),transparent_45%),linear-gradient(180deg,rgba(2,44,34,0.95),rgba(2,44,34,0.85))] px-6 text-center text-sm text-white/45">
+            Chargement du parcours...
+        </div>
+    ),
+});
 
 type LegacyItineraryItem = {
     day: string;
@@ -119,7 +129,13 @@ function DayCard({ day, id, onActive }: { day: StoryDay, id: string, onActive: (
                                 transition={{ duration: 0.8, ease: "easeInOut" }}
                                 className="absolute inset-0 z-0"
                             >
-                                <img src={activeImage} alt="Background preview" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                                <Image
+                                    src={activeImage}
+                                    alt="Apercu du lieu"
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, 960px"
+                                    className="object-cover"
+                                />
                                 <div className="absolute inset-0 bg-gradient-to-t from-jungle/40 via-jungle/15 to-transparent" />
                             </motion.div>
                         )}
@@ -146,6 +162,7 @@ function DayCard({ day, id, onActive }: { day: StoryDay, id: string, onActive: (
                             {day.stops.map((stop) => (
                                 <div
                                     key={stop.id}
+                                    id={stop.id}
                                     className="group/item flex flex-col md:flex-row gap-4 md:gap-8 items-start"
                                 >
                                     <div className="w-24 shrink-0 pt-1">
@@ -221,7 +238,13 @@ function DayCardLegacy({ day, items, onActive }: { day: string; items: LegacyIti
                                 transition={{ duration: 0.8, ease: "easeInOut" }}
                                 className="absolute inset-0 z-0"
                             >
-                                <img src={activeImage} alt="Background preview" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                                <Image
+                                    src={activeImage}
+                                    alt="Apercu du lieu"
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, 960px"
+                                    className="object-cover"
+                                />
                                 <div className="absolute inset-0 bg-gradient-to-t from-jungle/20 via-jungle/10 to-transparent" />
                             </motion.div>
                         )}

@@ -1,18 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import { storyData } from "../data/storyData";
 import { SearchResult } from "../data/types";
+import { SearchResponse } from "../data/searchTypes";
 import { rateLimit } from "@/app/lib/rateLimit";
 
 const DEFAULT_LIMIT = 12;
+const MAX_LIMIT = 20;
 
-const normalize = (value: string) => value.toLowerCase().normalize("NFC");
+const normalize = (value: string) =>
+  value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "");
 
 const textMatches = (text: string, query: string) => normalize(text).includes(query);
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const query = (url.searchParams.get("q") || "").trim();
-  const limit = Number(url.searchParams.get("limit") || DEFAULT_LIMIT);
+  const requestedLimit = Number(url.searchParams.get("limit") || DEFAULT_LIMIT);
+  const limit =
+    Number.isFinite(requestedLimit) && requestedLimit > 0
+      ? Math.min(requestedLimit, MAX_LIMIT)
+      : DEFAULT_LIMIT;
 
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "anon";
   const { allowed, retryAfter } = rateLimit({
@@ -47,7 +57,13 @@ export async function GET(request: NextRequest) {
     }
 
     day.stops.forEach((stop) => {
-      const stopHaystack = [stop.title, stop.city, stop.description, stop.price || ""].join(" ");
+      const stopHaystack = [
+        stop.title,
+        stop.city,
+        stop.description,
+        stop.price || "",
+        ...(stop.tags || []),
+      ].join(" ");
       if (!q || textMatches(stopHaystack, q)) {
         results.push({
           item: {
@@ -55,7 +71,9 @@ export async function GET(request: NextRequest) {
             id: stop.id,
             title: stop.title,
             subtitle: `${stop.city}${stop.time ? ` · ${stop.time}` : ""}`,
+            dayId: day.id,
             href: stop.href,
+            description: stop.description,
           },
           score: q ? 3 : 0.2,
         });
@@ -82,13 +100,15 @@ export async function GET(request: NextRequest) {
   const ranked = results
     .sort((a, b) => b.score - a.score)
     .map((entry) => entry.item)
-    .slice(0, Number.isFinite(limit) && limit > 0 ? limit : DEFAULT_LIMIT);
+    .slice(0, limit);
+
+  const payload: SearchResponse = {
+    query: query || "",
+    results: ranked,
+  };
 
   return NextResponse.json(
-    {
-      query: query || "",
-      results: ranked,
-    },
+    payload,
     {
       status: 200,
       headers: { "Cache-Control": "public, max-age=30, stale-while-revalidate=60" },

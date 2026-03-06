@@ -1,4 +1,5 @@
 import { StoryResponse, BudgetResponse, FeatureFlagsResponse, SearchResult } from '@/app/api/data/types';
+import type { SearchResponse } from '@/app/api/data/searchTypes';
 
 const getBaseUrl = () => {
     if (typeof window !== 'undefined') return ''; // Browser should use relative path
@@ -40,7 +41,8 @@ export async function getFeatureFlags(): Promise<FeatureFlagsResponse> {
 export async function search(query: string, limit = 12): Promise<SearchResult[]> {
     if (!query) return [];
     const params = new URLSearchParams({ q: query, limit: limit.toString() });
-    return fetchJson<SearchResult[]>(`/api/search?${params.toString()}`);
+    const { results } = await fetchJson<SearchResponse>(`/api/search?${params.toString()}`);
+    return results;
 }
 
 export type TrackingEvent = {

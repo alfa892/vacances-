@@ -1,13 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Map, {
   Layer,
   MapRef,
   Marker,
-  Popup,
   Source,
 } from "react-map-gl/mapbox";
 import { LngLatBounds } from "mapbox-gl";
@@ -194,13 +192,6 @@ const INITIAL_VIEW_STATE = {
   pitch: 0,
 };
 
-type ViewportTarget = {
-  center: [number, number];
-  zoom: number;
-  bearing: number;
-  pitch: number;
-};
-
 const computeBounds = (coordinates: [number, number][]) => {
   if (coordinates.length === 0) {
     return new LngLatBounds([79.4, 5.5], [81.6, 9.1]);
@@ -245,8 +236,7 @@ const normalizeDayKey = (value?: string) => {
 export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }: RouteMapProps) {
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
-  const [activeSegmentId, setActiveSegmentId] = useState<string>("all");
-  const [popupInfo, setPopupInfo] = useState<Stop | null>(null);
+  const activeSegmentId = "all";
   const [mapReady, setMapReady] = useState(false);
   const [hasZoomedToSriLanka, setHasZoomedToSriLanka] = useState(false);
   const [introPlayed, setIntroPlayed] = useState(false);
@@ -399,22 +389,6 @@ export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }
     // No day coordinates: do nothing
   }, [activeCity, activeDay, focusOnCoordinates, introPlayed, mapReady, prefersReducedMotion]);
 
-  const handleMarkerSelect = useCallback(
-    (stop: Stop) => {
-      if (popupInfo?.title === stop.title) {
-        setPopupInfo(null);
-        setActiveSegmentId("all");
-        return;
-      }
-
-      setPopupInfo(stop);
-      if (stop.segmentId) {
-        setActiveSegmentId(stop.segmentId);
-      }
-    },
-    [popupInfo]
-  );
-
   if (!token) {
     return (
       <motion.div
@@ -422,9 +396,44 @@ export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.25 }}
-        className="flex h-[420px] w-full items-center justify-center rounded-3xl glass-panel px-6 text-sm text-ink/80"
+        className="flex h-full w-full items-center justify-center px-4 py-10"
       >
-        Ajoute ton jeton Mapbox (`NEXT_PUBLIC_MAPBOX_TOKEN`) pour profiter de la carte interactive animée.
+        <div className="w-full max-w-3xl rounded-[2rem] border border-white/10 bg-black/20 p-6 backdrop-blur-xl md:p-8">
+          <p className="text-xs font-mono uppercase tracking-[0.28em] text-lime/70">
+            Parcours simplifie
+          </p>
+          <h3 className="mt-4 font-serif text-3xl text-white md:text-4xl">
+            La carte interactive attend juste un jeton Mapbox
+          </h3>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-white/65">
+            En attendant, le site reste utile: voici les grandes etapes du voyage,
+            dans l&apos;ordre, avec une lecture simple.
+          </p>
+
+          <div className="mt-8 grid gap-3 md:grid-cols-2">
+            {ROUTE_SEGMENTS.map((segment) => (
+              <div
+                key={segment.id}
+                className="rounded-[1.5rem] border border-white/10 bg-white/5 p-4"
+              >
+                <div className="flex items-center gap-3">
+                  <span
+                    className="h-3 w-3 rounded-full"
+                    style={{ backgroundColor: segment.color }}
+                  />
+                  <p className="text-sm font-semibold text-white">{segment.label}</p>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-white/55">
+                  {segment.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-6 text-xs text-white/35">
+            Variable a ajouter: <code>NEXT_PUBLIC_MAPBOX_TOKEN</code>
+          </p>
+        </div>
       </motion.div>
     );
   }
@@ -533,13 +542,11 @@ export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }
 
         {STOPS.map((stop) => {
           const phase = phaseMap[stop.phaseId];
-          const isActive = popupInfo?.title === stop.title;
           return (
             <Marker key={`${stop.title}-${stop.coords[0]}`} longitude={stop.coords[0]} latitude={stop.coords[1]} anchor="bottom">
               <div className="group relative flex flex-col items-center pointer-events-none">
                 <span
-                  className={`flex h-10 w-10 items-center justify-center rounded-full border-2 bg-white/80 text-lg shadow-md transition ${isActive ? "border-[var(--color-jungle)]" : "border-white/70"
-                    }`}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/70 bg-white/80 text-lg shadow-md transition"
                   style={{ color: phase.color, backdropFilter: "blur(6px)" }}
                 >
                   {phase.icon}
@@ -548,52 +555,6 @@ export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }
             </Marker>
           );
         })}
-
-        {popupInfo ? (
-          <Popup
-            longitude={popupInfo.coords[0]}
-            latitude={popupInfo.coords[1]}
-            anchor="top"
-            offset={[0, 18]}
-            closeButton
-            closeOnMove={false}
-            maxWidth="240px"
-            onClose={() => {
-              setPopupInfo(null);
-              setActiveSegmentId("all");
-            }}
-          >
-            <div className="w-[220px] space-y-2">
-              {popupInfo.image ? (
-                <div className="overflow-hidden rounded-xl">
-                  <Image
-                    src={popupInfo.image}
-                    alt={popupInfo.title}
-                    width={220}
-                    height={112}
-                    className="h-28 w-full object-cover"
-                    sizes="220px"
-                    priority={false}
-                  />
-                </div>
-              ) : null}
-              <div>
-                <p className="text-sm font-semibold text-ink">{popupInfo.title}</p>
-                <p className="mt-1 text-xs leading-relaxed text-slate-600">{popupInfo.description}</p>
-              </div>
-              {popupInfo.href ? (
-                <a
-                  href={popupInfo.href}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--color-jungle)] underline decoration-dotted underline-offset-2"
-                >
-                  Ouvrir la fiche
-                </a>
-              ) : null}
-            </div>
-          </Popup>
-        ) : null}
       </Map>
     </motion.div>
   );
