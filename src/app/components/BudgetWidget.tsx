@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Wallet, Users, Plane, Bed, Ticket, Bus, Utensils, FileText } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Bed, Bus, FileText, Plane, Ticket, Users, Utensils, Wallet } from 'lucide-react';
 import clsx from 'clsx';
-import { BudgetResponse } from '../api/data/types';
+import type { BudgetResponse } from '../api/data/types';
+import { tripModes, type TripModeId } from '../lib/siteContent';
 
-const CATEGORY_CONFIG: Record<string, { icon: React.ElementType, color: string }> = {
+const CATEGORY_CONFIG: Record<string, { icon: React.ElementType; color: string }> = {
     vols: { icon: Plane, color: 'bg-ocean' },
     logement: { icon: Bed, color: 'bg-indigo-400' },
     activites: { icon: Ticket, color: 'bg-saffron' },
@@ -16,141 +17,181 @@ const CATEGORY_CONFIG: Record<string, { icon: React.ElementType, color: string }
     divers: { icon: Wallet, color: 'bg-pink-400' },
 };
 
+const COMFORT_LIMIT = 2000;
+
 export function BudgetWidget({ budget }: { budget: BudgetResponse }) {
-    const [perPerson, setPerPerson] = useState(true);
+    const [scope, setScope] = useState<'person' | 'group'>('person');
+    const [mode, setMode] = useState<TripModeId>('balanced');
+
+    const activeMode = tripModes.find((item) => item.id === mode) ?? tripModes[1];
+
+    const scenario = useMemo(() => {
+        const lines = budget.perPerson.map((line) => {
+            const delta = activeMode.adjustments[line.category] ?? 0;
+            return {
+                ...line,
+                amount: Math.max(0, line.amount + delta),
+            };
+        });
+
+        const totalPerPerson = lines.reduce((sum, line) => sum + line.amount, 0);
+        const margin = COMFORT_LIMIT - totalPerPerson;
+
+        return {
+            lines,
+            totalPerPerson,
+            totalGroup: totalPerPerson * budget.groupSize,
+            margin,
+        };
+    }, [activeMode, budget.groupSize, budget.perPerson]);
+
+    const displayTotal = scope === 'person' ? scenario.totalPerPerson : scenario.totalGroup;
+    const maxLineAmount = Math.max(...scenario.lines.map((line) => line.amount), COMFORT_LIMIT / 4);
 
     return (
-        <div className="relative p-6 md:p-10 max-w-3xl w-full rounded-[2.5rem] bg-jungle/80 backdrop-blur-xl border border-white/10 shadow-2xl overflow-hidden">
-            {/* Decorative glow */}
-            <div className="absolute -top-20 -right-20 w-40 h-40 bg-lime/10 rounded-full blur-[60px] pointer-events-none" />
+        <div className="relative w-full overflow-hidden rounded-[2.5rem] border border-white/10 bg-jungle/85 p-6 shadow-2xl backdrop-blur-xl md:p-10">
+            <div className="absolute -right-24 -top-24 h-56 w-56 rounded-full bg-lime/10 blur-[90px]" />
 
-            <div className="relative z-10 mb-8">
-                <div className="flex items-center justify-between mb-4">
+            <div className="relative z-10">
+                <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                     <div>
-                        <h3 className="font-serif text-2xl text-white">Budget</h3>
-                        <p className="text-xs text-lime font-mono uppercase tracking-wider mt-1">Estimation 2026</p>
+                        <p className="text-xs font-mono uppercase tracking-[0.28em] text-lime/75">
+                            Budget vivant
+                        </p>
+                        <h3 className="mt-3 font-serif text-3xl text-white md:text-4xl">
+                            Choisis le niveau de confort
+                        </h3>
+                        <p className="mt-3 max-w-xl text-sm leading-7 text-white/65">
+                            On peut montrer au groupe trois versions tres claires:
+                            plus malin, equilibre, ou plus premium.
+                        </p>
                     </div>
-                    <button
-                        onClick={() => setPerPerson(!perPerson)}
-                        className="group relative flex items-center justify-center w-12 h-12 rounded-full bg-white/10 border border-white/20 shadow-sm hover:bg-white/20 hover:scale-105 transition-all duration-300"
-                        title={perPerson ? "Voir total groupe" : "Voir par personne"}
-                    >
-                        <AnimatePresence mode="wait">
-                            {perPerson ? (
-                                <motion.div
-                                    key="user"
-                                    initial={{ scale: 0.5, opacity: 0 }}
-                                    animate={{ scale: 1, opacity: 1 }}
-                                    exit={{ scale: 0.5, opacity: 0 }}
-                                >
-                                    <Users size={20} className="text-lime" />
-                                </motion.div>
-                            ) : (
-                                <motion.div
-                                    key="wallet"
-                                    initial={{ scale: 0.5, opacity: 0 }}
-                                    animate={{ scale: 1, opacity: 1 }}
-                                    exit={{ scale: 0.5, opacity: 0 }}
-                                >
-                                    <Wallet size={20} className="text-lime" />
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </button>
+
+                    <div className="inline-flex rounded-full border border-white/10 bg-black/20 p-1">
+                        <button
+                            type="button"
+                            onClick={() => setScope('person')}
+                            className={`rounded-full px-4 py-2 text-sm transition ${scope === 'person' ? 'bg-lime text-jungle' : 'text-white/65'}`}
+                        >
+                            1 personne
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setScope('group')}
+                            className={`rounded-full px-4 py-2 text-sm transition ${scope === 'group' ? 'bg-lime text-jungle' : 'text-white/65'}`}
+                        >
+                            Groupe x{budget.groupSize}
+                        </button>
+                    </div>
                 </div>
 
-            </div>
-
-            <div className="relative z-10 space-y-5">
-                {budget.perPerson.map((line, index) => {
-                    const config = CATEGORY_CONFIG[line.category] || CATEGORY_CONFIG.divers;
-                    const Icon = config.icon;
-                    const amount = perPerson ? line.amount : line.amount * budget.groupSize;
-
-                    return (
-                        <div key={line.label} className="group flex items-center gap-4">
-                            <div className={clsx("w-10 h-10 rounded-2xl flex items-center justify-center shadow-inner text-jungle font-bold", config.color)}>
-                                <Icon size={18} />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <div className="flex justify-between items-baseline mb-1">
-                                    <span className="font-medium text-white text-sm">{line.label}</span>
-                                    <span className="font-mono text-lime font-semibold">
-                                        {amount.toLocaleString('fr-FR')} €
+                <div className="mt-8 grid gap-3 md:grid-cols-3">
+                    {tripModes.map((tripMode) => (
+                        <button
+                            key={tripMode.id}
+                            type="button"
+                            onClick={() => setMode(tripMode.id)}
+                            className={`rounded-[1.5rem] border p-4 text-left transition ${tripMode.id === mode ? 'border-lime/30 bg-lime/10' : 'border-white/10 bg-white/5 hover:bg-white/8'}`}
+                        >
+                            <div className="flex items-center justify-between gap-4">
+                                <div>
+                                    <p className="text-sm text-white">{tripMode.label}</p>
+                                    <p className="mt-1 text-xs text-white/45">{tripMode.badge}</p>
+                                </div>
+                                {tripMode.recommended && (
+                                    <span className="rounded-full bg-lime px-2 py-1 text-[10px] font-mono uppercase tracking-[0.2em] text-jungle">
+                                        Recommande
                                     </span>
+                                )}
+                            </div>
+                            <p className="mt-4 text-lg text-white">{tripMode.budgetHint}</p>
+                            <p className="mt-2 text-sm leading-6 text-white/55">{tripMode.description}</p>
+                        </button>
+                    ))}
+                </div>
+
+                <div className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+                    <div className="space-y-5">
+                        {scenario.lines.map((line, index) => {
+                            const config = CATEGORY_CONFIG[line.category] || CATEGORY_CONFIG.divers;
+                            const Icon = config.icon;
+                            const amount = scope === 'person' ? line.amount : line.amount * budget.groupSize;
+
+                            return (
+                                <div key={line.label} className="flex items-center gap-4">
+                                    <div className={clsx('flex h-11 w-11 items-center justify-center rounded-2xl text-jungle shadow-inner', config.color)}>
+                                        <Icon size={18} />
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                        <div className="mb-2 flex items-baseline justify-between gap-4">
+                                            <div>
+                                                <p className="text-sm text-white">{line.label}</p>
+                                                <p className="text-xs text-white/45">{line.note}</p>
+                                            </div>
+                                            <span className="font-mono text-lime">
+                                                {amount.toLocaleString('fr-FR')} EUR
+                                            </span>
+                                        </div>
+                                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/40">
+                                            <motion.div
+                                                initial={{ width: 0 }}
+                                                whileInView={{ width: `${(line.amount / maxLineAmount) * 100}%` }}
+                                                transition={{ duration: 0.7, delay: index * 0.05 }}
+                                                className={clsx('h-full rounded-full', config.color)}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="w-full h-1.5 bg-black/40 rounded-full overflow-hidden">
-                                    <motion.div
-                                        initial={{ width: 0 }}
-                                        whileInView={{ width: `${(line.amount / 2000) * 100}%` }}
-                                        transition={{ duration: 1, delay: index * 0.1 }}
-                                        className={clsx("h-full rounded-full opacity-100", config.color)}
-                                    />
+                            );
+                        })}
+                    </div>
+
+                    <div className="rounded-[2rem] border border-white/10 bg-black/20 p-5">
+                        <p className="text-xs font-mono uppercase tracking-[0.24em] text-lime/70">
+                            Lecture rapide
+                        </p>
+                        <div className="mt-5 rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
+                            <p className="text-sm text-white/55">Total estime</p>
+                            <p className="mt-2 font-serif text-5xl text-white">
+                                {displayTotal.toLocaleString('fr-FR')} EUR
+                            </p>
+                            <p className="mt-3 text-sm text-white/55">
+                                {scope === 'person' ? 'Par personne' : `Pour ${budget.groupSize} personnes`}
+                            </p>
+                        </div>
+
+                        <div className="mt-4 rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
+                            <div className="flex items-center gap-3">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-lime/10 text-lime">
+                                    {scope === 'group' ? <Users size={18} /> : <Wallet size={18} />}
                                 </div>
+                                <div>
+                                    <p className="text-sm text-white">Marge avant 2 000 EUR</p>
+                                    <p className={`mt-1 text-lg ${scenario.margin >= 0 ? 'text-lime' : 'text-saffron'}`}>
+                                        {scenario.margin >= 0 ? '+' : ''}
+                                        {scenario.margin.toLocaleString('fr-FR')} EUR
+                                    </p>
+                                </div>
+                            </div>
+                            <p className="mt-4 text-sm leading-7 text-white/60">
+                                {scenario.margin >= 0
+                                    ? "Bonne nouvelle: on reste sous la barre psychologique des 2 000 EUR."
+                                    : "On depasse la barre des 2 000 EUR, mais on gagne en confort et en simplicite."}
+                            </p>
+                        </div>
+
+                        <div className="mt-4 rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
+                            <p className="text-sm text-white">Pourquoi ce mode est defendable</p>
+                            <div className="mt-4 space-y-3">
+                                {activeMode.bullets.map((bullet) => (
+                                    <p key={bullet} className="text-sm leading-6 text-white/60">
+                                        {bullet}
+                                    </p>
+                                ))}
                             </div>
                         </div>
-                    );
-                })}
-
-                {/* Imprévu Line */}
-                {(() => {
-                    const targetBudget = 2000;
-                    const imprevuPerPerson = targetBudget - budget.totalPerPerson;
-
-                    if (imprevuPerPerson > 0) {
-                        const amount = perPerson ? imprevuPerPerson : imprevuPerPerson * budget.groupSize;
-                        const config = { icon: Wallet, color: 'bg-fuchsia-400' }; // Brighter color for Imprévu
-                        const Icon = config.icon;
-
-                        return (
-                            <div key="Imprévu" className="group flex items-center gap-4">
-                                <div className={clsx("w-10 h-10 rounded-2xl flex items-center justify-center shadow-inner text-jungle font-bold", config.color)}>
-                                    <Icon size={18} />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <div className="flex justify-between items-baseline mb-1">
-                                        <span className="font-medium text-white text-sm">Imprévu</span>
-                                        <span className="font-mono text-lime font-semibold">
-                                            {amount.toLocaleString('fr-FR')} €
-                                        </span>
-                                    </div>
-                                    <div className="w-full h-1.5 bg-black/40 rounded-full overflow-hidden">
-                                        <motion.div
-                                            initial={{ width: 0 }}
-                                            whileInView={{ width: `${(imprevuPerPerson / targetBudget) * 100}%` }}
-                                            transition={{ duration: 1, delay: budget.perPerson.length * 0.1 }}
-                                            className={clsx("h-full rounded-full opacity-100", config.color)}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    }
-                    return null;
-                })()}
-            </div>
-
-            <div className="relative z-10 mt-8 pt-6 border-t border-white/10">
-                <div className="flex justify-between items-end">
-                    <span className="text-sm font-medium text-white/80">Total cible</span>
-                    <motion.span
-                        key={perPerson ? 'person' : 'group'}
-                        initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                        className="font-serif text-4xl text-white tracking-tight"
-                    >
-                        {perPerson ? (2000).toLocaleString('fr-FR') : (2000 * budget.groupSize).toLocaleString('fr-FR')} €
-                    </motion.span>
-                </div>
-                <p className="text-right text-[10px] text-lime/80 mt-2 font-mono uppercase tracking-wider">
-                    {perPerson ? 'Par personne' : `Pour ${budget.groupSize} personnes`}
-                </p>
-                {budget.promo && (
-                    <div className="mt-4 p-3 bg-lime/10 border border-lime/20 rounded-xl flex justify-between items-center">
-                        <span className="text-xs text-lime font-bold">{budget.promo.label}</span>
-                        <span className="text-xs text-white font-mono">-{budget.promo.amount} €</span>
                     </div>
-                )}
+                </div>
             </div>
         </div>
     );

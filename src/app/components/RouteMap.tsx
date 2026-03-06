@@ -210,15 +210,15 @@ type RouteMapProps = {
 };
 
 const DAY_COORDS: Record<string, [number, number][]> = {
-  'Day 1': [STOPS[0].coords], // Colombo
+  'Day 1': [STOPS[0].coords, STOPS[1].coords], // Colombo + Unawatuna
   'Day 2': [STOPS[1].coords, STOPS[2].coords], // Unawatuna + Mirissa
-  'Day 3': [STOPS[3].coords], // Udawalawe
+  'Day 3': [STOPS[3].coords, STOPS[4].coords], // Udawalawe + Ella
   'Day 4': [STOPS[4].coords, STOPS[5].coords], // Ella + Kandy
-  'Day 5': [STOPS[6].coords], // Sigiriya
-  'Day 6': [STOPS[7].coords], // Trincomalee
+  'Day 5': [STOPS[5].coords], // Kandy
+  'Day 6': [STOPS[6].coords, STOPS[7].coords], // Sigiriya + Trincomalee
   'Day 7': [STOPS[7].coords], // Trincomalee
   'Day 8': [STOPS[7].coords], // Trincomalee
-  'Day 9': [STOPS[8].coords], // Colombo retour
+  'Day 9': [STOPS[7].coords, STOPS[8].coords], // Trincomalee + Colombo retour
 };
 
 const normalizeDayKey = (value?: string) => {

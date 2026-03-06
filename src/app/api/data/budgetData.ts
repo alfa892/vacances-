@@ -2,11 +2,10 @@ import { BudgetLine, BudgetResponse } from "./types";
 
 const perPerson: BudgetLine[] = [
   { label: "Avion", amount: 650, note: "Paris ↔ Colombo", category: "vols" },
-  { label: "Logement", amount: 470, note: "Hôtels & villas", category: "logement" },
-  { label: "Activités", amount: 250, note: "Safari, zipline, temples", category: "activites" },
-  { label: "Repas & drinks", amount: 200, note: "Restaurants, rooftops", category: "repas" },
-  { label: "Transport", amount: 50, note: "Train, van, tuk-tuk", category: "transport" },
-  { label: "Visa", amount: 40, note: "ETA en ligne", category: "visa" },
+  { label: "Logement", amount: 470.62, note: "Hotels, villas et nuits clefs", category: "logement" },
+  { label: "Activites", amount: 255, note: "Safari, snorkelling, temples et extras", category: "activites" },
+  { label: "Repas", amount: 250, note: "Restos, rooftop et marge repas", category: "repas" },
+  { label: "Trajets", amount: 41.64, note: "Voitures, train et petits transferts", category: "transport" },
 ];
 
 const groupSize = 8;

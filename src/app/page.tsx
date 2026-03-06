@@ -8,10 +8,28 @@ import { BudgetWidget } from "./components/BudgetWidget";
 import { ClientEffects } from "./components/ClientEffects";
 import { CommandPalette } from "./components/CommandPalette";
 import { CtaSection } from "./components/CtaSection";
+import { GroupPitchCard } from "./components/GroupPitchCard";
+import { PlanningToolkit } from "./components/PlanningToolkit";
+import { PracticalResources } from "./components/PracticalResources";
 import { ScrollytellingSection } from "./components/ScrollytellingSection";
+import { SignatureMoments } from "./components/SignatureMoments";
 import { TripHero } from "./components/TripHero";
+import { TripFaq } from "./components/TripFaq";
+import { TripModes } from "./components/TripModes";
+import {
+  faqItems,
+  groupPitchBullets,
+  groupPitchMessage,
+  heroHighlights,
+  packingChecklist,
+  planningSteps,
+  practicalResources,
+  signatureMoments,
+  tripModes,
+} from "./lib/siteContent";
 
 const heroImage = "/photos/hero-sri-lanka.jpg";
+const groupPitchWhatsApp = `https://wa.me/?text=${encodeURIComponent(groupPitchMessage)}`;
 
 const quickStats = [
   {
@@ -58,6 +76,9 @@ export default function Home() {
         subtitle={storyData.tripSubtitle}
         heroImage={heroImage}
         heroVideo={storyData.days[0]?.heroVideo}
+        highlights={heroHighlights}
+        primaryAction={{ label: "Voir les moments forts", href: "#moments" }}
+        secondaryAction={{ label: "Convaincre le groupe", href: "#kit-groupe" }}
       />
 
       <section className="relative z-10 border-y border-white/10 bg-[linear-gradient(180deg,rgba(2,44,34,0.96),rgba(3,84,63,0.92))] px-6 py-16 lg:px-12">
@@ -99,6 +120,36 @@ export default function Home() {
         </div>
       </section>
 
+      <SignatureMoments moments={signatureMoments} />
+
+      <section id="kit-groupe" className="relative z-10 px-6 py-24 lg:px-12">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+          <div>
+            <p className="text-xs font-mono uppercase tracking-[0.3em] text-lime/80">
+              Trois facons de vendre le meme voyage
+            </p>
+            <h2 className="mt-4 font-serif text-4xl text-white md:text-6xl">
+              On peut discuter le style sans refaire tout le projet
+            </h2>
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-white/65 md:text-base">
+              C&apos;est ce qui manque souvent dans un groupe: un langage simple pour comparer.
+              Ici, chacun comprend vite le niveau de confort vise.
+            </p>
+            <div className="mt-10">
+              <TripModes modes={tripModes} />
+            </div>
+          </div>
+
+          <div className="lg:sticky lg:top-24 lg:self-start">
+            <GroupPitchCard
+              message={groupPitchMessage}
+              bullets={groupPitchBullets}
+              whatsappHref={groupPitchWhatsApp}
+            />
+          </div>
+        </div>
+      </section>
+
       <ScrollytellingSection days={storyData.days} />
 
       <section className="relative overflow-hidden bg-ink px-6 py-24 text-white lg:px-12">
@@ -122,6 +173,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <PlanningToolkit planningSteps={planningSteps} checklist={packingChecklist} />
+      <PracticalResources resources={practicalResources} />
+      <TripFaq items={faqItems} />
 
       <section className="relative z-10 px-6 py-28 lg:px-12">
         <div className="mx-auto max-w-5xl rounded-[3rem] border border-lime/20 bg-lime p-10 text-center shadow-[0_40px_120px_rgba(2,44,34,0.35)] sm:p-14">
