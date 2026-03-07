@@ -7,8 +7,6 @@ import { budgetData } from "./api/data/budgetData";
 import { BudgetWidget } from "./components/BudgetWidget";
 import { ClientEffects } from "./components/ClientEffects";
 import { CommandPalette } from "./components/CommandPalette";
-import { CtaSection } from "./components/CtaSection";
-import { GroupPitchCard } from "./components/GroupPitchCard";
 import { PlanningToolkit } from "./components/PlanningToolkit";
 import { PracticalResources } from "./components/PracticalResources";
 import { ScrollytellingSection } from "./components/ScrollytellingSection";
@@ -17,8 +15,6 @@ import { TripHero } from "./components/TripHero";
 import { TripFaq } from "./components/TripFaq";
 import {
   faqItems,
-  groupPitchBullets,
-  groupPitchMessage,
   packingChecklist,
   planningSteps,
   practicalResources,
@@ -26,27 +22,26 @@ import {
 } from "./lib/siteContent";
 
 const heroImage = "/photos/hero-sri-lanka.jpg";
-const groupPitchWhatsApp = `https://wa.me/?text=${encodeURIComponent(groupPitchMessage)}`;
 
 const quickPitchCards = [
   {
-    label: "Quand",
-    value: "9 jours sur place",
-    note: "Depart 2026. Dense mais pas speed.",
+    label: "Duree",
+    value: "9 jours",
+    note: "Du jour 1 a Colombo au vol retour.",
     icon: CalendarDays,
     variant: "brutal-card-ocean" as const,
   },
   {
-    label: "Combien",
+    label: "Budget",
     value: `${budgetData.totalPerPerson.toLocaleString("fr-FR")} EUR`,
-    note: "Vol + hotel + activites. Tout inclus.",
+    note: "Par personne, tout compris.",
     icon: Wallet,
     variant: "brutal-card-saffron" as const,
   },
   {
-    label: "Le parcours",
-    value: `${new Set(storyData.days.flatMap((day) => day.cities)).size} villes`,
-    note: "Colombo, safari, train, temples, lagon.",
+    label: "Parcours",
+    value: `${new Set(storyData.days.flatMap((day) => day.cities)).size} etapes`,
+    note: "Colombo, safari, train, temples, plages.",
     icon: MapPinned,
     variant: "brutal-card-lime" as const,
   },
@@ -68,21 +63,21 @@ export default function Home() {
         duration={String(storyData.days.length)}
         totalBudget={`${budgetData.totalPerPerson.toLocaleString("fr-FR")} EUR`}
         primaryAction={{ label: "Voir l'itineraire", href: "#itineraire" }}
-        secondaryAction={{ label: "Convaincre le groupe", href: "#kit-groupe" }}
+        secondaryAction={{ label: "Voir le budget", href: "#budget" }}
       />
 
-      {/* ─── QUICK PITCH — 3 neobrutal cards ─── */}
+      {/* ─── RESUME RAPIDE ─── */}
       <section className="relative z-10 px-6 py-20 lg:px-12">
         <div className="mx-auto max-w-6xl">
           <p className="text-xs font-mono uppercase tracking-[0.3em] text-lime/60">
-            En 10 secondes
+            En bref
           </p>
           <h2 className="mt-4 font-serif text-4xl text-ink md:text-6xl">
-            T&apos;es chaud ou pas ?
+            Le plan
           </h2>
           <p className="mt-4 max-w-xl text-base text-ink/50">
-            Le Sri Lanka en groupe. Tout est deja cadre.
-            Il te reste juste a dire oui.
+            9 jours au Sri Lanka a 12. Tout est deja organise,
+            y&apos;a plus qu&apos;a confirmer.
           </p>
 
           <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -105,77 +100,52 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── SIGNATURE MOMENTS ─── */}
+      {/* ─── TEMPS FORTS ─── */}
       <SignatureMoments moments={signatureMoments} />
 
-      {/* ─── ITINERARY (scrollytelling + map) ─── */}
+      {/* ─── ITINERAIRE ─── */}
       <div id="itineraire">
         <ScrollytellingSection days={storyData.days} />
       </div>
 
       {/* ─── BUDGET ─── */}
-      <section className="relative z-10 overflow-hidden bg-night px-6 py-24 lg:px-12">
+      <section id="budget" className="relative z-10 overflow-hidden bg-night px-6 py-24 lg:px-12">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 max-w-xl">
             <p className="text-xs font-mono uppercase tracking-[0.3em] text-saffron/80">
-              Budget transparent
+              Budget
             </p>
             <h2 className="mt-4 font-serif text-4xl text-ink md:text-6xl">
-              Combien ca coute, vraiment
+              Combien ca coute
             </h2>
             <p className="mt-4 text-base text-ink/50">
-              Pas de surprise. Tu vois ou va chaque euro.
-              Et tu peux ajuster le niveau de confort.
+              {budgetData.totalPerPerson.toLocaleString("fr-FR")} EUR par personne, tout compris.
+              Voila comment c&apos;est reparti.
             </p>
           </div>
           <BudgetWidget budget={budgetData} />
         </div>
       </section>
 
-      {/* ─── CONVINCE THE GROUP ─── */}
-      <section id="kit-groupe" className="relative z-10 px-6 py-24 lg:px-12">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-12 max-w-xl">
-            <p className="text-xs font-mono uppercase tracking-[0.3em] text-lime/60">
-              Kit de persuasion
-            </p>
-            <h2 className="mt-4 font-serif text-4xl text-ink md:text-6xl">
-              Envoie ca au groupe, c&apos;est plie
-            </h2>
-          </div>
-          <GroupPitchCard
-            message={groupPitchMessage}
-            bullets={groupPitchBullets}
-            whatsappHref={groupPitchWhatsApp}
-          />
-        </div>
-      </section>
-
       {/* ─── PLANNING + CHECKLIST ─── */}
       <PlanningToolkit planningSteps={planningSteps} checklist={packingChecklist} />
 
-      {/* ─── PRACTICAL RESOURCES ─── */}
+      {/* ─── INFOS PRATIQUES ─── */}
       <PracticalResources resources={practicalResources} />
 
       {/* ─── FAQ ─── */}
       <TripFaq items={faqItems} />
 
-      {/* ─── FINAL CTA — massive, neobrutal ─── */}
+      {/* ─── FOOTER ─── */}
       <section className="relative z-10 px-6 py-28 lg:px-12">
         <div className="brutal-card-lime mx-auto max-w-5xl p-10 text-center sm:p-16">
-          <p className="text-xs font-mono uppercase tracking-[0.3em] opacity-50">
-            Derniere chance
-          </p>
-          <h2 className="mt-6 font-serif text-4xl md:text-7xl">
-            Le Sri Lanka t&apos;attend. Tes potes aussi.
+          <h2 className="font-serif text-4xl md:text-7xl">
+            Bon, vous en etes ?
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed opacity-60">
-            Tout est la. L&apos;itineraire, le budget, les liens.
-            Il manque plus que toi.
+            Tout est la : l&apos;itineraire, le budget, les infos.
+            Confirmez vite qu&apos;on bloque les billets.
           </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-5 sm:flex-row">
-            <CtaSection ctas={storyData.ctas} />
-          </div>
         </div>
       </section>
     </main>
