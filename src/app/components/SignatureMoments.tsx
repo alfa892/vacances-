@@ -3,18 +3,17 @@ import type { SignatureMoment } from "../lib/siteContent";
 
 export function SignatureMoments({ moments }: { moments: SignatureMoment[] }) {
   return (
-    <section id="moments" className="relative z-10 px-6 py-24 lg:px-12">
+    <section id="moments" className="relative z-10 bg-night px-6 py-24 lg:px-12">
       <div className="mx-auto max-w-7xl">
         <div className="max-w-3xl">
           <p className="text-xs font-mono uppercase tracking-[0.3em] text-lime/80">
-            Les moments qui vendent le voyage
+            Temps forts
           </p>
           <h2 className="mt-4 font-serif text-4xl text-ink md:text-6xl">
-            Quatre scenes qui suffisent a faire dire oui
+            Les moments qui valent le detour
           </h2>
           <p className="mt-5 text-sm leading-7 text-ink/50 md:text-base">
-            On ne vend pas une liste. On vend des images mentales fortes,
-            faciles a projeter et faciles a partager.
+            Quatre scenes du voyage, pour se projeter.
           </p>
         </div>
 

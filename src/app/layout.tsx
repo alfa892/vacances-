@@ -19,21 +19,20 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
-const title = "Sri Lanka de Luxe — Roadtrip entre potes";
+const title = "Sri Lanka 2026";
 const description =
-  "Itinéraire 11 jours au Sri Lanka : Colombo, plages sud, safari, train bleu, temples et Trincomalee. Budget 1 670 € maîtrisé, hébergements stylés, vibe fun.";
+  "9 jours au Sri Lanka à 12 : Colombo, côte sud, safari, train Ella-Kandy, Sigiriya, Trincomalee. 2 000 € par personne tout compris.";
 
 export const metadata: Metadata = {
   title,
   description,
   keywords: [
     "Sri Lanka",
-    "Voyage amis",
-    "Itinéraire luxe",
+    "Voyage entre amis",
     "Safari Udawalawe",
     "Train Ella Kandy",
     "Trincomalee",
-    "Budget voyage",
+    "Sigiriya",
   ],
   openGraph: {
     title,

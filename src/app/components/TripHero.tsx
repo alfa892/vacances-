@@ -42,7 +42,7 @@ export function TripHero({
   const defaultImage = 'https://images.unsplash.com/photo-1526401485004-8ad6f57be0d7?auto=format&fit=crop&w=1600&q=80';
 
   return (
-    <section ref={ref} className="relative flex min-h-screen items-center justify-center overflow-hidden bg-night">
+    <section ref={ref} className="relative z-10 flex min-h-screen items-center justify-center overflow-hidden bg-night">
       <motion.div style={{ y, scale }} className="absolute inset-0 z-0">
         {!prefersReducedMotion ? (
           <video
@@ -70,7 +70,7 @@ export function TripHero({
           transition={{ duration: prefersReducedMotion ? 0 : 0.8, delay: 0.2 }}
         >
           <span className="inline-flex items-center gap-2 rounded-full border-2 border-white/15 px-5 py-2 text-xs font-mono uppercase tracking-[0.3em] text-lime/80">
-            Edition 2026
+            2026
           </span>
         </motion.div>
 

@@ -67,7 +67,7 @@ export default function Home() {
       />
 
       {/* ─── RESUME RAPIDE ─── */}
-      <section className="relative z-10 px-6 py-20 lg:px-12">
+      <section className="relative z-10 bg-night px-6 py-20 lg:px-12">
         <div className="mx-auto max-w-6xl">
           <p className="text-xs font-mono uppercase tracking-[0.3em] text-lime/60">
             En bref
@@ -137,7 +137,7 @@ export default function Home() {
       <TripFaq items={faqItems} />
 
       {/* ─── FOOTER ─── */}
-      <section className="relative z-10 px-6 py-28 lg:px-12">
+      <section className="relative z-10 bg-night px-6 py-28 lg:px-12">
         <div className="brutal-card-lime mx-auto max-w-5xl p-10 text-center sm:p-16">
           <h2 className="font-serif text-4xl md:text-7xl">
             Bon, vous en etes ?

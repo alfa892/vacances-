@@ -8,10 +8,10 @@ export function TripFaq({ items }: { items: FaqItem[] }) {
     const [openIndex, setOpenIndex] = useState(0);
 
     return (
-        <section className="relative z-10 px-6 pb-24 lg:px-12">
+        <section className="relative z-10 bg-night px-6 pb-24 lg:px-12">
             <div className="mx-auto max-w-4xl">
                 <p className="text-xs font-mono uppercase tracking-[0.3em] text-ink/40">
-                    Objections
+                    Questions
                 </p>
                 <h2 className="mt-4 font-serif text-4xl text-ink md:text-5xl">
                     Les questions que tes potes vont poser

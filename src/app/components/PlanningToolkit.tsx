@@ -27,7 +27,7 @@ export function PlanningToolkit({ planningSteps, checklist }: PlanningToolkitPro
     };
 
     return (
-        <section id="kit" className="relative z-10 px-6 py-24 lg:px-12">
+        <section id="kit" className="relative z-10 bg-night px-6 py-24 lg:px-12">
             <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.92fr_1.08fr]">
                 {/* Planning steps */}
                 <div className="brutal-card p-6 md:p-8">

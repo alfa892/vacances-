@@ -5,7 +5,7 @@ const ICONS = [CarFront, TrainFront, Bike];
 
 export function PracticalResources({ resources }: { resources: PracticalResource[] }) {
   return (
-    <section className="relative z-10 px-6 py-24 lg:px-12">
+    <section className="relative z-10 bg-night px-6 py-24 lg:px-12">
       <div className="mx-auto max-w-6xl">
         <div className="max-w-xl">
           <p className="text-xs font-mono uppercase tracking-[0.3em] text-ink/40">
