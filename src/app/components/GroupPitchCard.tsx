@@ -25,27 +25,23 @@ export function GroupPitchCard({ message, bullets, whatsappHref }: GroupPitchCar
     };
 
     return (
-        <div className="rounded-[2rem] border border-lime/20 bg-[linear-gradient(180deg,rgba(217,249,157,0.14),rgba(217,249,157,0.05))] p-6 shadow-[0_30px_90px_rgba(2,44,34,0.18)] backdrop-blur-xl md:p-8">
-            <p className="text-xs font-mono uppercase tracking-[0.28em] text-jungle/60">
-                Convaincre le groupe
-            </p>
-            <h3 className="mt-4 font-serif text-4xl text-jungle">
-                Un message deja pret a envoyer
+        <div className="brutal-card p-6 md:p-8">
+            <h3 className="font-serif text-3xl text-ink md:text-4xl">
+                Un message pret a envoyer
             </h3>
-            <p className="mt-4 text-sm leading-7 text-jungle/70">
-                Le but est simple: enlever le travail mental. Tu copies, tu envoies, et
-                le projet devient concret.
+            <p className="mt-4 text-sm leading-7 text-ink/50">
+                Tu copies, tu envoies, c&apos;est plie.
             </p>
 
             <div className="mt-6 space-y-3">
                 {bullets.map((bullet) => (
-                    <div key={bullet} className="rounded-2xl border border-jungle/10 bg-white/40 px-4 py-3 text-sm text-jungle/75">
+                    <div key={bullet} className="rounded-xl border-2 border-white/8 bg-white/3 px-4 py-3 text-sm text-ink/70">
                         {bullet}
                     </div>
                 ))}
             </div>
 
-            <div className="mt-6 rounded-[1.75rem] border border-jungle/10 bg-jungle p-5 text-sm leading-7 text-white/80">
+            <div className="mt-6 rounded-xl border-2 border-lime/20 bg-lime/5 p-5 text-sm leading-7 text-ink/80">
                 {message}
             </div>
 
@@ -53,20 +49,20 @@ export function GroupPitchCard({ message, bullets, whatsappHref }: GroupPitchCar
                 <button
                     type="button"
                     onClick={handleCopy}
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-jungle px-5 py-3 text-sm font-medium text-white transition hover:scale-[1.01]"
+                    className="brutal-btn brutal-btn-primary"
                 >
                     {copied ? <Check size={16} /> : <Copy size={16} />}
-                    {copied ? 'Texte copie' : 'Copier le pitch'}
+                    {copied ? 'Copie !' : 'Copier le pitch'}
                 </button>
                 <a
                     href={whatsappHref}
                     target="_blank"
                     rel="noreferrer noopener"
                     onClick={() => track({ event: 'pitch_whatsapp' })}
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-jungle/15 bg-white/50 px-5 py-3 text-sm font-medium text-jungle transition hover:bg-white/70"
+                    className="brutal-btn brutal-btn-whatsapp"
                 >
                     <MessageCircleMore size={16} />
-                    Envoyer dans WhatsApp
+                    Envoyer sur WhatsApp
                 </a>
             </div>
         </div>

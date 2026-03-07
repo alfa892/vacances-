@@ -49,36 +49,34 @@ export function BudgetWidget({ budget }: { budget: BudgetResponse }) {
     const maxLineAmount = Math.max(...scenario.lines.map((line) => line.amount), COMFORT_LIMIT / 4);
 
     return (
-        <div className="relative w-full overflow-hidden rounded-[2.5rem] border border-white/10 bg-jungle/85 p-6 shadow-2xl backdrop-blur-xl md:p-10">
-            <div className="absolute -right-24 -top-24 h-56 w-56 rounded-full bg-lime/10 blur-[90px]" />
-
+        <div className="brutal-card relative w-full p-6 md:p-10">
             <div className="relative z-10">
                 <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                     <div>
                         <p className="text-xs font-mono uppercase tracking-[0.28em] text-lime/75">
                             Budget vivant
                         </p>
-                        <h3 className="mt-3 font-serif text-3xl text-white md:text-4xl">
+                        <h3 className="mt-3 font-serif text-3xl text-ink md:text-4xl">
                             Choisis le niveau de confort
                         </h3>
-                        <p className="mt-3 max-w-xl text-sm leading-7 text-white/65">
+                        <p className="mt-3 max-w-xl text-sm leading-7 text-ink/50">
                             On peut montrer au groupe trois versions tres claires:
                             plus malin, equilibre, ou plus premium.
                         </p>
                     </div>
 
-                    <div className="inline-flex rounded-full border border-white/10 bg-black/20 p-1">
+                    <div className="inline-flex rounded-full border-2 border-white/10 bg-night p-1">
                         <button
                             type="button"
                             onClick={() => setScope('person')}
-                            className={`rounded-full px-4 py-2 text-sm transition ${scope === 'person' ? 'bg-lime text-jungle' : 'text-white/65'}`}
+                            className={`rounded-full px-4 py-2 text-sm font-mono transition ${scope === 'person' ? 'bg-lime text-night font-bold' : 'text-ink/60'}`}
                         >
                             1 personne
                         </button>
                         <button
                             type="button"
                             onClick={() => setScope('group')}
-                            className={`rounded-full px-4 py-2 text-sm transition ${scope === 'group' ? 'bg-lime text-jungle' : 'text-white/65'}`}
+                            className={`rounded-full px-4 py-2 text-sm font-mono transition ${scope === 'group' ? 'bg-lime text-night font-bold' : 'text-ink/60'}`}
                         >
                             Groupe x{budget.groupSize}
                         </button>
@@ -91,21 +89,21 @@ export function BudgetWidget({ budget }: { budget: BudgetResponse }) {
                             key={tripMode.id}
                             type="button"
                             onClick={() => setMode(tripMode.id)}
-                            className={`rounded-[1.5rem] border p-4 text-left transition ${tripMode.id === mode ? 'border-lime/30 bg-lime/10' : 'border-white/10 bg-white/5 hover:bg-white/8'}`}
+                            className={`rounded-xl border-2 p-4 text-left transition ${tripMode.id === mode ? 'border-lime/40 bg-lime/10' : 'border-white/8 bg-white/3 hover:bg-white/5'}`}
                         >
                             <div className="flex items-center justify-between gap-4">
                                 <div>
-                                    <p className="text-sm text-white">{tripMode.label}</p>
-                                    <p className="mt-1 text-xs text-white/45">{tripMode.badge}</p>
+                                    <p className="text-sm text-ink">{tripMode.label}</p>
+                                    <p className="mt-1 text-xs text-ink/40">{tripMode.badge}</p>
                                 </div>
                                 {tripMode.recommended && (
-                                    <span className="rounded-full bg-lime px-2 py-1 text-[10px] font-mono uppercase tracking-[0.2em] text-jungle">
+                                    <span className="brutal-card-lime rounded-full px-2 py-1 text-[10px] font-mono uppercase tracking-[0.2em] !border-2 !shadow-[2px_2px_0px_#0a0a0a]">
                                         Recommande
                                     </span>
                                 )}
                             </div>
-                            <p className="mt-4 text-lg text-white">{tripMode.budgetHint}</p>
-                            <p className="mt-2 text-sm leading-6 text-white/55">{tripMode.description}</p>
+                            <p className="mt-4 text-lg text-ink">{tripMode.budgetHint}</p>
+                            <p className="mt-2 text-sm leading-6 text-ink/50">{tripMode.description}</p>
                         </button>
                     ))}
                 </div>
@@ -119,20 +117,20 @@ export function BudgetWidget({ budget }: { budget: BudgetResponse }) {
 
                             return (
                                 <div key={line.label} className="flex items-center gap-4">
-                                    <div className={clsx('flex h-11 w-11 items-center justify-center rounded-2xl text-jungle shadow-inner', config.color)}>
+                                    <div className={clsx('flex h-11 w-11 items-center justify-center rounded-xl border-2 border-night text-night shadow-[2px_2px_0px_#0a0a0a]', config.color)}>
                                         <Icon size={18} />
                                     </div>
                                     <div className="min-w-0 flex-1">
                                         <div className="mb-2 flex items-baseline justify-between gap-4">
                                             <div>
-                                                <p className="text-sm text-white">{line.label}</p>
-                                                <p className="text-xs text-white/45">{line.note}</p>
+                                                <p className="text-sm text-ink">{line.label}</p>
+                                                <p className="text-xs text-ink/40">{line.note}</p>
                                             </div>
                                             <span className="font-mono text-lime">
                                                 {amount.toLocaleString('fr-FR')} EUR
                                             </span>
                                         </div>
-                                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/40">
+                                        <div className="h-2 w-full overflow-hidden rounded-full border border-white/10 bg-night">
                                             <motion.div
                                                 initial={{ width: 0 }}
                                                 whileInView={{ width: `${(line.amount / maxLineAmount) * 100}%` }}
@@ -146,45 +144,45 @@ export function BudgetWidget({ budget }: { budget: BudgetResponse }) {
                         })}
                     </div>
 
-                    <div className="rounded-[2rem] border border-white/10 bg-black/20 p-5">
+                    <div className="brutal-card p-5">
                         <p className="text-xs font-mono uppercase tracking-[0.24em] text-lime/70">
                             Lecture rapide
                         </p>
-                        <div className="mt-5 rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
-                            <p className="text-sm text-white/55">Total estime</p>
-                            <p className="mt-2 font-serif text-5xl text-white">
+                        <div className="mt-5 rounded-xl border-2 border-white/8 bg-white/3 p-5">
+                            <p className="text-sm text-ink/50">Total estime</p>
+                            <p className="mt-2 font-serif text-5xl text-ink">
                                 {displayTotal.toLocaleString('fr-FR')} EUR
                             </p>
-                            <p className="mt-3 text-sm text-white/55">
+                            <p className="mt-3 text-sm text-ink/50">
                                 {scope === 'person' ? 'Par personne' : `Pour ${budget.groupSize} personnes`}
                             </p>
                         </div>
 
-                        <div className="mt-4 rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
+                        <div className="mt-4 rounded-xl border-2 border-white/8 bg-white/3 p-5">
                             <div className="flex items-center gap-3">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-lime/10 text-lime">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-lime/10 text-lime">
                                     {scope === 'group' ? <Users size={18} /> : <Wallet size={18} />}
                                 </div>
                                 <div>
-                                    <p className="text-sm text-white">Marge avant 2 000 EUR</p>
-                                    <p className={`mt-1 text-lg ${scenario.margin >= 0 ? 'text-lime' : 'text-saffron'}`}>
+                                    <p className="text-sm text-ink">Marge avant 2 000 EUR</p>
+                                    <p className={`mt-1 font-mono text-lg ${scenario.margin >= 0 ? 'text-lime' : 'text-saffron'}`}>
                                         {scenario.margin >= 0 ? '+' : ''}
                                         {scenario.margin.toLocaleString('fr-FR')} EUR
                                     </p>
                                 </div>
                             </div>
-                            <p className="mt-4 text-sm leading-7 text-white/60">
+                            <p className="mt-4 text-sm leading-7 text-ink/50">
                                 {scenario.margin >= 0
                                     ? "Bonne nouvelle: on reste sous la barre psychologique des 2 000 EUR."
                                     : "On depasse la barre des 2 000 EUR, mais on gagne en confort et en simplicite."}
                             </p>
                         </div>
 
-                        <div className="mt-4 rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
-                            <p className="text-sm text-white">Pourquoi ce mode est defendable</p>
+                        <div className="mt-4 rounded-xl border-2 border-white/8 bg-white/3 p-5">
+                            <p className="text-sm text-ink">Pourquoi ce mode est defendable</p>
                             <div className="mt-4 space-y-3">
                                 {activeMode.bullets.map((bullet) => (
-                                    <p key={bullet} className="text-sm leading-6 text-white/60">
+                                    <p key={bullet} className="text-sm leading-6 text-ink/50">
                                         {bullet}
                                     </p>
                                 ))}
