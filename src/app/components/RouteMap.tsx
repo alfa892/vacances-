@@ -236,7 +236,6 @@ const normalizeDayKey = (value?: string) => {
 export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }: RouteMapProps) {
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
-  const activeSegmentId = "all";
   const [mapReady, setMapReady] = useState(false);
   const [hasZoomedToSriLanka, setHasZoomedToSriLanka] = useState(false);
   const [introPlayed, setIntroPlayed] = useState(false);
@@ -249,10 +248,10 @@ export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }
     () =>
       ROUTE_SEGMENTS.map((segment) => ({
         ...segment,
-        width: activeSegmentId === "all" || segment.id === activeSegmentId ? 6 : 3,
-        opacity: activeSegmentId === "all" || segment.id === activeSegmentId ? 0.95 : 0.2,
+        width: 6,
+        opacity: 0.95,
       })),
-    [activeSegmentId]
+    []
   );
 
   const routeGeoJson = useMemo(
@@ -320,17 +319,8 @@ export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }
 
   useEffect(() => {
     if (!mapReady) return;
-    if (activeSegmentId === "all") {
-      focusOnCoordinates(ALL_COORDS_WITH_WORLD, 220);
-      return;
-    }
-
-    const segment = ROUTE_SEGMENTS.find((item) => item.id === activeSegmentId);
-    if (segment) {
-      const padding = segment.coordinates.length > 2 ? 160 : 140;
-      focusOnCoordinates(segment.coordinates, padding);
-    }
-  }, [activeSegmentId, focusOnCoordinates, mapReady]);
+    focusOnCoordinates(ALL_COORDS_WITH_WORLD, 220);
+  }, [focusOnCoordinates, mapReady]);
 
   // Fly to location when activeDay changes
   useEffect(() => {

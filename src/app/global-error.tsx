@@ -1,12 +1,14 @@
 'use client';
 
 export default function GlobalError({
-  error: _error,
+  error,
   reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  // Log the error for debugging (error is required by Next.js interface)
+  console.error('Global error:', error);
   return (
     <html lang="fr">
       <body

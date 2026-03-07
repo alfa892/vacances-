@@ -131,7 +131,7 @@ function DayCard({ day, id, onActive }: { day: StoryDay, id: string, onActive: (
                             >
                                 <Image
                                     src={activeImage}
-                                    alt="Apercu du lieu"
+                                    alt=""
                                     fill
                                     sizes="(max-width: 768px) 100vw, 960px"
                                     className="object-cover"
@@ -240,7 +240,7 @@ function DayCardLegacy({ day, items, onActive }: { day: string; items: LegacyIti
                             >
                                 <Image
                                     src={activeImage}
-                                    alt="Apercu du lieu"
+                                    alt=""
                                     fill
                                     sizes="(max-width: 768px) 100vw, 960px"
                                     className="object-cover"
