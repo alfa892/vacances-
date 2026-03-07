@@ -17,6 +17,7 @@ const fraunces = Fraunces({
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 const title = "Sri Lanka 2026";
@@ -76,6 +77,12 @@ export default async function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body className={bodyClasses}>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[9999] focus:rounded-lg focus:bg-lime focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-night"
+        >
+          Aller au contenu principal
+        </a>
         <CustomCursor forceHidden={!flags.animations} />
         {children}
       </body>

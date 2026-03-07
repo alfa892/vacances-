@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Calendar, ExternalLink, MapPin, Search, X } from 'lucide-react';
 import { SearchResult } from '@/app/api/data/types';
@@ -12,6 +12,7 @@ export function CommandPalette() {
     const [results, setResults] = useState<SearchResult[]>([]);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [loading, setLoading] = useState(false);
+    const previouslyFocusedRef = useRef<HTMLElement | null>(null);
 
     const closePalette = useCallback(() => {
         setIsOpen(false);
@@ -19,9 +20,11 @@ export function CommandPalette() {
         setResults([]);
         setSelectedIndex(0);
         setLoading(false);
+        previouslyFocusedRef.current?.focus();
     }, []);
 
     const openPalette = useCallback((source: 'keyboard' | 'button') => {
+        previouslyFocusedRef.current = document.activeElement as HTMLElement;
         setIsOpen(true);
         track({ event: 'search_open', props: { source } });
     }, []);
@@ -33,6 +36,7 @@ export function CommandPalette() {
                 setIsOpen((open) => {
                     const nextOpen = !open;
                     if (nextOpen) {
+                        previouslyFocusedRef.current = document.activeElement as HTMLElement;
                         track({ event: 'search_open', props: { source: 'keyboard' } });
                     }
                     return nextOpen;
@@ -159,13 +163,18 @@ export function CommandPalette() {
             >
                 <Search className="h-4 w-4 text-lime" />
                 <span>Recherche</span>
-                <span className="hidden rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-mono uppercase tracking-[0.2em] text-white/55 sm:inline-flex">
+                <span className="hidden rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-mono uppercase tracking-[0.2em] text-white/65 sm:inline-flex">
                     Cmd/Ctrl + K
                 </span>
             </button>
 
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-[12vh]">
+                <div
+                    className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-[12vh]"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="command-palette-title"
+                >
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -181,28 +190,30 @@ export function CommandPalette() {
                         <div className="border-b border-white/10 px-4 py-3 sm:px-5">
                             <div className="mb-3 flex items-center justify-between gap-3">
                                 <div>
-                                    <p className="text-xs font-mono uppercase tracking-[0.25em] text-lime/70">
+                                    <p id="command-palette-title" className="text-xs font-mono uppercase tracking-[0.25em] text-lime/70">
                                         Recherche rapide
                                     </p>
-                                    <p className="mt-1 text-sm text-white/55">
+                                    <p className="mt-1 text-sm text-white/65">
                                         Trouve une ville, une activite ou un lien utile.
                                     </p>
                                 </div>
                                 <button
                                     type="button"
                                     onClick={closePalette}
+                                    aria-label="Fermer la recherche"
                                     className="rounded-md p-1 transition-colors hover:bg-white/10"
                                 >
-                                    <X className="h-5 w-5 text-white/50" />
+                                    <X className="h-5 w-5 text-white/65" />
                                 </button>
                             </div>
 
                             <div className="flex items-center rounded-2xl border border-white/10 bg-white/5 px-4">
-                                <Search className="mr-3 h-5 w-5 text-white/45" />
+                                <Search className="mr-3 h-5 w-5 text-white/60" />
                                 <input
                                     autoFocus
                                     type="text"
                                     placeholder="Exemple: Colombo, safari, train..."
+                                    aria-label="Recherche"
                                     className="h-14 flex-1 bg-transparent text-base text-white placeholder:text-white/30 focus:outline-none"
                                     value={query}
                                     onChange={(e) => setQuery(e.target.value)}
@@ -213,19 +224,19 @@ export function CommandPalette() {
 
                         <div className="max-h-[60vh] overflow-y-auto p-2">
                             {loading && (
-                                <div className="py-10 text-center text-sm text-white/35">
+                                <div className="py-10 text-center text-sm text-white/55">
                                     Recherche en cours...
                                 </div>
                             )}
 
                             {!loading && results.length === 0 && query && (
-                                <div className="py-10 text-center text-sm text-white/35">
+                                <div className="py-10 text-center text-sm text-white/55">
                                     Aucun resultat trouve.
                                 </div>
                             )}
 
                             {!loading && results.length === 0 && !query && (
-                                <div className="px-3 py-8 text-center text-sm text-white/35">
+                                <div className="px-3 py-8 text-center text-sm text-white/55">
                                     <p>Tape un mot simple. Exemple :</p>
                                     <div className="mt-4 flex flex-wrap justify-center gap-2">
                                         {['Colombo', 'Safari', 'Train', 'Plage'].map((hint) => (
@@ -263,26 +274,26 @@ export function CommandPalette() {
                                     <div className="min-w-0 flex-1">
                                         <div className="flex items-center gap-3">
                                             <p className="truncate text-white">{result.title}</p>
-                                            <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-mono uppercase tracking-[0.2em] text-white/45">
+                                            <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-mono uppercase tracking-[0.2em] text-white/60">
                                                 {result.kind}
                                             </span>
                                         </div>
-                                        <p className="mt-1 truncate text-sm text-white/55">{result.subtitle}</p>
+                                        <p className="mt-1 truncate text-sm text-white/65">{result.subtitle}</p>
                                         {result.description && (
-                                            <p className="mt-2 line-clamp-2 text-sm text-white/40">
+                                            <p className="mt-2 line-clamp-2 text-sm text-white/60">
                                                 {result.description}
                                             </p>
                                         )}
                                     </div>
 
                                     {index === selectedIndex && (
-                                        <ArrowRight size={16} className="mt-1 text-white/45" />
+                                        <ArrowRight size={16} className="mt-1 text-white/60" />
                                     )}
                                 </button>
                             ))}
                         </div>
 
-                        <div className="flex items-center justify-between border-t border-white/10 bg-white/5 px-4 py-2 text-[10px] font-mono uppercase tracking-[0.2em] text-white/30">
+                        <div className="flex items-center justify-between border-t border-white/10 bg-white/5 px-4 py-2 text-[10px] font-mono uppercase tracking-[0.2em] text-white/50">
                             <span>Navigation ↑ ↓</span>
                             <span>Ouvrir ↵</span>
                         </div>

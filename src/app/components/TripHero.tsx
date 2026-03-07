@@ -50,6 +50,7 @@ export function TripHero({
             loop
             muted
             playsInline
+            aria-hidden="true"
             className="absolute inset-0 h-full w-full object-cover opacity-50"
           >
             <source src={heroVideo || defaultVideo} type="video/mp4" />
@@ -102,13 +103,13 @@ export function TripHero({
             {duration && (
               <div className="brutal-card px-6 py-3 text-center">
                 <p className="font-mono text-2xl font-bold text-lime">{duration}</p>
-                <p className="mt-1 text-xs uppercase tracking-widest text-white/50">jours</p>
+                <p className="mt-1 text-xs uppercase tracking-widest text-white/65">jours</p>
               </div>
             )}
             {totalBudget && (
               <div className="brutal-card px-6 py-3 text-center">
                 <p className="font-mono text-2xl font-bold text-saffron">{totalBudget}</p>
-                <p className="mt-1 text-xs uppercase tracking-widest text-white/50">par personne</p>
+                <p className="mt-1 text-xs uppercase tracking-widest text-white/65">par personne</p>
               </div>
             )}
           </motion.div>

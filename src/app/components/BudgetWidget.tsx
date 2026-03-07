@@ -36,7 +36,7 @@ export function BudgetWidget({ budget }: { budget: BudgetResponse }) {
                                     <div className="mb-2 flex items-baseline justify-between gap-4">
                                         <div>
                                             <p className="text-sm text-ink">{line.label}</p>
-                                            <p className="text-xs text-ink/40">{line.note}</p>
+                                            <p className="text-xs text-ink/60">{line.note}</p>
                                         </div>
                                         <span className="shrink-0 font-mono text-lime">
                                             {line.amount.toLocaleString('fr-FR')} EUR
@@ -59,19 +59,19 @@ export function BudgetWidget({ budget }: { budget: BudgetResponse }) {
                 {/* Resume */}
                 <div className="space-y-4">
                     <div className="brutal-card p-6 text-center">
-                        <p className="text-xs font-mono uppercase tracking-[0.24em] text-ink/40">
+                        <p className="text-xs font-mono uppercase tracking-[0.24em] text-ink/60">
                             Total par personne
                         </p>
                         <p className="mt-3 font-serif text-5xl text-ink md:text-6xl">
                             {budget.totalPerPerson.toLocaleString('fr-FR')} EUR
                         </p>
-                        <p className="mt-3 text-sm text-ink/40">
+                        <p className="mt-3 text-sm text-ink/60">
                             Tout compris
                         </p>
                     </div>
 
                     <div className="brutal-card p-5">
-                        <p className="text-xs font-mono uppercase tracking-[0.24em] text-ink/40">
+                        <p className="text-xs font-mono uppercase tracking-[0.24em] text-ink/60">
                             Total groupe ({budget.groupSize} personnes)
                         </p>
                         <p className="mt-3 font-serif text-3xl text-ink">

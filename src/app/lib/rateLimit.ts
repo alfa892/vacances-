@@ -1,3 +1,14 @@
+/**
+ * In-memory token-bucket rate limiter.
+ *
+ * Works well for single-instance deployments (Node server, Docker container).
+ * In serverless / multi-instance environments each instance has its own Map,
+ * so effective limits are multiplied by the number of instances and reset on
+ * cold starts.
+ *
+ * For production at scale, consider a shared store such as Upstash Redis
+ * (`@upstash/ratelimit`) which provides atomic, cross-instance rate limiting.
+ */
 const buckets = new Map<string, { tokens: number; updatedAt: number }>();
 
 type RateLimitConfig = {

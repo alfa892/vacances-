@@ -10,7 +10,7 @@ export function TripFaq({ items }: { items: FaqItem[] }) {
     return (
         <section className="relative z-10 bg-night px-6 pb-24 lg:px-12">
             <div className="mx-auto max-w-4xl">
-                <p className="text-xs font-mono uppercase tracking-[0.3em] text-ink/40">
+                <p className="text-xs font-mono uppercase tracking-[0.3em] text-ink/60">
                     Questions
                 </p>
                 <h2 className="mt-4 font-serif text-4xl text-ink md:text-5xl">
@@ -30,15 +30,22 @@ export function TripFaq({ items }: { items: FaqItem[] }) {
                                     type="button"
                                     onClick={() => setOpenIndex(isOpen ? -1 : index)}
                                     className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left"
+                                    aria-expanded={isOpen}
+                                    aria-controls={`faq-answer-${index}`}
                                 >
-                                    <span className="text-lg font-medium text-ink">{item.question}</span>
+                                    <span id={`faq-question-${index}`} className="text-lg font-medium text-ink">{item.question}</span>
                                     <ChevronDown
                                         size={18}
                                         className={`shrink-0 text-lime transition-transform ${isOpen ? 'rotate-180' : ''}`}
                                     />
                                 </button>
                                 {isOpen && (
-                                    <div className="border-t-2 border-white/8 px-5 py-5 text-sm leading-7 text-ink/60">
+                                    <div
+                                        id={`faq-answer-${index}`}
+                                        role="region"
+                                        aria-labelledby={`faq-question-${index}`}
+                                        className="border-t-2 border-white/8 px-5 py-5 text-sm leading-7 text-ink/60"
+                                    >
                                         {item.answer}
                                     </div>
                                 )}

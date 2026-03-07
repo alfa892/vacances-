@@ -423,14 +423,14 @@ export function RouteMap({ activeDay, activeCity, prefersReducedMotion = false }
                   />
                   <p className="text-sm font-semibold text-white">{segment.label}</p>
                 </div>
-                <p className="mt-3 text-sm leading-6 text-white/55">
+                <p className="mt-3 text-sm leading-6 text-white/65">
                   {segment.description}
                 </p>
               </div>
             ))}
           </div>
 
-          <p className="mt-6 text-xs text-white/35">
+          <p className="mt-6 text-xs text-white/55">
             Variable a ajouter: <code>NEXT_PUBLIC_MAPBOX_TOKEN</code>
           </p>
         </div>

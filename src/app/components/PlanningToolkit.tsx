@@ -46,13 +46,13 @@ export function PlanningToolkit({ planningSteps, checklist }: PlanningToolkitPro
                                         <CalendarClock size={16} />
                                     </div>
                                     <div>
-                                        <p className="text-xs font-mono uppercase tracking-[0.2em] text-ink/40">
+                                        <p className="text-xs font-mono uppercase tracking-[0.2em] text-ink/60">
                                             Etape {index + 1} — {step.when}
                                         </p>
                                         <p className="mt-1 text-base font-medium text-ink">{step.title}</p>
                                     </div>
                                 </div>
-                                <p className="mt-3 text-sm leading-7 text-ink/50">{step.note}</p>
+                                <p className="mt-3 text-sm leading-7 text-ink/60">{step.note}</p>
                             </div>
                         ))}
                     </div>
@@ -77,7 +77,7 @@ export function PlanningToolkit({ planningSteps, checklist }: PlanningToolkitPro
                     <div className="mt-8 grid gap-5 md:grid-cols-2">
                         {Object.entries(groupedChecklist).map(([category, items]) => (
                             <div key={category} className="rounded-xl border-2 border-white/8 bg-white/3 p-5">
-                                <p className="text-xs font-mono uppercase tracking-[0.22em] text-ink/40">
+                                <p className="text-xs font-mono uppercase tracking-[0.22em] text-ink/60">
                                     {category}
                                 </p>
                                 <div className="mt-4 space-y-3">
@@ -87,6 +87,7 @@ export function PlanningToolkit({ planningSteps, checklist }: PlanningToolkitPro
                                             <button
                                                 key={item.id}
                                                 type="button"
+                                                aria-pressed={isChecked}
                                                 onClick={() => toggleItem(item.id)}
                                                 className="flex w-full items-start gap-3 rounded-lg border-2 border-white/8 bg-night px-4 py-3 text-left transition hover:border-white/15"
                                             >
@@ -97,7 +98,7 @@ export function PlanningToolkit({ planningSteps, checklist }: PlanningToolkitPro
                                                     <p className={`text-sm ${isChecked ? 'text-ink/40 line-through' : 'text-ink'}`}>
                                                         {item.label}
                                                     </p>
-                                                    <p className="mt-1 text-xs leading-6 text-ink/35">{item.note}</p>
+                                                    <p className="mt-1 text-xs leading-6 text-ink/55">{item.note}</p>
                                                 </div>
                                             </button>
                                         );

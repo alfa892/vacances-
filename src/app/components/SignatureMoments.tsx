@@ -12,7 +12,7 @@ export function SignatureMoments({ moments }: { moments: SignatureMoment[] }) {
           <h2 className="mt-4 font-serif text-4xl text-ink md:text-6xl">
             Les moments qui valent le detour
           </h2>
-          <p className="mt-5 text-sm leading-7 text-ink/50 md:text-base">
+          <p className="mt-5 text-sm leading-7 text-ink/60 md:text-base">
             Quatre scenes du voyage, pour se projeter.
           </p>
         </div>

@@ -49,7 +49,7 @@ const quickPitchCards = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-night text-ink selection:bg-lime selection:text-night">
+    <main id="main-content" className="min-h-screen bg-night text-ink selection:bg-lime selection:text-night">
       <div className="bg-noise" />
       <ClientEffects />
       <CommandPalette />
@@ -75,7 +75,7 @@ export default function Home() {
           <h2 className="mt-4 font-serif text-4xl text-ink md:text-6xl">
             Le plan
           </h2>
-          <p className="mt-4 max-w-xl text-base text-ink/50">
+          <p className="mt-4 max-w-xl text-base text-ink/60">
             9 jours au Sri Lanka a 12. Tout est deja organise,
             y&apos;a plus qu&apos;a confirmer.
           </p>
@@ -118,7 +118,7 @@ export default function Home() {
             <h2 className="mt-4 font-serif text-4xl text-ink md:text-6xl">
               Combien ca coute
             </h2>
-            <p className="mt-4 text-base text-ink/50">
+            <p className="mt-4 text-base text-ink/60">
               {budgetData.totalPerPerson.toLocaleString("fr-FR")} EUR par personne, tout compris.
               Voila comment c&apos;est reparti.
             </p>

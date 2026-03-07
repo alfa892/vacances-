@@ -8,7 +8,7 @@ export function PracticalResources({ resources }: { resources: PracticalResource
     <section className="relative z-10 bg-night px-6 py-24 lg:px-12">
       <div className="mx-auto max-w-6xl">
         <div className="max-w-xl">
-          <p className="text-xs font-mono uppercase tracking-[0.3em] text-ink/40">
+          <p className="text-xs font-mono uppercase tracking-[0.3em] text-ink/60">
             Infos pratiques
           </p>
           <h2 className="mt-4 font-serif text-4xl text-ink md:text-5xl">
@@ -25,7 +25,7 @@ export function PracticalResources({ resources }: { resources: PracticalResource
                   <Icon size={20} />
                 </div>
                 <h3 className="mt-5 font-serif text-2xl text-ink">{resource.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-ink/50">{resource.description}</p>
+                <p className="mt-3 text-sm leading-7 text-ink/60">{resource.description}</p>
 
                 <div className="mt-5 space-y-2">
                   {resource.points.map((point) => (

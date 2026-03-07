@@ -12,7 +12,7 @@ import clsx from 'clsx';
 const RouteMap = dynamic(() => import('./RouteMap').then((mod) => mod.RouteMap), {
     ssr: false,
     loading: () => (
-        <div className="flex h-full w-full items-center justify-center bg-[radial-gradient(circle_at_top,rgba(14,116,144,0.18),transparent_45%),linear-gradient(180deg,rgba(2,44,34,0.95),rgba(2,44,34,0.85))] px-6 text-center text-sm text-white/45">
+        <div className="flex h-full w-full items-center justify-center bg-[radial-gradient(circle_at_top,rgba(14,116,144,0.18),transparent_45%),linear-gradient(180deg,rgba(2,44,34,0.95),rgba(2,44,34,0.85))] px-6 text-center text-sm text-white/60">
             Chargement du parcours...
         </div>
     ),

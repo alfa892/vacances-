@@ -52,7 +52,9 @@ export async function POST(request: NextRequest) {
   const event = parsed.data;
 
   if (process.env.NODE_ENV !== "production") {
-    // In dev, log for debugging. In prod, the route is a no-op by design.
+    // Dev: log events for debugging.
+    // Prod: intentional no-op — plug in your analytics provider here
+    // (e.g. Plausible, PostHog, or a DB write) when ready.
     console.debug("track event", { ip, event });
   }
 
